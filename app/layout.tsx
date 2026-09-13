@@ -1,37 +1,37 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "deslop — Stop shipping AI slop. Start shipping design.",
+  title: "deslop — Precision Quality Control for AI Frontend Code",
   description:
-    "Generate complete design.md files from any live website. Extract colors, typography, spacing, and components into a structured design system ready for Cursor, v0, and any AI tool.",
-  keywords: [
-    "design system",
-    "design tokens",
-    "AI design",
-    "design.md",
-    "design system generator",
-  ],
-  openGraph: {
-    title: "deslop — Stop shipping AI slop. Start shipping design.",
-    description:
-      "Generate complete design.md files from any live website. Extract colors, typography, spacing, and components.",
-    type: "website",
-  },
+    "Extract clean design systems and production-grade design.md files from any live URL. Eliminate AI hallucinations, random gradients, and generic slop.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang="en" className={`${dmSans.variable} antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en" className={`${jakarta.variable} ${jetbrainsMono.variable} antialiased`}>
+      <body className="min-h-screen bg-[#FAFAFA] text-[#0A0D14] font-sans selection:bg-[#FF4800] selection:text-white">
+        {children}
+      </body>
     </html>
   );
 }
