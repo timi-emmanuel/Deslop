@@ -16,7 +16,13 @@ export async function getQuota(clientIp: string, isProHeader?: boolean): Promise
   const now = Date.now();
   const isPro = Boolean(isProHeader);
 
-  if (isPro) {
+  const isLocal =
+    clientIp === "127.0.0.1" ||
+    clientIp === "localhost" ||
+    clientIp === "::1" ||
+    process.env.NODE_ENV === "development";
+
+  if (isPro || isLocal) {
     return {
       ipHash: clientIp,
       allowedScans: 9999,

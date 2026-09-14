@@ -16,7 +16,7 @@ export function generateDesignMarkdown(params: {
   const colorRows = colors
     .map(
       (c) =>
-        `- \`--${c.name}\`: \`${c.hex}\` // Role: ${c.role} (WCAG: ${c.wcagRating}, Contrast: ${c.contrastAgainstCanvas}:1)`
+        `- \`--${c.name}\`: \`${c.hex}\` // Role: ${c.role}${c.role === "canvas" ? "" : ` (WCAG: ${c.wcagRating}, Contrast: ${c.contrastAgainstCanvas}:1)`}`
     )
     .join("\n");
 

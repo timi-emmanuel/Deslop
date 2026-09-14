@@ -52,6 +52,40 @@ export function calculateContrastRatio(hexA: string, hexB: string): number {
   return Number(((brightest + 0.05) / (darkest + 0.05)).toFixed(2));
 }
 
+export function rgbToHsl(r: number, g: number, b: number): { h: number; s: number; l: number } {
+  const rf = r / 255;
+  const gf = g / 255;
+  const bf = b / 255;
+  const max = Math.max(rf, gf, bf);
+  const min = Math.min(rf, gf, bf);
+  let h = 0;
+  let s = 0;
+  const l = (max + min) / 2;
+
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case rf:
+        h = (gf - bf) / d + (gf < bf ? 6 : 0);
+        break;
+      case gf:
+        h = (bf - rf) / d + 2;
+        break;
+      case bf:
+        h = (rf - gf) / d + 4;
+        break;
+    }
+    h /= 6;
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100),
+  };
+}
+
 /**
  * Computes color distance in RGB space.
  */
@@ -67,8 +101,25 @@ export interface RawColorOccurence {
 }
 
 /**
+ * Derives a human-friendly and semantic accent name based on HSL values.
+ */
+function getSemanticAccentName(hex: string, rgb: RgbColor, isPrimary: boolean): string {
+  if (isPrimary) return "brand-accent";
+  const { h, s } = rgbToHsl(rgb.r, rgb.g, rgb.b);
+
+  if (s < 20) return "accent-neutral";
+  if (h >= 170 && h < 210) return "accent-cyan";
+  if (h >= 210 && h < 255) return "accent-blue";
+  if (h >= 80 && h < 170) return "accent-green";
+  if (h >= 35 && h < 80) return "accent-amber";
+  if (h >= 255 && h < 320) return "accent-purple";
+  if (h < 25 || h >= 345) return "accent-red";
+  return "accent-secondary";
+}
+
+/**
  * Clusters an arbitrary list of scanned hex codes into a normalized,
- * deduplicated semantic palette.
+ * deduplicated semantic palette with ZERO duplicate token names.
  */
 export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): ColorToken[] {
   if (!rawOccurences || rawOccurences.length === 0) {
@@ -94,46 +145,104 @@ export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): Colo
     }
   }
 
-  // Sort clusters by frequency
-  clusters.sort((a, b) => b.count - a.count);
+  if (clusters.length === 0) return [];
 
-  // Identify canvas (typically the most frequent surface background color)
-  const primaryBackground = clusters[0]?.hex || "#FFFFFF";
-  const bgLuminance = getRelativeLuminance(hexToRgb(primaryBackground));
-  const isDarkCanvas = bgLuminance < 0.2;
+  // Intelligently identify canvas:
+  // Canvases are almost exclusively neutral surfaces (low saturation)
+  // either light (l >= 80) or dark (l <= 20).
+  // Saturated badges/tags (e.g. orange, cyan) should NEVER override true canvas.
+  let primaryBackgroundCluster = clusters[0];
+  let maxCanvasScore = -1;
 
-  // Build semantic roles
+  for (const c of clusters) {
+    const hsl = rgbToHsl(c.rgb.r, c.rgb.g, c.rgb.b);
+    let score = c.count;
+
+    if (hsl.s < 25) {
+      if (hsl.l >= 85 || hsl.l <= 15) {
+        score *= 15; // Heavy bias toward white/near-black neutral backgrounds
+      } else {
+        score *= 4;
+      }
+    } else if (hsl.s > 50) {
+      score *= 0.05; // Penalize vibrant saturated colors as page background canvas
+    }
+
+    if (score > maxCanvasScore) {
+      maxCanvasScore = score;
+      primaryBackgroundCluster = c;
+    }
+  }
+
+  const primaryBackground = primaryBackgroundCluster.hex;
+  const bgLuminance = getRelativeLuminance(primaryBackgroundCluster.rgb);
+  const isDarkCanvas = bgLuminance < 0.25;
+
+  // Reorder clusters so that:
+  // 1. Canvas is first
+  // 2. High-contrast text candidate is second
+  // 3. Brand accents & surfaces follow
+  const remainingClusters = clusters.filter((c) => c.hex !== primaryBackground);
+  const orderedClusters = [primaryBackgroundCluster, ...remainingClusters];
+
   const tokens: ColorToken[] = [];
+  const usedNames = new Set<string>();
+  let hasPrimaryAccent = false;
+  let hasPrimaryText = false;
+  let hasMutedText = false;
+  let hasSurface = false;
 
-  clusters.slice(0, 8).forEach((cluster, idx) => {
-    let role: SemanticColorRole = "surface";
-    let name = `color-token-${idx + 1}`;
+  orderedClusters.slice(0, 8).forEach((cluster, idx) => {
+    let role: SemanticColorRole = "accent";
+    let baseName = `color-token-${idx + 1}`;
 
     const contrast = calculateContrastRatio(cluster.hex, primaryBackground);
     const lum = getRelativeLuminance(cluster.rgb);
+    const hsl = rgbToHsl(cluster.rgb.r, cluster.rgb.g, cluster.rgb.b);
 
     if (idx === 0) {
       role = "canvas";
-      name = "bg-canvas";
-    } else if (contrast > 4.5 && (isDarkCanvas ? lum > 0.6 : lum < 0.3)) {
+      baseName = "bg-canvas";
+    } else if (!hasPrimaryText && contrast >= 7.0 && hsl.s < 40) {
       role = "text-primary";
-      name = "text-primary";
-    } else if (contrast > 2.5 && contrast <= 4.5) {
+      baseName = "text-primary";
+      hasPrimaryText = true;
+    } else if (!hasMutedText && contrast >= 3.5 && contrast < 7.0 && hsl.s < 45) {
       role = "text-muted";
-      name = "text-muted";
-    } else if (Math.abs(lum - bgLuminance) < 0.15 && idx < 3) {
-      role = "surface";
-      name = "bg-surface";
+      baseName = "text-muted";
+      hasMutedText = true;
+    } else if (Math.abs(lum - bgLuminance) < 0.20 && (hsl.s < 40 || lum > 0.88)) {
+      if (!hasSurface) {
+        role = "surface";
+        baseName = "bg-surface";
+        hasSurface = true;
+      } else {
+        role = "surface-elevated";
+        baseName = "bg-surface-elevated";
+      }
     } else {
       role = "accent";
-      name = "brand-accent";
+      const isPrimary = !hasPrimaryAccent && contrast >= 2.5;
+      baseName = getSemanticAccentName(cluster.hex, cluster.rgb, isPrimary);
+      if (isPrimary) {
+        hasPrimaryAccent = true;
+      }
     }
+
+    // Ensure every token name is 100% unique (no collisions in generated CSS/Markdown)
+    let uniqueName = baseName;
+    let collisionCounter = 2;
+    while (usedNames.has(uniqueName)) {
+      uniqueName = `${baseName}-${collisionCounter}`;
+      collisionCounter++;
+    }
+    usedNames.add(uniqueName);
 
     const wcagRating = contrast >= 7.0 ? "AAA" : contrast >= 4.5 ? "AA" : "FAIL";
 
     tokens.push({
       id: `token-${idx}-${cluster.hex.replace("#", "")}`,
-      name,
+      name: uniqueName,
       hex: cluster.hex,
       role,
       contrastAgainstCanvas: contrast,
