@@ -145,7 +145,7 @@ export function TestimonialsAndCta() {
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                href="/inspect?url=https%3A%2F%2Flinear.app"
+                href="/inspect"
                 className="btn-gloss-orange w-full sm:w-auto h-12 px-7 text-sm font-bold gap-2 cursor-pointer"
               >
                 <span>Launch Extractor Now</span>

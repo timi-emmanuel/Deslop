@@ -8,48 +8,52 @@ const WORKFLOW_STAGES = [
   {
     id: "ingest",
     step: "01",
-    action: "DOM SCAN & AST INGESTION",
-    title: "Inspect live computed styles and layout trees",
+    action: "SCAN ANY WEBSITE",
+    title: "Inspect real screen colors, fonts & spacing",
     description:
-      "Deslop crawls rendered websites, evaluates live computed CSS variables, measures bounding-box geometry, and detects real runtime font stacks instead of guessing from unrendered source files.",
-    codeSample: `// Stage 01: Live Computed Stylesheet Extraction
-const computed = window.getComputedStyle(document.body);
-const extractionReport = {
-  canvasBackground: computed.backgroundColor, // "rgb(10, 13, 20)"
-  activeAccent: computed.getPropertyValue("--color-primary"), // "#FF4800"
-  detectedFontStack: computed.fontFamily, // "Plus Jakarta Sans, sans-serif"
-  typographyRamp: [12, 14, 16, 20, 24, 32, 48, 64]
-};`,
+      "Paste any live URL you love (Linear, Stripe, Raycast). Deslop looks at how the site actually renders on a screen—pulling out the exact colors, typography, and button dimensions.",
+    codeSample: `// Step 01: Scan any live website you love
+const site = await deslop.scan("https://linear.app");
+
+console.log(site.colors); 
+// ["#08090A", "#5E6AD2", "#F7F8F8"]
+console.log(site.fonts);  
+// "Geist Sans (Headings), Inter (Body)"
+console.log(site.spacing);
+// "8px neat layout grid [4, 8, 16, 24px]"`,
   },
   {
     id: "purge",
     step: "02",
-    action: "PURGE SLOP & CALIBRATE",
-    title: "Deduplicate unmapped hex codes into strict token ramps",
+    action: "PURGE AI SLOP",
+    title: "Clean up messy duplicate colors & weird margins",
     description:
-      "Modern websites often suffer from 40+ accidental hex codes and random 13px padding hacks. Deslop clusters near-identical colors into a disciplined semantic scale and enforces strict 8pt modular geometry.",
-    codeSample: `// Stage 02: Semantic Normalization & Grid Enforcement
-const desloppedSystem = deslop.calibrate({
-  rawColorsScanned: 84,
-  prunedToTokens: 12, // Canvas, Surface, Keyline, Locked Accent
-  contrastVerification: "WCAG AAA Verified (Contrast Ratio: 7.8:1)",
-  modularSpacing: "8pt strict baseline [4, 8, 16, 24, 32, 48, 64]",
-  cornerGeometry: { button: "6px", card: "8px", modal: "12px" }
+      "Most websites have 50 accidental messy hex colors and weird 13px padding hacks. Deslop tidies everything into 5 crisp brand colors and snaps spacing to neat 8px blocks.",
+    codeSample: `// Step 02: Deslop purges the clutter & AI slop
+const cleanTokens = deslop.purify({
+  messyColorsFound: 84, // Too many messy variations!
+  cleanedToTokens: 5,   // Canvas, surface, brand accent, text, border
+  bannedAIHabits: [
+    "No random purple gradients",
+    "No 13px or 17px padding hacks",
+    "No mismatched button roundness"
+  ]
 });`,
   },
   {
     id: "export",
     step: "03",
-    action: "OUTPUT PRODUCTION DESIGN.MD",
-    title: "Generate hardened markdown rules for AI workflows",
+    action: "DROP INTO YOUR AI",
+    title: "Paste 1 file into Cursor, Claude, Lovable, or v0",
     description:
-      "Deslop generates a clean, authoritative design.md ready for .cursorrules, Claude Code, or v0 system prompts. Your AI assistants will strictly adhere to your design system without hallucinating slop.",
-    codeSample: `# design.md // Production Constraint File
-## AI Generation Rules
-- NEVER invent unmapped hex codes outside the locked palette
-- Primary Button: bg-[#FF4800] text-white rounded-[6px] shadow-sm
-- Spacing: Strictly use 8pt scale (p-2, p-4, p-6, p-8)
-- Headings: font-extrabold tracking-[-0.035em] text-[#0A0D14]`,
+      "Deslop gives you a clean design.md file. Drop it into your project or prompt, and your AI assistant will strictly build gorgeous, on-brand interfaces on the first try.",
+    codeSample: `# design.md // Copy & paste into your AI project!
+
+## Rules for Cursor, Claude, Lovable & v0:
+1. Primary Button: bg-[#FF4800] text-white rounded-[6px]
+2. Spacing: Always use clean 8px, 16px, or 24px (never 13px!)
+3. Dark background: #08090A (matte dark, never generic purple)
+4. Fonts: Geist Sans for titles, Inter for body text`,
   },
 ];
 
@@ -68,7 +72,7 @@ export function HowItWorks() {
             </h2>
           </div>
           <p className="text-xs text-[#868C98]">
-            Automated headless inspection pipeline
+            From any live website to clean AI code in seconds
           </p>
         </div>
 

@@ -47,7 +47,7 @@ export function Navbar() {
           </a>
 
           <Link
-            href="/inspect?url=https%3A%2F%2Flinear.app"
+            href="/inspect"
             className="inline-flex items-center gap-1.5 btn-gloss-orange h-8 px-3.5 text-xs font-semibold cursor-pointer"
           >
             <span>Open Studio</span>

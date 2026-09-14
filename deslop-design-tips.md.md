@@ -675,3 +675,101 @@ Before adding any visual element, ask:
 If the answer to #4 is yes, redesign it.
 
 **The landing page is not decoration around Deslop. The landing page is the first demonstration that Deslop works.**
+
+---
+
+## 22. Woblo Benchmark & The "Cute Technical" Visual Strategy
+
+### 22.1 The Woblo Case Study
+Woblo's visual strategy is deeply relevant to Deslop: it does not rely on conventional SaaS illustrations. Instead, it uses:
+- The product UI itself as the illustration
+- Playful visual artifacts & tiny labels
+- Floating panels & diagrams
+- Subtle, tangible motion to make a technical product feel approachable
+
+Woblo makes the product tangible by showing its inspector panel, asset extraction, typography scale, token values, and `design.md` output directly on the landing page. Deslop should do the same thing.
+
+### 22.2 What Deslop Is NOT
+The brand identity is: **Playful technical editorial**.
+- **NOT** a Corporate SaaS illustration site.
+- **NOT** a Cyberpunk developer tool.
+- **NOT** an AI purple gradient glow.
+- **NOT a Linear clone** (Avoid dark, cold, sterile, monolithic pseudo-Linear styling).
+
+### 22.3 The Aesthetic: Cute + Technical + Slightly Weird + Extremely Polished
+Combine:
+- Little diagrams, doodles, stickers, UI fragments
+- Imperfect hand-drawn arrows, doodle stars, scribble underlines
+- Tiny annotations, browser windows, code snippets, tokens, imperfect shapes
+- Subtle, purposeful motion — all sitting on top of a very disciplined underlying design system.
+
+### 22.4 The Core Brand Contradiction
+> **"The product says 'don't let AI make your interface generic' while the interface itself feels obviously handcrafted."**
+This contradiction is one of the strongest pillars of the Deslop brand identity.
+
+### 22.5 Hero Visual Blueprint
+Instead of a generic developer illustration or giant monolithic dashboard, use an illustrated product transformation flow:
+
+```text
+✦  ┌─────────────────┐
+   │   YOUR WEBSITE  │
+   │                 │
+   │  ✦ #7C3AED      │
+   │  ✦ Inter        │
+   │  ✦ 16px         │
+   └────────┬────────┘
+            │ ✂ EXTRACT
+            ▼
+   ┌───────────────────┐
+   │     DESIGN.MD     │
+   │                   │
+   │  colors:   ✓      │
+   │  type:     ✓      │
+   │  spacing:  ✓      │
+   │  taste:    ✓      │
+   └───────────────────┘
+```
+Enriched with organic shapes, cute micro-icons, hand-drawn arrows, floating tags, and tiny stars.
+
+### 22.6 Motion Budget: 3–5 Moments (No Animation Soup)
+Do not turn the page into "animation soup". Limit motion to **3–5 meaningful animated moments** across the entire landing page:
+1. Cursor clicking / active selection
+2. Code typing
+3. Scanning / extraction indicator
+4. Loading / transform transition
+5. Nodes connecting / checkmarks locking in
+
+### 22.7 Asset & Search Query Swipe File
+When sourcing or creating visual artifacts on Figma Community, Dribbble, Vector UI Studio, DrawKit, or Blush, use these exact targeted search terms:
+
+**Cute / Playful Tech:**
+- `cute tech illustration`
+- `playful developer illustration`
+- `cute SaaS illustration`
+- `playful web design illustration`
+- `kawaii technology illustration` (Vector UI Studio Kawaii Memphis style)
+- `cute UI illustration`
+- `friendly developer tools illustration`
+
+**Deslop Specific:**
+- `design system illustration`
+- `design tokens illustration`
+- `UI audit illustration`
+- `code to design illustration`
+- `website analysis illustration`
+- `browser inspection illustration`
+- `DOM tree illustration`
+
+**Handcrafted Visual Artifacts:**
+- `hand drawn arrows SVG`
+- `hand drawn shapes SVG`
+- `doodle arrows`
+- `doodle stars SVG`
+- `scribble underline SVG`
+- `cute stickers SVG`
+- `technical doodles`
+- `browser window illustration`
+- `floating UI elements`
+- `abstract blobs SVG`
+- `playful geometric shapes`
+
