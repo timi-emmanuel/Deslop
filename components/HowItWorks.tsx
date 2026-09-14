@@ -58,21 +58,17 @@ export function HowItWorks() {
   const current = WORKFLOW_STAGES[activeStage];
 
   return (
-    <section id="how-it-works" className="py-20 border-b border-[#E2E4E9] bg-white">
+    <section id="how-it-works" className="py-24 border-b border-[#E2E4E9] bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12 pb-6 border-b border-[#E2E4E9]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 pb-6 border-b border-[#E2E4E9]">
           <div>
-            <div className="flex items-center gap-2 font-mono text-[11px] font-bold uppercase tracking-wider text-[#FF4800]">
-              <ArrowsClockwise size={15} weight="bold" />
-              <span>INSPECTION PIPELINE</span>
-            </div>
-            <h2 className="mt-2 text-2xl sm:text-4xl font-extrabold tracking-tight text-[#0A0D14]">
-              How Deslop purges frontend slop in 3 steps.
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0A0D14]">
+              Three steps from live site to locked tokens.
             </h2>
           </div>
-          <p className="text-xs font-mono text-[#868C98]">
-            PROTOCOL_VERSION: 2.4 // FULL_AUTOMATION
+          <p className="text-xs text-[#868C98]">
+            Automated headless inspection pipeline
           </p>
         </div>
 
@@ -86,28 +82,28 @@ export function HowItWorks() {
                 <button
                   key={stage.id}
                   onClick={() => setActiveStage(idx)}
-                  className={`text-left p-4 rounded-[6px] border transition-all ${
+                  className={`text-left p-5 rounded-[8px] border transition-all ${
                     isActive
-                      ? "border-[#FF4800] bg-[#FFF1EB] shadow-sm"
+                      ? "border-[#FF4800] bg-[#FFF1EB] shadow-xs"
                       : "border-[#E2E4E9] bg-[#FAFAFA] hover:border-[#CDD0D5] hover:bg-white"
                   }`}
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span
-                      className={`font-mono text-xs font-bold ${
+                      className={`font-mono text-xs font-semibold ${
                         isActive ? "text-[#FF4800]" : "text-[#868C98]"
                       }`}
                     >
-                      [{stage.step} // {stage.action}]
+                      Step {stage.step} — {stage.action}
                     </span>
                     {isActive ? (
-                      <CheckCircle size={16} weight="fill" className="text-[#FF4800]" />
+                      <CheckCircle size={17} weight="fill" className="text-[#FF4800]" />
                     ) : (
                       <CaretRight size={14} className="text-[#868C98]" />
                     )}
                   </div>
                   <h3 className="font-bold text-sm text-[#0A0D14]">{stage.title}</h3>
-                  <p className="mt-1 text-xs text-[#525866] line-clamp-2 leading-relaxed">
+                  <p className="mt-1 text-xs text-[#525866] leading-relaxed">
                     {stage.description}
                   </p>
                 </button>
@@ -116,9 +112,9 @@ export function HowItWorks() {
           </div>
 
           {/* Code & Terminal Inspector */}
-          <div className="lg:col-span-7 flex flex-col rounded-[6px] border border-[#E2E4E9] bg-[#0A0D14] text-white shadow-keyline overflow-hidden">
+          <div className="lg:col-span-7 flex flex-col rounded-[8px] border border-[#E2E4E9] bg-[#0A0D14] text-white shadow-keyline overflow-hidden">
             {/* Terminal Top Chrome */}
-            <div className="flex items-center justify-between border-b border-[#22252D] bg-[#12151D] px-4 py-2.5">
+            <div className="flex items-center justify-between border-b border-[#22252D] bg-[#12151D] px-4 py-3">
               <div className="flex items-center gap-2">
                 <Terminal size={14} className="text-[#FF4800]" />
                 <span className="font-mono text-[11px] text-[#A1A7B3]">
@@ -133,7 +129,7 @@ export function HowItWorks() {
             </div>
 
             {/* Code Output */}
-            <div className="p-4 sm:p-6 flex-1 font-mono text-xs overflow-x-auto text-[#E2E4E9] leading-relaxed">
+            <div className="p-5 sm:p-6 flex-1 font-mono text-xs overflow-x-auto text-[#E2E4E9] leading-relaxed">
               <AnimatePresence mode="wait">
                 <motion.pre
                   key={current.id}
@@ -149,8 +145,8 @@ export function HowItWorks() {
 
             {/* Terminal Footer */}
             <div className="border-t border-[#22252D] bg-[#12151D] px-4 py-2 flex items-center justify-between font-mono text-[10px] text-[#868C98]">
-              <span>STATUS: READY</span>
-              <span>SYNTHESIZED IN 42ms</span>
+              <span>CALIBRATED FOR CURSOR & CLAUDE</span>
+              <span className="text-[#10B981]">READY</span>
             </div>
           </div>
         </div>
