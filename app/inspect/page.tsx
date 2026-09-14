@@ -15,58 +15,38 @@ import {
 } from "@phosphor-icons/react";
 import Link from "next/link";
 
+import { useExtraction } from "@/lib/api/hooks/useExtraction";
+
+import { StudioLauncher } from "@/components/inspect/StudioLauncher";
+
 function InspectionStudioContent() {
   const searchParams = useSearchParams();
-  const rawUrl = searchParams.get("url") || "https://linear.app";
+  const rawUrl = searchParams.get("url");
 
-  const [system, setSystem] = useState<ExtractedDesignSystem | null>(null);
-  const [quota, setQuota] = useState<UserQuota | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [loadingStep, setLoadingStep] = useState<string>("CONNECTING TO RUNTIME");
-  const [error, setError] = useState<string | null>(null);
+
+  const {
+    system,
+    quota,
+    isLoading,
+    loadingStep,
+    error,
+    isPaywall,
+    refetch,
+  } = useExtraction(rawUrl);
+
   const [isPaywallOpen, setIsPaywallOpen] = useState<boolean>(false);
 
-  const fetchExtraction = async (target: string) => {
-    setIsLoading(true);
-    setError(null);
-
-    // Progressive loading simulation stages
-    setLoadingStep("MOUNTING HEADLESS DOM PARSER...");
-    const t1 = setTimeout(() => setLoadingStep("HARVESTING COMPUTED STYLES & FONTS..."), 300);
-    const t2 = setTimeout(() => setLoadingStep("SYNTHESIZING OKLCH PALETTE & 8PT GRID..."), 600);
-
-    try {
-      const response = await fetch("/api/extract", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: target }),
-      });
-
-      const json = await response.json();
-
-      if (!response.ok || !json.success) {
-        if (json.paywall) {
-          setIsPaywallOpen(true);
-          setQuota(json.quota);
-        }
-        throw new Error(json.error || "Failed to extract design system");
-      }
-
-      setSystem(json.data);
-      setQuota(json.quota);
-    } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Extraction failed";
-      setError(message);
-    } finally {
-      clearTimeout(t1);
-      clearTimeout(t2);
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchExtraction(rawUrl);
-  }, [rawUrl]);
+    if (isPaywall) {
+      setIsPaywallOpen(true);
+    }
+  }, [isPaywall]);
+
+  // If no URL is specified, render the Studio Launcher
+  if (!rawUrl) {
+    return <StudioLauncher />;
+  }
+
 
   return (
     <div className="min-h-screen bg-[#FAFAFA] text-[#0A0D14] flex flex-col">
@@ -105,7 +85,7 @@ function InspectionStudioContent() {
             <p className="text-xs text-[#7F1D1D] mt-1 mb-6 leading-relaxed">{error}</p>
             <div className="flex items-center justify-center gap-3">
               <button
-                onClick={() => fetchExtraction(rawUrl)}
+                onClick={() => refetch()}
                 className="rounded-[6px] bg-[#DC2626] px-4 py-2 text-xs font-semibold text-white shadow-sm hover:bg-[#B91C1C] transition-colors"
               >
                 Retry Scan
@@ -123,40 +103,6 @@ function InspectionStudioContent() {
         {/* Loaded Specimen Studio */}
         {!isLoading && system && (
           <div className="space-y-6">
-            {/* Top Diagnostics Banner */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-white p-3.5 shadow-xs">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">CALIBRATION SCORE</span>
-                <span className="font-extrabold text-2xl text-[#059669] mt-0.5 block">
-                  {system.diagnostics.slopScore}%
-                </span>
-                <span className="text-[11px] text-[#525866]">0% visual drift detected</span>
-              </div>
-
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-white p-3.5 shadow-xs">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">COLORS PRUNED</span>
-                <span className="font-extrabold text-2xl text-[#0A0D14] mt-0.5 block">
-                  {system.diagnostics.rawColorsScanned} → {system.diagnostics.tokensNormalized}
-                </span>
-                <span className="text-[11px] text-[#525866]">Deduplicated to locked roles</span>
-              </div>
-
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-white p-3.5 shadow-xs">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">GRID HARMONY</span>
-                <span className="font-extrabold text-2xl text-[#FF4800] mt-0.5 block">
-                  {system.geometry.baseGridPx}pt
-                </span>
-                <span className="text-[11px] text-[#525866]">Strict modular baseline ramp</span>
-              </div>
-
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-white p-3.5 shadow-xs">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">EXTRACTION SPEED</span>
-                <span className="font-extrabold text-2xl text-[#0A0D14] mt-0.5 block">
-                  {system.diagnostics.timingMs}ms
-                </span>
-                <span className="text-[11px] text-[#525866]">Compiled directly in memory</span>
-              </div>
-            </div>
 
             {/* Token Tabs & Code Viewers */}
             <TokenTabs system={system} />
@@ -170,7 +116,7 @@ function InspectionStudioContent() {
         onClose={() => setIsPaywallOpen(false)}
         onUnlockDemo={() => {
           setIsPaywallOpen(false);
-          fetchExtraction(rawUrl);
+          refetch();
         }}
       />
     </div>
