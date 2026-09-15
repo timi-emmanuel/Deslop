@@ -179,7 +179,7 @@ Structure your output cleanly in Markdown:
 2. ## 1. Brand Visual Identity & Archetype (Identify what makes this site's design unique and disciplined)
 3. ## 2. Semantic Color Token Matrix (Locked hex codes with semantic roles: --bg-canvas, --bg-surface, --accent-primary, --text-primary, --keyline)
 4. ## 3. Anti-Slop Negative Constraints (5 strict "NEVER" rules tailored specifically to this brand)
-5. ## 4. Concrete Component Recipes (Exact Tailwind CSS class strings for Primary Button, Secondary Button, Card Container, Form Input, and Pill Tag)
+5. ## 4. Concrete Component Recipes (Exact Tailwind CSS class strings for Primary Button, Secondary Button, Card Container, Form Input, and Pill Tag. Always ensure text on buttons and tags has high WCAG contrast against the element fill background — for light accent fills use dark text, and for dark fills use light text).
 6. ## 5. Cursor / Claude Drop-In System Directive (A ready-to-paste prompt block for AI coding tools)
 
 Output ONLY the markdown content without preamble or conversational filler.`;

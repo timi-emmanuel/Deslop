@@ -13,6 +13,7 @@ import {
   ArrowClockwise,
   PaperPlaneTilt,
   Browsers,
+  DownloadSimple,
 } from "@phosphor-icons/react";
 import { ExtractedDesignSystem } from "@/types/tokens";
 
@@ -35,6 +36,18 @@ export function TokenTabs({ system }: TokenTabsProps) {
     navigator.clipboard.writeText(text);
     setCopiedKey(key);
     setTimeout(() => setCopiedKey(null), 2000);
+  };
+
+  const downloadFile = (content: string, filename: string) => {
+    const blob = new Blob([content], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleSynthesizeWithZorveus = async (overridePrompt?: string) => {
@@ -594,22 +607,32 @@ export function TokenTabs({ system }: TokenTabsProps) {
 
             {/* Markdown Display Box */}
             <div className="relative rounded-[6px] border border-[#E2E4E9] bg-[#0A0D14] p-5 font-mono text-xs text-[#F4F4F6] overflow-x-auto max-h-[500px]">
-              <button
-                onClick={() => copyToClipboard(currentMarkdown, "raw-markdown")}
-                className="absolute top-4 right-4 flex items-center gap-1.5 rounded-[4px] bg-white/10 hover:bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md transition-colors"
-              >
-                {copiedKey === "raw-markdown" ? (
-                  <>
-                    <CheckCircle size={13} weight="fill" className="text-[#10B981]" />
-                    <span className="text-[#10B981]">Copied!</span>
-                  </>
-                ) : (
-                  <>
-                    <Copy size={13} />
-                    <span>Copy Markdown</span>
-                  </>
-                )}
-              </button>
+              <div className="absolute top-4 right-4 flex items-center gap-2">
+                <button
+                  onClick={() => downloadFile(currentMarkdown, `${system.domain || "design"}-design.md`)}
+                  className="flex items-center gap-1.5 rounded-[4px] bg-white/10 hover:bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md transition-colors cursor-pointer"
+                  title="Download design.md"
+                >
+                  <DownloadSimple size={13} weight="bold" />
+                  <span>Download .md</span>
+                </button>
+                <button
+                  onClick={() => copyToClipboard(currentMarkdown, "raw-markdown")}
+                  className="flex items-center gap-1.5 rounded-[4px] bg-white/10 hover:bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md transition-colors cursor-pointer"
+                >
+                  {copiedKey === "raw-markdown" ? (
+                    <>
+                      <CheckCircle size={13} weight="fill" className="text-[#10B981]" />
+                      <span className="text-[#10B981]">Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy size={13} />
+                      <span>Copy Markdown</span>
+                    </>
+                  )}
+                </button>
+              </div>
 
               {isSynthesizing ? (
                 <div className="py-12 text-center text-[#A1A7B3] flex flex-col items-center justify-center">
@@ -631,22 +654,32 @@ export function TokenTabs({ system }: TokenTabsProps) {
         {/* TAB 5: TAILWIND V4 */}
         {activeTab === "tailwind" && (
           <div className="relative rounded-[6px] border border-[#E2E4E9] bg-[#0A0D14] p-5 font-mono text-xs text-[#F4F4F6] overflow-x-auto max-h-[500px]">
-            <button
-              onClick={() => copyToClipboard(system.tailwindCss, "tailwind-css")}
-              className="absolute top-4 right-4 flex items-center gap-1.5 rounded-[4px] bg-white/10 hover:bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md transition-colors"
-            >
-              {copiedKey === "tailwind-css" ? (
-                <>
-                  <CheckCircle size={13} weight="fill" className="text-[#10B981]" />
-                  <span className="text-[#10B981]">Copied!</span>
-                </>
-              ) : (
-                <>
-                  <Copy size={13} />
-                  <span>Copy CSS</span>
-                </>
-              )}
-            </button>
+            <div className="absolute top-4 right-4 flex items-center gap-2">
+              <button
+                onClick={() => downloadFile(system.tailwindCss, `${system.domain || "design"}-tokens.css`)}
+                className="flex items-center gap-1.5 rounded-[4px] bg-white/10 hover:bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md transition-colors cursor-pointer"
+                title="Download CSS"
+              >
+                <DownloadSimple size={13} weight="bold" />
+                <span>Download .css</span>
+              </button>
+              <button
+                onClick={() => copyToClipboard(system.tailwindCss, "tailwind-css")}
+                className="flex items-center gap-1.5 rounded-[4px] bg-white/10 hover:bg-white/20 px-3 py-1 text-xs text-white backdrop-blur-md transition-colors cursor-pointer"
+              >
+                {copiedKey === "tailwind-css" ? (
+                  <>
+                    <CheckCircle size={13} weight="fill" className="text-[#10B981]" />
+                    <span className="text-[#10B981]">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy size={13} />
+                    <span>Copy CSS</span>
+                  </>
+                )}
+              </button>
+            </div>
             <pre className="leading-relaxed">{system.tailwindCss}</pre>
           </div>
         )}
