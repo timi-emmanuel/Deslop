@@ -23,7 +23,7 @@ export function getZorveusConfig(): ZorveusConfig {
     proKey: process.env.ZORVEUS_PRO_KEY,
     serviceKey: process.env.ZORVEUS_SERVICE_KEY,
     appId: process.env.ZORVEUS_APP_ID,
-    defaultModel: process.env.ZORVEUS_MODEL || "anthropic/claude-3-5-sonnet-latest",
+    defaultModel: process.env.ZORVEUS_MODEL || "zorveus/gpt-oss-120b",
     gatewayBaseUrl: process.env.ZORVEUS_GATEWAY_URL || "https://api.zorveus.com/v1",
     controlPlaneBaseUrl: process.env.ZORVEUS_BASE_URL || "https://api.zorveus.com",
   };
