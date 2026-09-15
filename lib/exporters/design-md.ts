@@ -14,10 +14,11 @@ export function generateDesignMarkdown(params: {
   const { domain, colors, typography, geometry, url } = params;
 
   const colorRows = colors
-    .map(
-      (c) =>
-        `- \`--${c.name}\`: \`${c.hex}\` // Role: ${c.role}${c.role === "canvas" ? "" : ` (WCAG: ${c.wcagRating}, Contrast: ${c.contrastAgainstCanvas}:1)`}`
-    )
+    .map((c) => {
+      const targetStr = c.contrastTarget ? ` (${c.wcagRating}, ${c.contrastRatio || c.contrastAgainstCanvas}:1 ${c.contrastTarget})` : "";
+      const usageStr = c.usageContext ? ` | ${c.usageContext}` : "";
+      return `- \`--${c.name}\`: \`${c.hex}\` // Role: ${c.role}${usageStr}${targetStr}`;
+    })
     .join("\n");
 
   const spacingList = geometry.spacingRampPx.map((s) => `${s}px`).join(", ");
@@ -28,13 +29,18 @@ export function generateDesignMarkdown(params: {
 
 ---
 
-## 1. Color Palette Tokens
+## 1. Semantic Color Token Matrix
 ${colorRows}
 
 ### AI Color Rules:
 - NEVER invent unmapped hex codes outside this locked palette.
-- Use \`--bg-canvas\` for body background and \`--bg-surface\` for elevated cards/modals.
-- Reserve primary accent exclusively for key actions and active focus indicators.
+- Use \`--bg-canvas\` exclusively for root body background.
+- Use \`--bg-surface\` for elevated card containers, panels, and modals.
+- Use \`--accent-primary\` exclusively for primary CTA buttons and active focus indicators.
+- Use \`--accent-secondary\` for ghost controls and secondary action badges.
+- Use \`--accent-danger\` (if present) exclusively for destructive actions, error banners, and delete dialogs.
+- Use \`--text-primary\` for high-contrast reading text, headings, and data labels.
+- Forbid generic interchangeable accent usage: each accent has a locked semantic purpose.
 
 ---
 
@@ -47,6 +53,7 @@ ${colorRows}
 ### AI Typography Rules:
 - Headings must use tight letter-spacing (\`tracking-tight\` or \`-0.03em\`).
 - Maintain a minimum 1.5 line-height on all body paragraphs.
+- Never mix arbitrary font families outside the declared display, body, and mono stacks.
 
 ---
 
@@ -58,6 +65,7 @@ ${colorRows}
 
 ### AI Spatial Rules:
 - Forbid arbitrary margins/paddings (e.g., \`p-[13px]\`). Snap strictly to 8pt/4pt tokens.
-- Apply subtle 1px border strokes with inset highlights instead of heavy blurry drop-shadows.
+- Apply subtle 1px border strokes (\`keyline\`) with inset highlights instead of heavy blurry drop-shadows.
+- Never use unconstrained nested padding or centered hero clichés.
 `;
 }

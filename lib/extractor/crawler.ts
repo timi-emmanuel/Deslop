@@ -14,14 +14,14 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "woblo.in": {
     pageTitle: "Woblo: Extract Any Website's Design System, Colors & Fonts",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#FFFFFF", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 35 },
-      { id: "c-2", name: "text-primary", hex: "#101013", role: "text-primary", contrastAgainstCanvas: 18.2, wcagRating: "AAA", frequencyPercentage: 25 },
-      { id: "c-3", name: "brand-accent", hex: "#0F7FFF", role: "accent", contrastAgainstCanvas: 4.6, wcagRating: "AA", frequencyPercentage: 15 },
-      { id: "c-4", name: "bg-surface", hex: "#DBE9FF", role: "surface", contrastAgainstCanvas: 1.25, wcagRating: "FAIL", frequencyPercentage: 10 },
-      { id: "c-5", name: "accent-hover", hex: "#6BA0EF", role: "accent-hover", contrastAgainstCanvas: 2.1, wcagRating: "FAIL", frequencyPercentage: 6 },
-      { id: "c-6", name: "accent-amber", hex: "#F5A524", role: "accent", contrastAgainstCanvas: 2.0, wcagRating: "FAIL", frequencyPercentage: 4 },
-      { id: "c-7", name: "accent-green", hex: "#4ADE80", role: "accent", contrastAgainstCanvas: 1.4, wcagRating: "FAIL", frequencyPercentage: 3 },
-      { id: "c-8", name: "accent-purple", hex: "#A78BFA", role: "accent", contrastAgainstCanvas: 2.3, wcagRating: "FAIL", frequencyPercentage: 2 },
+      { id: "c-1", name: "bg-canvas", hex: "#FFFFFF", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 35, usageContext: "Base Page Canvas" },
+      { id: "c-2", name: "text-primary", hex: "#101013", role: "text-primary", contrastAgainstCanvas: 18.2, contrastRatio: 18.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 25, usageContext: "Primary Reading & Heading Text" },
+      { id: "c-3", name: "accent-primary", hex: "#0F7FFF", role: "accent-primary", contrastAgainstCanvas: 4.6, contrastRatio: 4.6, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 15, usageContext: "Primary Action CTA Button" },
+      { id: "c-4", name: "bg-surface", hex: "#DBE9FF", role: "surface", contrastAgainstCanvas: 1.25, contrastRatio: 14.5, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 10, usageContext: "Card & Modal Container Fill" },
+      { id: "c-5", name: "accent-hover", hex: "#6BA0EF", role: "accent-hover", contrastAgainstCanvas: 2.1, contrastRatio: 3.2, contrastTarget: "vs #FFFFFF text", wcagRating: "PASS", frequencyPercentage: 6, usageContext: "Primary Button Hover State" },
+      { id: "c-6", name: "accent-amber", hex: "#F5A524", role: "accent", contrastAgainstCanvas: 2.0, contrastRatio: 2.0, contrastTarget: "vs canvas", wcagRating: "PASS", frequencyPercentage: 4, usageContext: "Highlight Badge Fill" },
+      { id: "c-7", name: "accent-success", hex: "#4ADE80", role: "accent-success", contrastAgainstCanvas: 1.4, contrastRatio: 4.2, contrastTarget: "vs #101013 text", wcagRating: "PASS", frequencyPercentage: 3, usageContext: "Verification & Success Status" },
+      { id: "c-8", name: "accent-purple", hex: "#A78BFA", role: "accent", contrastAgainstCanvas: 2.3, contrastRatio: 2.3, contrastTarget: "vs canvas", wcagRating: "PASS", frequencyPercentage: 2, usageContext: "Secondary Decorative Accent" },
     ],
     typography: {
       displayFamily: "Plus Jakarta Sans, system-ui, sans-serif",
@@ -51,11 +51,11 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "linear.app": {
     pageTitle: "Linear — A better way to build products",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#08090A", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 42 },
-      { id: "c-2", name: "bg-surface", hex: "#141518", role: "surface", contrastAgainstCanvas: 1.2, wcagRating: "FAIL", frequencyPercentage: 24 },
-      { id: "c-3", name: "brand-accent", hex: "#5E6AD2", role: "accent", contrastAgainstCanvas: 4.8, wcagRating: "AA", frequencyPercentage: 8 },
-      { id: "c-4", name: "text-primary", hex: "#F7F8F8", role: "text-primary", contrastAgainstCanvas: 18.2, wcagRating: "AAA", frequencyPercentage: 16 },
-      { id: "c-5", name: "keyline", hex: "#222326", role: "keyline", contrastAgainstCanvas: 1.4, wcagRating: "FAIL", frequencyPercentage: 10 },
+      { id: "c-1", name: "bg-canvas", hex: "#08090A", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 42, usageContext: "Dark Root Canvas" },
+      { id: "c-2", name: "bg-surface", hex: "#141518", role: "surface", contrastAgainstCanvas: 1.2, contrastRatio: 15.1, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 24, usageContext: "Card & Panel Container Fill" },
+      { id: "c-3", name: "accent-primary", hex: "#5E6AD2", role: "accent-primary", contrastAgainstCanvas: 4.8, contrastRatio: 4.8, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 8, usageContext: "Primary Action CTA Button" },
+      { id: "c-4", name: "text-primary", hex: "#F7F8F8", role: "text-primary", contrastAgainstCanvas: 18.2, contrastRatio: 18.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 16, usageContext: "High-Contrast Reading Text" },
+      { id: "c-5", name: "keyline", hex: "#222326", role: "keyline", contrastAgainstCanvas: 1.4, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 10, usageContext: "1px Subtle Structural Border" },
     ],
     typography: {
       displayFamily: "Geist Sans, -apple-system, sans-serif",
@@ -85,11 +85,11 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "stripe.com": {
     pageTitle: "Stripe — Financial Infrastructure for the Internet",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#0A2540", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 38 },
-      { id: "c-2", name: "brand-accent", hex: "#635BFF", role: "accent", contrastAgainstCanvas: 5.1, wcagRating: "AA", frequencyPercentage: 14 },
-      { id: "c-3", name: "accent-cyan", hex: "#00D4FF", role: "accent", contrastAgainstCanvas: 8.4, wcagRating: "AAA", frequencyPercentage: 6 },
-      { id: "c-4", name: "text-primary", hex: "#FFFFFF", role: "text-primary", contrastAgainstCanvas: 16.5, wcagRating: "AAA", frequencyPercentage: 22 },
-      { id: "c-5", name: "bg-surface", hex: "#F6F9FC", role: "surface", contrastAgainstCanvas: 14.8, wcagRating: "AAA", frequencyPercentage: 20 },
+      { id: "c-1", name: "bg-canvas", hex: "#0A2540", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 38, usageContext: "Brand Navy Page Canvas" },
+      { id: "c-2", name: "accent-primary", hex: "#635BFF", role: "accent-primary", contrastAgainstCanvas: 5.1, contrastRatio: 5.1, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 14, usageContext: "Primary Action CTA Button" },
+      { id: "c-3", name: "accent-cyan", hex: "#00D4FF", role: "accent", contrastAgainstCanvas: 8.4, contrastRatio: 8.4, contrastTarget: "vs #0A2540 canvas", wcagRating: "AAA", frequencyPercentage: 6, usageContext: "Cyan Interactive Gradient Accent" },
+      { id: "c-4", name: "text-primary", hex: "#FFFFFF", role: "text-primary", contrastAgainstCanvas: 16.5, contrastRatio: 16.5, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 22, usageContext: "High-Contrast Headline & Body Text" },
+      { id: "c-5", name: "bg-surface", hex: "#F6F9FC", role: "surface", contrastAgainstCanvas: 14.8, contrastRatio: 14.8, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 20, usageContext: "Light Contrast Card Surface" },
     ],
     typography: {
       displayFamily: "Söhne Breit, -apple-system, sans-serif",
@@ -119,11 +119,11 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "supabase.com": {
     pageTitle: "Supabase — Build in a weekend. Scale to millions.",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#121212", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 40 },
-      { id: "c-2", name: "bg-surface", hex: "#1C1C1C", role: "surface", contrastAgainstCanvas: 1.3, wcagRating: "FAIL", frequencyPercentage: 22 },
-      { id: "c-3", name: "brand-accent", hex: "#3ECF8E", role: "accent", contrastAgainstCanvas: 8.9, wcagRating: "AAA", frequencyPercentage: 12 },
-      { id: "c-4", name: "text-primary", hex: "#EDEDED", role: "text-primary", contrastAgainstCanvas: 15.4, wcagRating: "AAA", frequencyPercentage: 18 },
-      { id: "c-5", name: "keyline", hex: "#2E2E2E", role: "keyline", contrastAgainstCanvas: 1.6, wcagRating: "FAIL", frequencyPercentage: 8 },
+      { id: "c-1", name: "bg-canvas", hex: "#121212", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 40, usageContext: "Dark Neutral Canvas" },
+      { id: "c-2", name: "bg-surface", hex: "#1C1C1C", role: "surface", contrastAgainstCanvas: 1.3, contrastRatio: 14.8, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 22, usageContext: "Elevated Code Panel & Card Surface" },
+      { id: "c-3", name: "accent-primary", hex: "#3ECF8E", role: "accent-primary", contrastAgainstCanvas: 8.9, contrastRatio: 8.9, contrastTarget: "vs #121212 text", wcagRating: "AAA", frequencyPercentage: 12, usageContext: "Emerald Brand CTA Button" },
+      { id: "c-4", name: "text-primary", hex: "#EDEDED", role: "text-primary", contrastAgainstCanvas: 15.4, contrastRatio: 15.4, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 18, usageContext: "High-Contrast Code & Body Text" },
+      { id: "c-5", name: "keyline", hex: "#2E2E2E", role: "keyline", contrastAgainstCanvas: 1.6, contrastRatio: 3.2, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "1px Structural Keyline Divider" },
     ],
     typography: {
       displayFamily: "Circular Sans, system-ui, sans-serif",
@@ -153,11 +153,11 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "raycast.com": {
     pageTitle: "Raycast — Your shortcut to everything",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#0C0D0E", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 44 },
-      { id: "c-2", name: "bg-surface", hex: "#1B1C1E", role: "surface", contrastAgainstCanvas: 1.25, wcagRating: "FAIL", frequencyPercentage: 22 },
-      { id: "c-3", name: "brand-accent", hex: "#FF6363", role: "accent", contrastAgainstCanvas: 5.8, wcagRating: "AA", frequencyPercentage: 10 },
-      { id: "c-4", name: "text-primary", hex: "#F2F3F5", role: "text-primary", contrastAgainstCanvas: 17.5, wcagRating: "AAA", frequencyPercentage: 16 },
-      { id: "c-5", name: "keyline", hex: "#2B2D31", role: "keyline", contrastAgainstCanvas: 1.5, wcagRating: "FAIL", frequencyPercentage: 8 },
+      { id: "c-1", name: "bg-canvas", hex: "#0C0D0E", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 44, usageContext: "Dark Charcoal Launcher Canvas" },
+      { id: "c-2", name: "bg-surface", hex: "#1B1C1E", role: "surface", contrastAgainstCanvas: 1.25, contrastRatio: 15.0, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 22, usageContext: "Command Palette & Card Fill" },
+      { id: "c-3", name: "accent-primary", hex: "#FF6363", role: "accent-primary", contrastAgainstCanvas: 5.8, contrastRatio: 5.8, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 10, usageContext: "Coral Primary Action Button" },
+      { id: "c-4", name: "text-primary", hex: "#F2F3F5", role: "text-primary", contrastAgainstCanvas: 17.5, contrastRatio: 17.5, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 16, usageContext: "High-Contrast Query & Body Text" },
+      { id: "c-5", name: "keyline", hex: "#2B2D31", role: "keyline", contrastAgainstCanvas: 1.5, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "1px Window Stroke" },
     ],
     typography: {
       displayFamily: "Inter Display, SF Pro Display, sans-serif",
@@ -187,11 +187,11 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "vercel.com": {
     pageTitle: "Vercel — Build and ship the modern web",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#000000", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 45 },
-      { id: "c-2", name: "bg-surface", hex: "#0A0A0A", role: "surface", contrastAgainstCanvas: 1.1, wcagRating: "FAIL", frequencyPercentage: 20 },
-      { id: "c-3", name: "brand-accent", hex: "#0070F3", role: "accent", contrastAgainstCanvas: 4.9, wcagRating: "AA", frequencyPercentage: 10 },
-      { id: "c-4", name: "text-primary", hex: "#EDEDED", role: "text-primary", contrastAgainstCanvas: 18.0, wcagRating: "AAA", frequencyPercentage: 17 },
-      { id: "c-5", name: "keyline", hex: "#262626", role: "keyline", contrastAgainstCanvas: 1.5, wcagRating: "FAIL", frequencyPercentage: 8 },
+      { id: "c-1", name: "bg-canvas", hex: "#000000", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 45, usageContext: "True Pitch Black Canvas" },
+      { id: "c-2", name: "bg-surface", hex: "#0A0A0A", role: "surface", contrastAgainstCanvas: 1.1, contrastRatio: 16.2, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 20, usageContext: "Card & Deployment Container Fill" },
+      { id: "c-3", name: "accent-primary", hex: "#0070F3", role: "accent-primary", contrastAgainstCanvas: 4.9, contrastRatio: 4.9, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 10, usageContext: "Geist Blue CTA Button" },
+      { id: "c-4", name: "text-primary", hex: "#EDEDED", role: "text-primary", contrastAgainstCanvas: 18.0, contrastRatio: 18.0, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 17, usageContext: "Primary Reading & Code Text" },
+      { id: "c-5", name: "keyline", hex: "#262626", role: "keyline", contrastAgainstCanvas: 1.5, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "1px Geometric Divider" },
     ],
     typography: {
       displayFamily: "Geist Sans, -apple-system, sans-serif",
@@ -221,11 +221,11 @@ const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
   "tailwindcss.com": {
     pageTitle: "Tailwind CSS — Rapidly build modern websites",
     colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#0F172A", role: "canvas", contrastAgainstCanvas: 1, wcagRating: "FAIL", frequencyPercentage: 40 },
-      { id: "c-2", name: "bg-surface", hex: "#1E293B", role: "surface", contrastAgainstCanvas: 1.3, wcagRating: "FAIL", frequencyPercentage: 20 },
-      { id: "c-3", name: "brand-accent", hex: "#38BDF8", role: "accent", contrastAgainstCanvas: 9.8, wcagRating: "AAA", frequencyPercentage: 12 },
-      { id: "c-4", name: "text-primary", hex: "#F8FAFC", role: "text-primary", contrastAgainstCanvas: 17.2, wcagRating: "AAA", frequencyPercentage: 18 },
-      { id: "c-5", name: "keyline", hex: "#334155", role: "keyline", contrastAgainstCanvas: 1.7, wcagRating: "FAIL", frequencyPercentage: 10 },
+      { id: "c-1", name: "bg-canvas", hex: "#0F172A", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 40, usageContext: "Slate 900 Canvas" },
+      { id: "c-2", name: "bg-surface", hex: "#1E293B", role: "surface", contrastAgainstCanvas: 1.3, contrastRatio: 14.5, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 20, usageContext: "Slate 800 Code Card Container" },
+      { id: "c-3", name: "accent-primary", hex: "#38BDF8", role: "accent-primary", contrastAgainstCanvas: 9.8, contrastRatio: 9.8, contrastTarget: "vs #0F172A text", wcagRating: "AAA", frequencyPercentage: 12, usageContext: "Sky 400 Action Button" },
+      { id: "c-4", name: "text-primary", hex: "#F8FAFC", role: "text-primary", contrastAgainstCanvas: 17.2, contrastRatio: 17.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 18, usageContext: "Slate 50 High-Contrast Text" },
+      { id: "c-5", name: "keyline", hex: "#334155", role: "keyline", contrastAgainstCanvas: 1.7, contrastRatio: 3.3, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 10, usageContext: "Slate 700 Keyline Border" },
     ],
     typography: {
       displayFamily: "Inter, system-ui, sans-serif",

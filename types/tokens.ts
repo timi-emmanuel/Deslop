@@ -10,6 +10,10 @@ export type SemanticColorRole =
   | "surface"
   | "surface-elevated"
   | "accent"
+  | "accent-primary"
+  | "accent-secondary"
+  | "accent-danger"
+  | "accent-success"
   | "accent-hover"
   | "accent-wash"
   | "text-primary"
@@ -24,8 +28,11 @@ export interface ColorToken {
   oklch?: string;
   role: SemanticColorRole;
   contrastAgainstCanvas: number;
-  wcagRating: "AAA" | "AA" | "FAIL";
+  contrastRatio?: number;
+  contrastTarget?: string;
+  wcagRating: "AAA" | "AA" | "PASS" | "FAIL" | "BASE";
   frequencyPercentage: number;
+  usageContext?: string;
 }
 
 export interface FontSizeStep {

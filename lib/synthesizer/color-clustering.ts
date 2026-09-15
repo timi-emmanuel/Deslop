@@ -98,28 +98,57 @@ function colorDistance(a: RgbColor, b: RgbColor): number {
 export interface RawColorOccurence {
   hex: string;
   count: number;
+  sources?: {
+    isBackground?: number;
+    isText?: number;
+    isBorder?: number;
+    isButton?: number;
+  };
 }
 
 /**
- * Derives a human-friendly and semantic accent name based on HSL values.
+ * Derives a prescriptive, semantic accent role and name based on usage and HSL.
  */
-function getSemanticAccentName(hex: string, rgb: RgbColor, isPrimary: boolean): string {
-  if (isPrimary) return "brand-accent";
+function getSemanticAccentRole(
+  hex: string,
+  rgb: RgbColor,
+  isFirstAccent: boolean,
+  hasDanger: boolean,
+  hasSuccess: boolean
+): { role: SemanticColorRole; baseName: string } {
+  if (isFirstAccent) {
+    return { role: "accent-primary", baseName: "accent-primary" };
+  }
+
   const { h, s } = rgbToHsl(rgb.r, rgb.g, rgb.b);
 
-  if (s < 20) return "accent-neutral";
-  if (h >= 170 && h < 210) return "accent-cyan";
-  if (h >= 210 && h < 255) return "accent-blue";
-  if (h >= 80 && h < 170) return "accent-green";
-  if (h >= 35 && h < 80) return "accent-amber";
-  if (h >= 255 && h < 320) return "accent-purple";
-  if (h < 25 || h >= 345) return "accent-red";
-  return "accent-secondary";
+  // Red / Destructive
+  if (!hasDanger && (h < 25 || h >= 345) && s > 40) {
+    return { role: "accent-danger", baseName: "accent-danger" };
+  }
+
+  // Green / Confirmation
+  if (!hasSuccess && h >= 80 && h < 165 && s > 35) {
+    return { role: "accent-success", baseName: "accent-success" };
+  }
+
+  // Neutral / Subtle
+  if (s < 20) {
+    return { role: "accent-secondary", baseName: "accent-secondary" };
+  }
+
+  // Secondary interactive or decorative
+  if (h >= 205 && h < 255) return { role: "accent", baseName: "accent-blue" };
+  if (h >= 165 && h < 205) return { role: "accent", baseName: "accent-cyan" };
+  if (h >= 35 && h < 80) return { role: "accent", baseName: "accent-amber" };
+  if (h >= 255 && h < 320) return { role: "accent", baseName: "accent-purple" };
+
+  return { role: "accent-secondary", baseName: "accent-secondary" };
 }
 
 /**
  * Clusters an arbitrary list of scanned hex codes into a normalized,
- * deduplicated semantic palette with ZERO duplicate token names.
+ * deduplicated semantic palette with role-aware WCAG accessibility audits.
  */
 export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): ColorToken[] {
   if (!rawOccurences || rawOccurences.length === 0) {
@@ -147,10 +176,7 @@ export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): Colo
 
   if (clusters.length === 0) return [];
 
-  // Intelligently identify canvas:
-  // Canvases are almost exclusively neutral surfaces (low saturation)
-  // either light (l >= 80) or dark (l <= 20).
-  // Saturated badges/tags (e.g. orange, cyan) should NEVER override true canvas.
+  // Identify canvas (light or dark neutral surface with highest weighted score)
   let primaryBackgroundCluster = clusters[0];
   let maxCanvasScore = -1;
 
@@ -176,14 +202,24 @@ export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): Colo
 
   const primaryBackground = primaryBackgroundCluster.hex;
   const bgLuminance = getRelativeLuminance(primaryBackgroundCluster.rgb);
-  const isDarkCanvas = bgLuminance < 0.25;
 
-  // Reorder clusters so that:
+  // Reorder clusters:
   // 1. Canvas is first
   // 2. High-contrast text candidate is second
   // 3. Brand accents & surfaces follow
   const remainingClusters = clusters.filter((c) => c.hex !== primaryBackground);
   const orderedClusters = [primaryBackgroundCluster, ...remainingClusters];
+
+  // First pass to discover primary text hex for contextual surface auditing
+  let primaryTextCandidate = "#0A0D14";
+  for (const c of orderedClusters) {
+    const contrast = calculateContrastRatio(c.hex, primaryBackground);
+    const hsl = rgbToHsl(c.rgb.r, c.rgb.g, c.rgb.b);
+    if (contrast >= 7.0 && hsl.s < 40) {
+      primaryTextCandidate = c.hex;
+      break;
+    }
+  }
 
   const tokens: ColorToken[] = [];
   const usedNames = new Set<string>();
@@ -191,45 +227,102 @@ export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): Colo
   let hasPrimaryText = false;
   let hasMutedText = false;
   let hasSurface = false;
+  let hasDanger = false;
+  let hasSuccess = false;
 
   orderedClusters.slice(0, 8).forEach((cluster, idx) => {
     let role: SemanticColorRole = "accent";
     let baseName = `color-token-${idx + 1}`;
+    let usageContext = "Interactive UI Accent";
 
-    const contrast = calculateContrastRatio(cluster.hex, primaryBackground);
+    const contrastCanvas = calculateContrastRatio(cluster.hex, primaryBackground);
     const lum = getRelativeLuminance(cluster.rgb);
     const hsl = rgbToHsl(cluster.rgb.r, cluster.rgb.g, cluster.rgb.b);
+
+    let contrastRatio = contrastCanvas;
+    let contrastTarget = "vs canvas";
+    let wcagRating: "AAA" | "AA" | "PASS" | "FAIL" | "BASE" = "PASS";
 
     if (idx === 0) {
       role = "canvas";
       baseName = "bg-canvas";
-    } else if (!hasPrimaryText && contrast >= 7.0 && hsl.s < 40) {
+      usageContext = "Base Page Canvas";
+      contrastRatio = 1.0;
+      contrastTarget = "base canvas layer";
+      wcagRating = "BASE"; // Never falsely fail canvas against itself
+    } else if (!hasPrimaryText && contrastCanvas >= 7.0 && hsl.s < 40) {
       role = "text-primary";
       baseName = "text-primary";
+      usageContext = "Primary Reading & Heading Text";
+      contrastRatio = contrastCanvas;
+      contrastTarget = "vs bg-canvas";
+      wcagRating = "AAA";
       hasPrimaryText = true;
-    } else if (!hasMutedText && contrast >= 3.5 && contrast < 7.0 && hsl.s < 45) {
+    } else if (!hasMutedText && contrastCanvas >= 3.5 && contrastCanvas < 7.0 && hsl.s < 45) {
       role = "text-muted";
       baseName = "text-muted";
+      usageContext = "Secondary Text & Captions";
+      contrastRatio = contrastCanvas;
+      contrastTarget = "vs bg-canvas";
+      wcagRating = contrastCanvas >= 4.5 ? "AA" : "PASS";
       hasMutedText = true;
     } else if (Math.abs(lum - bgLuminance) < 0.20 && (hsl.s < 40 || lum > 0.88)) {
       if (!hasSurface) {
         role = "surface";
         baseName = "bg-surface";
+        usageContext = "Card & Modal Container Fill";
         hasSurface = true;
       } else {
         role = "surface-elevated";
         baseName = "bg-surface-elevated";
+        usageContext = "Elevated Popovers & Dropdowns";
       }
+      // Context-aware audit: evaluate surface against primary text, not canvas
+      const textContrast = calculateContrastRatio(primaryTextCandidate, cluster.hex);
+      contrastRatio = textContrast;
+      contrastTarget = "vs text-primary";
+      wcagRating = textContrast >= 7.0 ? "AAA" : textContrast >= 4.5 ? "AA" : "PASS";
     } else {
-      role = "accent";
-      const isPrimary = !hasPrimaryAccent && contrast >= 2.5;
-      baseName = getSemanticAccentName(cluster.hex, cluster.rgb, isPrimary);
-      if (isPrimary) {
+      // Accent / Interactive fill role
+      const accentInfo = getSemanticAccentRole(
+        cluster.hex,
+        cluster.rgb,
+        !hasPrimaryAccent,
+        hasDanger,
+        hasSuccess
+      );
+      role = accentInfo.role;
+      baseName = accentInfo.baseName;
+
+      if (role === "accent-primary") {
         hasPrimaryAccent = true;
+        usageContext = "Primary CTA Action Button";
+      } else if (role === "accent-danger") {
+        hasDanger = true;
+        usageContext = "Destructive Actions & Alerts";
+      } else if (role === "accent-success") {
+        hasSuccess = true;
+        usageContext = "Confirmation & Verification Badges";
+      } else {
+        usageContext = "Secondary Action / Focus Ring";
+      }
+
+      // Context-aware audit: test button fill against white text vs dark text
+      const contrastWhite = calculateContrastRatio(cluster.hex, "#FFFFFF");
+      const contrastDark = calculateContrastRatio(cluster.hex, "#0A0D14");
+
+      if (contrastWhite >= contrastDark) {
+        contrastRatio = contrastWhite;
+        contrastTarget = "vs #FFFFFF text";
+        wcagRating = contrastWhite >= 4.5 ? "AA" : contrastWhite >= 3.0 ? "PASS" : "FAIL";
+      } else {
+        contrastRatio = contrastDark;
+        contrastTarget = "vs #0A0D14 text";
+        wcagRating = contrastDark >= 4.5 ? "AA" : contrastDark >= 3.0 ? "PASS" : "FAIL";
       }
     }
 
-    // Ensure every token name is 100% unique (no collisions in generated CSS/Markdown)
+    // Ensure token name uniqueness
     let uniqueName = baseName;
     let collisionCounter = 2;
     while (usedNames.has(uniqueName)) {
@@ -238,16 +331,17 @@ export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): Colo
     }
     usedNames.add(uniqueName);
 
-    const wcagRating = contrast >= 7.0 ? "AAA" : contrast >= 4.5 ? "AA" : "FAIL";
-
     tokens.push({
       id: `token-${idx}-${cluster.hex.replace("#", "")}`,
       name: uniqueName,
       hex: cluster.hex,
       role,
-      contrastAgainstCanvas: contrast,
+      contrastAgainstCanvas: contrastCanvas,
+      contrastRatio,
+      contrastTarget,
       wcagRating,
       frequencyPercentage: Number(((cluster.count / totalCount) * 100).toFixed(1)),
+      usageContext,
     });
   });
 

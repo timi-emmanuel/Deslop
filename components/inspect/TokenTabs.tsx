@@ -91,7 +91,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "colors"
                 ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#0A0D14]"
+                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
             }`}
           >
             <Palette size={14} className={activeTab === "colors" ? "text-[#FF4800]" : ""} />
@@ -103,7 +103,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "typography"
                 ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#0A0D14]"
+                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
             }`}
           >
             <TextAa size={14} className={activeTab === "typography" ? "text-[#FF4800]" : ""} />
@@ -115,7 +115,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "geometry"
                 ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#0A0D14]"
+                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
             }`}
           >
             <Ruler size={14} className={activeTab === "geometry" ? "text-[#FF4800]" : ""} />
@@ -127,7 +127,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "components"
                 ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#0A0D14]"
+                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
             }`}
           >
             <Browsers size={14} className={activeTab === "components" ? "text-[#FF4800]" : ""} />
@@ -139,7 +139,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "markdown"
                 ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#0A0D14]"
+                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
             }`}
           >
             <Code size={14} className={activeTab === "markdown" ? "text-[#FF4800]" : ""} />
@@ -151,7 +151,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "tailwind"
                 ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#0A0D14]"
+                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
             }`}
           >
             <FileCode size={14} className={activeTab === "tailwind" ? "text-[#FF4800]" : ""} />
@@ -196,14 +196,25 @@ export function TokenTabs({ system }: TokenTabsProps) {
                             ? "bg-[#ECFDF5] text-[#059669] border border-[#A7F3D0]"
                             : c.wcagRating === "AA"
                             ? "bg-[#EFF6FF] text-[#2563EB] border border-[#BFDBFE]"
-                            : "bg-[#F4F4F6] text-[#868C98]"
+                            : c.wcagRating === "BASE"
+                            ? "bg-[#F4F4F6] text-[#525866] border border-[#E2E4E9]"
+                            : c.wcagRating === "PASS"
+                            ? "bg-[#F0FDF4] text-[#16A34A] border border-[#BBF7D0]"
+                            : "bg-[#FEF2F2] text-[#DC2626] border border-[#FECACA]"
                         }`}
                       >
-                        {c.wcagRating} ({c.contrastAgainstCanvas}:1)
+                        {c.wcagRating === "BASE"
+                          ? "BASE"
+                          : `${c.wcagRating} (${c.contrastRatio || c.contrastAgainstCanvas}:1)`}
                       </span>
                     </div>
 
                     <div className="font-mono text-[11px] text-[#525866] mt-1">{c.name}</div>
+                    {c.usageContext && (
+                      <div className="text-[10px] text-[#868C98] mt-0.5 truncate" title={c.usageContext}>
+                        {c.usageContext}
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-3 pt-2 border-t border-[#E2E4E9] flex items-center justify-between text-[10px] text-[#868C98]">
@@ -498,9 +509,9 @@ export function TokenTabs({ system }: TokenTabsProps) {
                       </span>
                     </div>
                     <div className="flex items-center justify-between p-2 rounded bg-white border border-[#E2E4E9]">
-                      <span className="text-[#525866]">Brand Accent on Canvas:</span>
-                      <span className={`font-bold ${primaryAccent.wcagRating === "FAIL" ? "text-[#FF4800]" : "text-[#2563EB]"}`}>
-                        {primaryAccent.contrastAgainstCanvas}:1 ({primaryAccent.wcagRating})
+                      <span className="text-[#525866]">CTA Action Contrast:</span>
+                      <span className={`font-bold ${primaryAccent.wcagRating === "FAIL" ? "text-[#FF4800]" : "text-[#059669]"}`}>
+                        {primaryAccent.contrastRatio || primaryAccent.contrastAgainstCanvas}:1 ({primaryAccent.wcagRating})
                       </span>
                     </div>
                   </div>
