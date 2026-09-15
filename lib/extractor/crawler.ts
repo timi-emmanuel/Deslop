@@ -268,6 +268,56 @@ function parseRgbToHex(rgbStr: string): string | null {
 }
 
 /**
+ * Converts HSL values (h: 0-360, s: 0-100, l: 0-100) into standardized uppercase hex.
+ */
+export function hslToHex(h: number, s: number, l: number): string {
+  s = Math.max(0, Math.min(100, s)) / 100;
+  l = Math.max(0, Math.min(100, l)) / 100;
+  const a = s * Math.min(l, 1 - l);
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12;
+    const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+    return Math.round(255 * color).toString(16).padStart(2, "0");
+  };
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
+
+/**
+ * Parses modern CSS HSL representations:
+ * 1. Standard CSS: hsl(255, 70%, 90%) or hsla(255, 70%, 90%, 0.8)
+ * 2. Modern CSS4: hsl(255 70% 90% / 0.5)
+ * 3. shadcn/ui & Tailwind raw CSS variable channels: "255 70% 90%" or "240 10% 3.9%"
+ */
+export function parseHslToHex(val: string): string | null {
+  if (!val) return null;
+  const trimmed = val.trim();
+
+  // Check raw shadcn/ui HSL channel format: "255 70% 90%" or "240 10% 3.9%"
+  const rawChannelsMatch = trimmed.match(/^(\d+(?:\.\d+)?)\s+(\d+(?:\.\d+)?)%?\s+(\d+(?:\.\d+)?)%?$/);
+  if (rawChannelsMatch) {
+    const h = parseFloat(rawChannelsMatch[1]);
+    const s = parseFloat(rawChannelsMatch[2]);
+    const l = parseFloat(rawChannelsMatch[3]);
+    if (!isNaN(h) && !isNaN(s) && !isNaN(l)) {
+      return hslToHex(h, s, l);
+    }
+  }
+
+  // Check functional syntax: hsl(...) or hsla(...)
+  const funcMatch = trimmed.match(/hsla?\(\s*(\d+(?:\.\d+)?)\s*(?:,|\s+)\s*(\d+(?:\.\d+)?)%?\s*(?:,|\s+)\s*(\d+(?:\.\d+)?)%?/i);
+  if (funcMatch) {
+    const h = parseFloat(funcMatch[1]);
+    const s = parseFloat(funcMatch[2]);
+    const l = parseFloat(funcMatch[3]);
+    if (!isNaN(h) && !isNaN(s) && !isNaN(l)) {
+      return hslToHex(h, s, l);
+    }
+  }
+
+  return null;
+}
+
+/**
  * Extracts live tokens from any public URL.
  * Combines fast HTTP AST parsing with perceptual clustering and heuristic fallback.
  */
@@ -330,14 +380,14 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
       pageTitle = titleMatch[1].trim();
     }
 
-    // Grab linked external stylesheets for rich token discovery
+    // Grab linked external stylesheets for rich token discovery (up to 5 stylesheets)
     const linkMatches = Array.from(
       html.matchAll(/<link[^>]+rel=["']stylesheet["'][^>]*href=["']([^"']+)["']/gi)
     );
     const cssUrls = linkMatches
       .map((m) => m[1])
       .filter((href) => href && !href.startsWith("data:"))
-      .slice(0, 2)
+      .slice(0, 5)
       .map((href) => {
         try {
           return new URL(href, targetUrl).toString();
@@ -352,14 +402,14 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
         cssUrls.map((cssUrl) =>
           fetch(cssUrl, {
             headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
-            signal: AbortSignal.timeout(3000),
+            signal: AbortSignal.timeout(3500),
           }).then((res) => res.text())
         )
       );
 
       for (const res of cssResults) {
         if (res.status === "fulfilled" && typeof res.value === "string") {
-          aggregatedCss += "\n" + res.value.slice(0, 80000);
+          aggregatedCss += "\n" + res.value.slice(0, 150000);
         }
       }
     }
@@ -373,20 +423,64 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
     .join("\n");
   const combinedPayload = `${html}\n${styleTags}\n${aggregatedCss}`;
 
-  // 3. Harvest Hex and RGB Colors
+  // 3. Harvest Theme Variables & Colors
+  const colorMap = new Map<string, number>();
+
+  // A. High-Priority Author Tokens from CSS Variables (e.g. shadcn/ui, Tailwind, CSS variables)
+  // Matches: --primary: 255 70% 90%; or --brand: #0F7FFF; or --accent: hsl(...);
+  const cssVarRegex = /--(primary|brand|accent|background|foreground|card|surface|canvas|text|destructive|secondary|ring)[a-zA-Z0-9-]*:\s*([^;}{]+)/gi;
+  let varMatch: RegExpExecArray | null;
+  while ((varMatch = cssVarRegex.exec(combinedPayload)) !== null) {
+    const rawValue = varMatch[2].trim();
+
+    // Check if HSL / shadcn raw channels (e.g. "255 70% 90%")
+    const hslHex = parseHslToHex(rawValue);
+    if (hslHex) {
+      colorMap.set(hslHex, (colorMap.get(hslHex) || 0) + 60);
+      continue;
+    }
+
+    // Check if RGB
+    const rgbHex = parseRgbToHex(rawValue);
+    if (rgbHex) {
+      colorMap.set(rgbHex, (colorMap.get(rgbHex) || 0) + 60);
+      continue;
+    }
+
+    // Check if hex
+    const hexMatch = rawValue.match(/#([0-9a-fA-F]{3,8})\b/);
+    if (hexMatch) {
+      const hex = hexMatch[0].length === 4
+        ? `#${hexMatch[0][1]}${hexMatch[0][1]}${hexMatch[0][2]}${hexMatch[0][2]}${hexMatch[0][3]}${hexMatch[0][3]}`.toUpperCase()
+        : hexMatch[0].toUpperCase();
+      colorMap.set(hex, (colorMap.get(hex) || 0) + 60);
+      continue;
+    }
+  }
+
+  // B. Standard Hex, RGB, and HSL occurrences throughout document
   const hexMatches = combinedPayload.match(/#([0-9a-fA-F]{3,8})\b/g) || [];
   const rgbMatches = combinedPayload.match(/rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+[^)]*\)/gi) || [];
-  const colorMap = new Map<string, number>();
+  const hslMatches = combinedPayload.match(/hsla?\([^)]+\)/gi) || [];
 
   for (const hex of hexMatches) {
     if (hex.length === 4 || hex.length === 7) {
-      const normalized = hex.toUpperCase();
+      const normalized = hex.length === 4
+        ? `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`.toUpperCase()
+        : hex.toUpperCase();
       colorMap.set(normalized, (colorMap.get(normalized) || 0) + 1);
     }
   }
 
   for (const rgb of rgbMatches) {
     const hex = parseRgbToHex(rgb);
+    if (hex) {
+      colorMap.set(hex, (colorMap.get(hex) || 0) + 1);
+    }
+  }
+
+  for (const hsl of hslMatches) {
+    const hex = parseHslToHex(hsl);
     if (hex) {
       colorMap.set(hex, (colorMap.get(hex) || 0) + 1);
     }
@@ -411,28 +505,65 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
 
   const colors = synthesizeColorPalette(rawOccurences);
 
-  // 4. Harvest Fonts
+  // 4. Harvest Fonts with Multi-Family and Display/Body Pairing
   const fontMatches = combinedPayload.match(/font-family:\s*([^;}{]+)/gi) || [];
-  let detectedFont = "Plus Jakarta Sans";
-  if (fontMatches.length > 0 && fontMatches[0]) {
-    const rawFamily = fontMatches[0].replace(/font-family:\s*/i, "");
-    const parts = rawFamily.split(",");
-    const first = parts[0]?.replace(/['"]/g, "").trim();
-    if (first && first.length > 2 && !first.startsWith("var(")) {
-      detectedFont = first;
+  const foundFamilies: string[] = [];
+
+  if (fontMatches.length > 0) {
+    for (const fm of fontMatches.slice(0, 15)) {
+      const rawFamily = fm.replace(/font-family:\s*/i, "");
+      const first = rawFamily.split(",")[0]?.replace(/['"]/g, "").trim();
+      if (
+        first &&
+        first.length > 2 &&
+        !first.startsWith("var(") &&
+        !first.startsWith("inherit") &&
+        !first.startsWith("system-ui")
+      ) {
+        if (!foundFamilies.includes(first)) foundFamilies.push(first);
+      }
     }
   }
 
-  // Check Google Font Link
-  const gFontMatch = html.match(/fonts\.googleapis\.com\/css2\?family=([^&"']+)/i);
-  if (gFontMatch && gFontMatch[1]) {
-    const fontName = decodeURIComponent(gFontMatch[1].split(":")[0].replace(/\+/g, " "));
-    if (fontName) detectedFont = fontName;
+  // Check Google Font Link(s) (supports multiple family= params e.g. family=DM+Sans:wght@400&family=Fraunces:wght@800)
+  const gFontMatches = Array.from(html.matchAll(/family=([^&"']+)/gi));
+  const gFamilies: string[] = [];
+  for (const gfm of gFontMatches) {
+    if (gfm[1]) {
+      const rawName = decodeURIComponent(gfm[1].split(":")[0].replace(/\+/g, " "));
+      if (rawName && !gFamilies.includes(rawName)) {
+        gFamilies.push(rawName);
+      }
+    }
+  }
+
+  // Known serif or expressive display fonts
+  const isDisplayFont = (name: string) =>
+    /fraunces|playfair|recoleta|cooper|serif|display|robert|cinzel|merriweather|lora|spectral|cormorant|boska|satoshi|clash|cal sans/i.test(name);
+
+  let displayFamily = "Plus Jakarta Sans";
+  let bodyFamily = "Inter";
+
+  const allDetected = [...gFamilies, ...foundFamilies];
+  if (allDetected.length > 0) {
+    const displayCandidate = allDetected.find((f) => isDisplayFont(f));
+    const bodyCandidate = allDetected.find((f) => !isDisplayFont(f) && !/mono|code/i.test(f));
+
+    if (displayCandidate && bodyCandidate) {
+      displayFamily = displayCandidate;
+      bodyFamily = bodyCandidate;
+    } else if (displayCandidate) {
+      displayFamily = displayCandidate;
+      bodyFamily = allDetected.find((f) => f !== displayCandidate) || "Inter";
+    } else if (allDetected[0]) {
+      displayFamily = allDetected[0];
+      bodyFamily = allDetected[1] || "Inter";
+    }
   }
 
   const typography: TypographySpec = {
-    displayFamily: `${detectedFont}, system-ui, sans-serif`,
-    bodyFamily: "Inter, system-ui, sans-serif",
+    displayFamily: `${displayFamily}, system-ui, sans-serif`,
+    bodyFamily: `${bodyFamily}, system-ui, sans-serif`,
     monoFamily: "JetBrains Mono, monospace",
     scaleName: "Major Second (1.125)",
     scaleRatio: 1.125,
@@ -445,20 +576,35 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
     ],
   };
 
-  // 5. Harvest Radii & Spacing
-  const paddingMatches = (combinedPayload.match(/padding[^:]*:\s*([0-9]+)px/gi) || []).map((m) => {
-    const num = m.match(/[0-9]+/);
-    return num && num[0] ? parseInt(num[0], 10) : 8;
+  // 5. Harvest Radii & Spacing (supports both px and rem units)
+  const paddingMatches = (combinedPayload.match(/padding[^:]*:\s*([0-9.]+)(px|rem)/gi) || []).map((m) => {
+    const match = m.match(/([0-9.]+)(px|rem)/i);
+    if (!match) return 8;
+    const val = parseFloat(match[1]);
+    const unit = match[2].toLowerCase();
+    return unit === "rem" ? Math.round(val * 16) : Math.round(val);
   });
 
-  const radiusMatches = (combinedPayload.match(/border-radius:\s*([0-9]+)px/gi) || []).map((m) => {
-    const num = m.match(/[0-9]+/);
-    return num && num[0] ? parseInt(num[0], 10) : 6;
+  const radiusMatches = (combinedPayload.match(/(?:border-radius|--radius)[^:]*:\s*([0-9.]+)(px|rem)/gi) || []).map((m) => {
+    const match = m.match(/([0-9.]+)(px|rem)/i);
+    if (!match) return 6;
+    const val = parseFloat(match[1]);
+    const unit = match[2].toLowerCase();
+    return unit === "rem" ? Math.round(val * 16) : Math.round(val);
   });
+
+  // Prioritize explicit theme root radius (e.g. shadcn/ui --radius: 0.5rem -> 8px)
+  const rootRadiusMatch = combinedPayload.match(/--radius:\s*([0-9.]+)(rem|px)/i);
+  let effectiveRadii = radiusMatches.length > 0 ? radiusMatches : [6, 8];
+  if (rootRadiusMatch) {
+    const rVal = parseFloat(rootRadiusMatch[1]);
+    const rPx = rootRadiusMatch[2].toLowerCase() === "rem" ? Math.round(rVal * 16) : Math.round(rVal);
+    effectiveRadii = [Math.max(4, rPx - 2), rPx, Math.min(24, Math.round(rPx * 1.5))];
+  }
 
   const geometry = synthesizeGeometry(
     paddingMatches.length > 0 ? paddingMatches : [4, 8, 16, 24, 32],
-    radiusMatches.length > 0 ? radiusMatches : [6, 8],
+    effectiveRadii,
     ["0 1px 3px rgba(0, 0, 0, 0.05)", "0 10px 24px -8px rgba(0, 0, 0, 0.08)"]
   );
 
