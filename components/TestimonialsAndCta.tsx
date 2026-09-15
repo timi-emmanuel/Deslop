@@ -6,56 +6,6 @@ import Link from "next/link";
 export function TestimonialsAndCta() {
   return (
     <>
-      {/* Testimonials */}
-      <section id="testimonials" className="py-24 border-b border-[#E2E4E9] bg-[#FAFAFA]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
-          <div className="mb-14 pb-6 border-b border-[#E2E4E9] flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-            <div>
-              <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0A0D14]">
-                Verified by frontend engineers.
-              </h2>
-            </div>
-            <p className="text-xs text-[#868C98]">
-              Trusted by teams building with Cursor, Claude Code, and v0
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Testimonial 1 */}
-            <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-7 flex flex-col justify-between shadow-xs">
-              <blockquote className="text-sm sm:text-base text-[#343741] leading-relaxed">
-                &ldquo;Our Cursor prompt outputs kept inventing random hex values and ugly 24px border radii. Dropping Deslop&apos;s <code className="font-mono text-xs bg-[#F4F4F6] border border-[#E2E4E9] px-1 py-0.5 rounded text-[#0A0D14]">design.md</code> into our repository immediately locked down our token adherence.&rdquo;
-              </blockquote>
-              <div className="mt-6 flex items-center gap-3 pt-4 border-t border-[#E2E4E9]">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF1EB] text-[#FF4800] border border-[#FFD6C7] font-mono font-bold text-xs">
-                  SK
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-[#0A0D14]">Sarah Kim</p>
-                  <p className="text-[11px] text-[#868C98]">Design Systems Architect @ NextPhase</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial 2 */}
-            <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-7 flex flex-col justify-between shadow-xs">
-              <blockquote className="text-sm sm:text-base text-[#343741] leading-relaxed">
-                &ldquo;We extracted our live marketing site into tokens in 20 seconds. Now v0 outputs match our exact typography scale and spacing grid on the first prompt without tedious CSS tweaking.&rdquo;
-              </blockquote>
-              <div className="mt-6 flex items-center gap-3 pt-4 border-t border-[#E2E4E9]">
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FFF1EB] text-[#FF4800] border border-[#FFD6C7] font-mono font-bold text-xs">
-                  MR
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-[#0A0D14]">Marcus Rivera</p>
-                  <p className="text-[11px] text-[#868C98]">Staff Engineer @ Shipwright Labs</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* High-Impact Light Mode CTA with Multiplayer Cursors */}
       <section className="relative py-24 border-b border-[#E2E4E9] bg-white bg-drafting-grid overflow-hidden">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">

@@ -294,33 +294,23 @@ export function Hero() {
           {/* Cute Editorial Micro-Badge */}
           <div className="inline-flex items-center gap-2 rounded-full border border-[#E2E4E9] bg-white px-3 py-1 text-xs font-medium text-[#525866] shadow-2xs mb-5">
             <span className="text-[#FF4800] text-sm">✦</span>
-            <span>Handcrafted rules for AI coding models</span>
+            <span>Drop one file in Cursor and never write CSS again</span>
             <span className="text-[#868C98]">·</span>
-            <span className="font-mono text-[11px] text-[#0A0D14] font-semibold">Zero Slop</span>
+            <span className="font-mono text-[11px] text-[#0A0D14] font-semibold">Zero Hassle</span>
           </div>
 
           {/* Main Headline with Hand-Drawn Scribble Underline */}
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-[#0A0D14] leading-[1.14]">
-            Stop shipping{" "}
+            Steal any website&apos;s{" "}
             <span className="relative inline-block text-[#0A0D14]">
-              AI slop.
+              look.
               {/* Organic Hand-Drawn Scribble Underline SVG */}
-              <svg
-                className="absolute -bottom-2 sm:-bottom-3 left-0 w-full h-3 text-[#FF4800] pointer-events-none"
-                viewBox="0 0 160 12"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M3 9C38 3 108 2 157 8M16 10C54 5 114 4 146 7"
-                  stroke="currentColor"
-                  strokeWidth="2.8"
-                  strokeLinecap="round"
-                />
+              <svg className="absolute -bottom-2 left-0 w-full h-[14px] text-[#FF4800] opacity-90" viewBox="0 0 100 12" preserveAspectRatio="none">
+                <path d="M2,10 Q25,2 50,8 T98,5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
               </svg>
-            </span>{" "}
+            </span>
             <br className="hidden sm:inline" />
-            Lock down any design for{" "}
+            Perfect UI on the first prompt for{" "}
             <span className="relative inline-flex h-[1.18em] overflow-hidden align-bottom">
               <span
                 key={currentTool}
