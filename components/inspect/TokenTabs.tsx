@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Palette,
   TextAa,
@@ -14,6 +14,7 @@ import {
   PaperPlaneTilt,
   Browsers,
   DownloadSimple,
+  GridFour,
 } from "@phosphor-icons/react";
 import { ExtractedDesignSystem } from "@/types/tokens";
 
@@ -31,6 +32,44 @@ export function TokenTabs({ system }: TokenTabsProps) {
   const [synthesisBadge, setSynthesisBadge] = useState<string | null>(null);
   const [customPrompt, setCustomPrompt] = useState<string>("");
   const [showPromptInput, setShowPromptInput] = useState<boolean>(false);
+
+  // Typography interactive specimen state
+  const [customTypePreview, setCustomTypePreview] = useState<string>("");
+
+  // Geometry interactive grid overlay state
+  const [showGridOverlay, setShowGridOverlay] = useState<boolean>(false);
+
+  // Auto-trigger Zorveus AI synthesis on load without requiring user click
+  useEffect(() => {
+    handleSynthesizeWithZorveus();
+  }, [system.id]);
+
+  // Dynamic Web Font Loader: Injects Google Fonts into document head for extracted typefaces
+  useEffect(() => {
+    const cleanFontName = (family: string) =>
+      family ? family.split(",")[0].replace(/['"]/g, "").trim() : "";
+    const display = cleanFontName(system.typography.displayFamily);
+    const body = cleanFontName(system.typography.bodyFamily);
+
+    const fontsToLoad = Array.from(new Set([display, body])).filter(
+      (f) => f && !["system-ui", "-apple-system", "sans-serif", "serif", "monospace", "inherit"].includes(f)
+    );
+
+    if (fontsToLoad.length > 0 && typeof document !== "undefined") {
+      const familyParams = fontsToLoad
+        .map((f) => `family=${encodeURIComponent(f)}:ital,wght@0,400;0,600;0,700;0,800;1,400`)
+        .join("&");
+      const linkId = `dynamic-google-font-${system.id}`;
+      let link = document.getElementById(linkId) as HTMLLinkElement;
+      if (!link) {
+        link = document.createElement("link");
+        link.id = linkId;
+        link.rel = "stylesheet";
+        document.head.appendChild(link);
+      }
+      link.href = `https://fonts.googleapis.com/css2?${familyParams}&display=swap`;
+    }
+  }, [system.id, system.typography.displayFamily, system.typography.bodyFamily]);
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -157,6 +196,14 @@ export function TokenTabs({ system }: TokenTabsProps) {
           >
             <Code size={14} className={activeTab === "markdown" ? "text-[#FF4800]" : ""} />
             <span>design.md</span>
+            {isSynthesizing && (
+              <span className="flex h-1.5 w-1.5 rounded-full bg-[#FF4800] animate-ping ml-0.5" title="AI synthesis running..." />
+            )}
+            {synthesisBadge?.includes("ZORVEUS") && !isSynthesizing && (
+              <span className="text-[9px] font-bold text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-1 rounded ml-0.5">
+                AI
+              </span>
+            )}
           </button>
 
           <button
@@ -240,125 +287,357 @@ export function TokenTabs({ system }: TokenTabsProps) {
           </div>
         )}
 
-        {/* TAB 2: TYPOGRAPHY */}
+        {/* TAB 2: TYPOGRAPHY WITH LIVE DYNAMIC FONT RENDERING */}
         {activeTab === "typography" && (
           <div className="space-y-6">
             {/* Font Stacks Overview */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
                 <span className="font-mono text-[10px] text-[#868C98] uppercase block">Display Stack</span>
-                <span className="font-bold text-[#0A0D14] text-sm mt-1 block">{system.typography.displayFamily}</span>
-                <span className="font-mono text-[10px] text-[#525866] mt-1 block">Tracking: -0.035em</span>
+                <span
+                  style={{ fontFamily: system.typography.displayFamily }}
+                  className="font-bold text-[#0A0D14] text-base mt-1 block truncate"
+                >
+                  {system.typography.displayFamily.split(",")[0].replace(/['"]/g, "")}
+                </span>
+                <span className="font-mono text-[10px] text-[#525866] mt-1 block truncate">
+                  Full stack: {system.typography.displayFamily}
+                </span>
               </div>
 
               <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
                 <span className="font-mono text-[10px] text-[#868C98] uppercase block">Body Stack</span>
-                <span className="font-bold text-[#0A0D14] text-sm mt-1 block">{system.typography.bodyFamily}</span>
-                <span className="font-mono text-[10px] text-[#525866] mt-1 block">Line Height: 1.55</span>
+                <span
+                  style={{ fontFamily: system.typography.bodyFamily }}
+                  className="font-bold text-[#0A0D14] text-base mt-1 block truncate"
+                >
+                  {system.typography.bodyFamily.split(",")[0].replace(/['"]/g, "")}
+                </span>
+                <span className="font-mono text-[10px] text-[#525866] mt-1 block truncate">
+                  Full stack: {system.typography.bodyFamily}
+                </span>
               </div>
 
               <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
                 <span className="font-mono text-[10px] text-[#868C98] uppercase block">Modular Ratio</span>
-                <span className="font-bold text-[#0A0D14] text-sm mt-1 block">{system.typography.scaleName}</span>
-                <span className="font-mono text-[10px] text-[#525866] mt-1 block">Factor: {system.typography.scaleRatio}</span>
+                <span className="font-bold text-[#0A0D14] text-base mt-1 block">
+                  {system.typography.scaleName}
+                </span>
+                <span className="font-mono text-[10px] text-[#525866] mt-1 block">
+                  Factor: {system.typography.scaleRatio}
+                </span>
               </div>
+            </div>
+
+            {/* Interactive Preview Bar */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA]">
+              <span className="font-mono text-xs text-[#525866] shrink-0">
+                Interactive Specimen Test:
+              </span>
+              <input
+                type="text"
+                value={customTypePreview}
+                onChange={(e) => setCustomTypePreview(e.target.value)}
+                placeholder="Type custom text to preview in the extracted typeface..."
+                className="w-full sm:flex-1 bg-white border border-[#E2E4E9] rounded-[4px] px-3 py-1.5 text-xs text-[#0A0D14] focus:outline-none focus:ring-1 focus:ring-[#FF4800]"
+              />
+              {customTypePreview && (
+                <button
+                  type="button"
+                  onClick={() => setCustomTypePreview("")}
+                  className="text-[11px] text-[#868C98] hover:text-[#0A0D14] font-mono shrink-0 cursor-pointer"
+                >
+                  Reset
+                </button>
+              )}
             </div>
 
             {/* Typography Specimen Ladder */}
-            <div className="rounded-[6px] border border-[#E2E4E9] bg-white divide-y divide-[#E2E4E9]">
-              {system.typography.steps.map((step) => (
-                <div key={step.name} className="p-4 flex flex-col sm:flex-row sm:items-baseline justify-between gap-3">
-                  <div className="w-36 shrink-0 font-mono text-xs text-[#525866]">
-                    <span className="font-bold text-[#0A0D14] uppercase">{step.name}</span>
-                    <span className="block text-[10px] text-[#868C98]">{step.sizePx}px / {step.lineHeightPx}px lh</span>
-                  </div>
+            <div className="rounded-[6px] border border-[#E2E4E9] bg-white divide-y divide-[#E2E4E9] overflow-hidden">
+              {system.typography.steps.map((step) => {
+                const isDisplayOrHeading = ["display", "h1", "h2"].includes(step.name);
+                const activeFontFamily = isDisplayOrHeading
+                  ? system.typography.displayFamily
+                  : system.typography.bodyFamily;
+                const activeWeight = step.name === "display" ? 800 : step.name === "h1" ? 700 : step.name === "h2" ? 600 : 400;
 
-                  <div
-                    className="flex-1 font-bold text-[#0A0D14] truncate"
-                    style={{
-                      fontSize: `${Math.min(32, step.sizePx)}px`,
-                      lineHeight: `${Math.min(40, step.lineHeightPx)}px`,
-                      letterSpacing: step.letterSpacing,
-                    }}
-                  >
-                    Disciplined software delivery without AI slop
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
+                const displaySizePx =
+                  step.name === "display"
+                    ? 44
+                    : step.name === "h1"
+                    ? 32
+                    : step.name === "h2"
+                    ? 24
+                    : step.name === "body"
+                    ? 15
+                    : 12;
 
-        {/* TAB 3: GEOMETRY */}
-        {activeTab === "geometry" && (
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {/* Spacing Grid */}
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-xs font-bold text-[#0A0D14] block mb-1">
-                  8pt Modular Baseline Grid
-                </span>
-                <p className="text-xs text-[#525866] mb-3">
-                  Paddings, margins, and gaps are quantized strictly to these multiples:
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {system.geometry.spacingRampPx.map((px) => (
-                    <span
-                      key={px}
-                      className="rounded-[4px] border border-[#E2E4E9] bg-white px-2.5 py-1 font-mono text-xs font-semibold text-[#0A0D14] shadow-xs"
+                const displayLhPx =
+                  step.name === "display"
+                    ? 52
+                    : step.name === "h1"
+                    ? 40
+                    : step.name === "h2"
+                    ? 32
+                    : step.name === "body"
+                    ? 24
+                    : 18;
+
+                return (
+                  <div key={step.name} className="p-4 flex flex-col md:flex-row md:items-baseline justify-between gap-4">
+                    <div className="w-40 shrink-0 font-mono text-xs text-[#525866]">
+                      <div className="flex items-center gap-1.5">
+                        <span className="font-bold text-[#0A0D14] uppercase">{step.name}</span>
+                        <span className="text-[10px] px-1 py-0.5 rounded bg-[#F4F4F6] text-[#868C98]">
+                          {isDisplayOrHeading ? "Display" : "Body"}
+                        </span>
+                      </div>
+                      <span className="block text-[10px] text-[#868C98] mt-0.5">
+                        {step.sizePx}px / {step.lineHeightPx}px lh
+                      </span>
+                    </div>
+
+                    <div
+                      className="flex-1 text-[#0A0D14] transition-all"
+                      style={{
+                        fontFamily: activeFontFamily,
+                        fontSize: `${displaySizePx}px`,
+                        lineHeight: `${displayLhPx}px`,
+                        fontWeight: activeWeight,
+                        letterSpacing: step.letterSpacing,
+                      }}
                     >
-                      {px}px
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Radii System */}
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-xs font-bold text-[#0A0D14] block mb-1">
-                  Border Radius Hierarchy
-                </span>
-                <p className="text-xs text-[#525866] mb-3">
-                  Prevents arbitrary pill corners from fighting card containers:
-                </p>
-                <div className="space-y-2 font-mono text-xs">
-                  <div className="flex items-center justify-between p-2 rounded bg-white border border-[#E2E4E9]">
-                    <span className="text-[#525866]">Controls (Buttons, Inputs):</span>
-                    <span className="font-bold text-[#0A0D14]">{system.geometry.radii.controlPx}px</span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 rounded bg-white border border-[#E2E4E9]">
-                    <span className="text-[#525866]">Containers (Cards, Panels):</span>
-                    <span className="font-bold text-[#0A0D14]">{system.geometry.radii.cardPx}px</span>
-                  </div>
-                  <div className="flex items-center justify-between p-2 rounded bg-white border border-[#E2E4E9]">
-                    <span className="text-[#525866]">Tags & Badges:</span>
-                    <span className="font-bold text-[#0A0D14]">9999px (Pill)</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Visual Spacing Rhythm Scale */}
-            <div className="rounded-[6px] border border-[#E2E4E9] bg-white p-4">
-              <span className="font-mono text-xs font-bold text-[#0A0D14] block mb-2">
-                Visual Spacing Rhythm Ramp ({system.geometry.baseGridPx}pt Multiples)
-              </span>
-              <div className="space-y-2 pt-1">
-                {system.geometry.spacingRampPx.map((px) => (
-                  <div key={px} className="flex items-center gap-3 font-mono text-xs">
-                    <span className="w-12 text-[#525866] text-right font-bold shrink-0">{px}px</span>
-                    <div className="flex-1 bg-[#F4F4F6] rounded h-4 overflow-hidden relative">
-                      <div
-                        className="h-full bg-[#FF4800]/85 rounded transition-all duration-300"
-                        style={{ width: `${Math.min(100, Math.max(4, (px / 64) * 100))}%` }}
-                      />
+                      {customTypePreview.trim() || (
+                        step.name === "display"
+                          ? "Your library of free, consistent vector illustrations"
+                          : step.name === "h1"
+                          ? "Choose an illustration style that fits your product"
+                          : step.name === "h2"
+                          ? "Work consistently within a single visual design system"
+                          : step.name === "body"
+                          ? "Designed for presentations, empty states, onboarding, errors, and landing pages with mathematical token precision."
+                          : "© 2026 Studio. All rights reserved. Built with anti-slop tokens."
+                      )}
                     </div>
                   </div>
-                ))}
+                );
+              })}
+            </div>
+
+            {/* Glyphs & Character Set Specimen */}
+            <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4 space-y-2">
+              <span className="font-mono text-[10px] text-[#868C98] uppercase block">
+                Extracted Typeface Character Glyphs ({system.typography.displayFamily.split(",")[0].replace(/['"]/g, "")})
+              </span>
+              <div
+                style={{ fontFamily: system.typography.displayFamily, fontWeight: 700 }}
+                className="text-lg text-[#0A0D14] tracking-wider leading-relaxed select-all"
+              >
+                A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
+              </div>
+              <div
+                style={{ fontFamily: system.typography.displayFamily }}
+                className="text-base text-[#525866] tracking-wider leading-relaxed select-all"
+              >
+                a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 ! @ # $ % &
               </div>
             </div>
           </div>
         )}
+
+        {/* TAB 3: GEOMETRY & SPATIAL ARCHITECTURE */}
+        {activeTab === "geometry" && (() => {
+          const controlPx = system.geometry.radii.controlPx;
+          const cardPx = system.geometry.radii.cardPx;
+          const pillPx = system.geometry.radii.pillPx;
+
+          // Compute Geometry Archetype
+          let archetypeTitle = "Modern SaaS Standard";
+          let archetypeBadgeColor = "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]";
+          let archetypeDesc = "Balanced 6px controls and 8px cards balance software elegance with modern precision (Stripe, Vercel).";
+
+          if (controlPx <= 2) {
+            archetypeTitle = "Sharp & Dense (Code & Utilitarian Tools)";
+            archetypeBadgeColor = "bg-[#F4F4F6] text-[#0A0D14] border-[#E2E4E9]";
+            archetypeDesc = "Micro-radii (<=2px) create a dense, functional, terminal-adjacent look common in developer tools (Linear, VS Code).";
+          } else if (controlPx >= 8 || cardPx >= 10) {
+            archetypeTitle = "Friendly & Approachable (Creative & Editorial)";
+            archetypeBadgeColor = "bg-[#FAF5FF] text-[#7E22CE] border-[#E9D5FF]";
+            archetypeDesc = "Generous 8px+ radii and rounded pills create an approachable, soft aesthetic common in creative studios and illustration sites (VectorUI).";
+          }
+
+          return (
+            <div className="space-y-6">
+              {/* Geometry Archetype Banner */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
+                <div>
+                  <div className="flex items-center gap-2 mb-1">
+                    <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase">
+                      Physical Geometry Archetype:
+                    </span>
+                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${archetypeBadgeColor}`}>
+                      {archetypeTitle}
+                    </span>
+                  </div>
+                  <p className="text-xs text-[#525866]">
+                    {archetypeDesc}
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setShowGridOverlay(!showGridOverlay)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-semibold rounded-[5px] border transition-all cursor-pointer ${
+                      showGridOverlay
+                        ? "bg-[#FF4800] text-white border-[#FF4800] shadow-xs"
+                        : "bg-white text-[#525866] border-[#E2E4E9] hover:text-[#0A0D14]"
+                    }`}
+                  >
+                    <GridFour size={14} weight={showGridOverlay ? "fill" : "regular"} />
+                    <span>{showGridOverlay ? "Hide 8pt Grid Overlay" : "Show 8pt Grid Overlay"}</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Real Visual Radius Hierarchy Specimens */}
+              <div>
+                <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block mb-1">
+                  Corner Radius Hierarchy & Concentricity
+                </span>
+                <p className="text-xs text-[#525866] mb-3">
+                  Prevents AI slop where arbitrary radii cause nested containers to clip and misalign:
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {/* Specimen 1: Controls */}
+                  <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-4 space-y-3">
+                    <div className="flex items-center justify-between font-mono text-xs">
+                      <span className="text-[#868C98]">Controls Radius</span>
+                      <span className="font-bold text-[#0A0D14] bg-[#F4F4F6] px-2 py-0.5 rounded">{controlPx}px</span>
+                    </div>
+                    <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E2E4E9] flex flex-col gap-2">
+                      <button
+                        type="button"
+                        style={{ borderRadius: `${controlPx}px` }}
+                        className="w-full py-2 px-3 text-xs font-semibold bg-[#0A0D14] text-white shadow-xs cursor-pointer"
+                      >
+                        Action Button ({controlPx}px)
+                      </button>
+                      <input
+                        type="text"
+                        readOnly
+                        value={`Input Field (${controlPx}px)`}
+                        style={{ borderRadius: `${controlPx}px` }}
+                        className="w-full py-1.5 px-3 text-xs font-mono bg-white border border-[#E2E4E9] text-[#525866]"
+                      />
+                    </div>
+                    <p className="text-[11px] text-[#868C98]">
+                      Applied to buttons, text inputs, dropdowns, and segmented toggles.
+                    </p>
+                  </div>
+
+                  {/* Specimen 2: Containers */}
+                  <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-4 space-y-3">
+                    <div className="flex items-center justify-between font-mono text-xs">
+                      <span className="text-[#868C98]">Container Card Radius</span>
+                      <span className="font-bold text-[#0A0D14] bg-[#F4F4F6] px-2 py-0.5 rounded">{cardPx}px</span>
+                    </div>
+                    <div
+                      style={{ borderRadius: `${cardPx}px` }}
+                      className="p-3.5 bg-[#FAFAFA] border border-[#E2E4E9] space-y-2 shadow-xs"
+                    >
+                      <div className="flex items-center justify-between text-xs font-bold text-[#0A0D14]">
+                        <span>Card Surface</span>
+                        <span className="text-[10px] font-mono text-[#868C98]">r = {cardPx}px</span>
+                      </div>
+                      <div
+                        style={{ borderRadius: `${Math.max(2, cardPx - 4)}px` }}
+                        className="p-2 bg-white border border-[#E2E4E9] text-[11px] font-mono text-[#525866]"
+                      >
+                        Concentric child (r = {Math.max(2, cardPx - 4)}px)
+                      </div>
+                    </div>
+                    <p className="text-[11px] text-[#868C98]">
+                      Formula: R(inner) = R(outer) - Padding prevents inner corners from clipping.
+                    </p>
+                  </div>
+
+                  {/* Specimen 3: Pills & Badges */}
+                  <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-4 space-y-3">
+                    <div className="flex items-center justify-between font-mono text-xs">
+                      <span className="text-[#868C98]">Pills & Badges</span>
+                      <span className="font-bold text-[#0A0D14] bg-[#F4F4F6] px-2 py-0.5 rounded">9999px</span>
+                    </div>
+                    <div className="p-4 bg-[#FAFAFA] rounded-[6px] border border-[#E2E4E9] flex flex-wrap items-center justify-center gap-2">
+                      <span className="rounded-full bg-[#E9D5FF] text-[#7E22CE] px-3 py-1 text-xs font-semibold">
+                        Status Pill
+                      </span>
+                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0A0D14] text-white font-mono text-xs font-bold">
+                        1
+                      </span>
+                      <span className="rounded-full border border-[#E2E4E9] bg-white px-2.5 py-0.5 text-[11px] font-mono text-[#525866]">
+                        rounded-full
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-[#868C98]">
+                      Full geometric arc reserved for status badges, counters, and chips.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* 8pt Spatial Grid & Rhythm Ramp with Interactive Drafting Overlay */}
+              <div className="relative rounded-[8px] border border-[#E2E4E9] bg-white p-5 overflow-hidden">
+                {showGridOverlay && (
+                  <div
+                    className="absolute inset-0 pointer-events-none opacity-25 z-0"
+                    style={{
+                      backgroundImage: `linear-gradient(to right, #FF4800 1px, transparent 1px), linear-gradient(to bottom, #FF4800 1px, transparent 1px)`,
+                      backgroundSize: `8px 8px`,
+                    }}
+                  />
+                )}
+
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block">
+                        8pt Modular Baseline Grid & Spacing Ramp
+                      </span>
+                      <span className="text-xs text-[#525866]">
+                        Every layout step, padding, and gap snaps to multiples of 8px (with 4px micro-half step)
+                      </span>
+                    </div>
+                    {showGridOverlay && (
+                      <span className="text-[10px] font-mono text-[#FF4800] bg-[#FFF1EB] border border-[#FFD6C7] px-2 py-0.5 rounded font-bold">
+                        8px Grid Overlay Active
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Ramp scale items */}
+                  <div className="space-y-2 pt-1">
+                    {system.geometry.spacingRampPx.map((px) => (
+                      <div key={px} className="flex items-center gap-3 font-mono text-xs">
+                        <span className="w-14 text-[#525866] text-right font-bold shrink-0">{px}px</span>
+                        <div className="flex-1 bg-[#F4F4F6] rounded h-5 overflow-hidden relative flex items-center px-2">
+                          <div
+                            className="absolute left-0 top-0 h-full bg-[#FF4800]/80 rounded transition-all duration-300"
+                            style={{ width: `${Math.min(100, Math.max(5, (px / 64) * 100))}%` }}
+                          />
+                          <span className="relative z-10 text-[10px] font-semibold text-white mix-blend-difference">
+                            {px / 8 === Math.floor(px / 8) ? `${px / 8} × 8pt` : `${px / 4} × 4pt`}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
 
         {/* TAB: LIVE SPECIMENS (COMPONENTS) */}
         {activeTab === "components" && (
@@ -543,13 +822,25 @@ export function TokenTabs({ system }: TokenTabsProps) {
                 <span className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-[#FFF1EB] border border-[#FFD6C7] text-[#FF4800]">
                   <Sparkle size={13} weight="fill" />
                 </span>
-                <div>
+                <div className="flex items-center gap-2">
                   <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase">
                     AI Design Compiler
                   </span>
-                  <span className="text-[#868C98] text-[11px] ml-2 hidden sm:inline">
-                    {synthesisBadge || "Deterministic Baseline"}
-                  </span>
+                  {isSynthesizing ? (
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#FF4800] bg-[#FFF1EB] border border-[#FFD6C7] px-2 py-0.5 rounded font-medium">
+                      <ArrowClockwise size={11} className="animate-spin" />
+                      <span>Synthesizing in background...</span>
+                    </span>
+                  ) : synthesisBadge?.includes("ZORVEUS") ? (
+                    <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-2 py-0.5 rounded font-bold">
+                      <CheckCircle size={11} weight="fill" />
+                      <span>{synthesisBadge}</span>
+                    </span>
+                  ) : (
+                    <span className="text-[#868C98] text-[11px] font-mono">
+                      {synthesisBadge || "Deterministic Baseline"}
+                    </span>
+                  )}
                 </div>
               </div>
 
@@ -557,28 +848,20 @@ export function TokenTabs({ system }: TokenTabsProps) {
                 <button
                   type="button"
                   onClick={() => setShowPromptInput(!showPromptInput)}
-                  className="btn-gloss-neutral h-8 px-3 text-xs font-medium cursor-pointer"
+                  className={`btn-gloss-neutral h-8 px-3 text-xs font-medium cursor-pointer ${showPromptInput ? "bg-[#FFF1EB] text-[#FF4800] border-[#FFD6C7]" : ""}`}
                 >
-                  {showPromptInput ? "Hide Prompt" : "+ Add Prompt Directive"}
+                  {showPromptInput ? "Hide Directive" : "+ Add Custom Directive"}
                 </button>
 
                 <button
                   type="button"
                   disabled={isSynthesizing}
                   onClick={() => handleSynthesizeWithZorveus()}
-                  className="btn-gloss-orange h-8 px-3.5 text-xs font-semibold gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="btn-gloss-neutral h-8 px-3 text-xs font-semibold gap-1.5 cursor-pointer disabled:opacity-50"
+                  title="Re-run AI synthesis"
                 >
-                  {isSynthesizing ? (
-                    <>
-                      <ArrowClockwise size={13} className="animate-spin" />
-                      <span>Synthesizing...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Sparkle size={13} weight="fill" />
-                      <span>Synthesize with Zorveus AI</span>
-                    </>
-                  )}
+                  <ArrowClockwise size={12} className={isSynthesizing ? "animate-spin text-[#FF4800]" : ""} />
+                  <span>{isSynthesizing ? "Compiling..." : "Re-synthesize"}</span>
                 </button>
               </div>
             </div>
