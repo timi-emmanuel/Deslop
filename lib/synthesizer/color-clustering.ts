@@ -230,7 +230,7 @@ export function synthesizeColorPalette(rawOccurences: RawColorOccurence[]): Colo
   let hasDanger = false;
   let hasSuccess = false;
 
-  orderedClusters.slice(0, 8).forEach((cluster, idx) => {
+  orderedClusters.slice(0, 12).forEach((cluster, idx) => {
     let role: SemanticColorRole = "accent";
     let baseName = `color-token-${idx + 1}`;
     let usageContext = "Interactive UI Accent";
