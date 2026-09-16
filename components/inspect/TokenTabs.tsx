@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import {
   Palette,
   TextAa,
-  Ruler,
   Code,
   Copy,
   CheckCircle,
@@ -14,7 +13,6 @@ import {
   PaperPlaneTilt,
   Browsers,
   DownloadSimple,
-  GridFour,
 } from "@phosphor-icons/react";
 import { ExtractedDesignSystem } from "@/types/tokens";
 
@@ -23,7 +21,7 @@ interface TokenTabsProps {
 }
 
 export function TokenTabs({ system }: TokenTabsProps) {
-  const [activeTab, setActiveTab] = useState<"colors" | "typography" | "geometry" | "components" | "markdown" | "tailwind">("colors");
+  const [activeTab, setActiveTab] = useState<"colors" | "typography" | "components" | "markdown" | "tailwind">("colors");
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   // Zorveus AI synthesis state
@@ -35,9 +33,6 @@ export function TokenTabs({ system }: TokenTabsProps) {
 
   // Typography interactive specimen state
   const [customTypePreview, setCustomTypePreview] = useState<string>("");
-
-  // Geometry interactive grid overlay state
-  const [showGridOverlay, setShowGridOverlay] = useState<boolean>(false);
 
   // Auto-trigger Zorveus AI synthesis on load without requiring user click
   useEffect(() => {
@@ -160,18 +155,6 @@ export function TokenTabs({ system }: TokenTabsProps) {
           >
             <TextAa size={14} className={activeTab === "typography" ? "text-[#FF4800]" : ""} />
             <span>Typography</span>
-          </button>
-
-          <button
-            onClick={() => setActiveTab("geometry")}
-            className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
-              activeTab === "geometry"
-                ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
-            }`}
-          >
-            <Ruler size={14} className={activeTab === "geometry" ? "text-[#FF4800]" : ""} />
-            <span>Geometry & Grid</span>
           </button>
 
           <button
@@ -444,200 +427,6 @@ export function TokenTabs({ system }: TokenTabsProps) {
             </div>
           </div>
         )}
-
-        {/* TAB 3: GEOMETRY & SPATIAL ARCHITECTURE */}
-        {activeTab === "geometry" && (() => {
-          const controlPx = system.geometry.radii.controlPx;
-          const cardPx = system.geometry.radii.cardPx;
-          const pillPx = system.geometry.radii.pillPx;
-
-          // Compute Geometry Archetype
-          let archetypeTitle = "Modern SaaS Standard";
-          let archetypeBadgeColor = "bg-[#EFF6FF] text-[#2563EB] border-[#BFDBFE]";
-          let archetypeDesc = "Balanced 6px controls and 8px cards balance software elegance with modern precision (Stripe, Vercel).";
-
-          if (controlPx <= 2) {
-            archetypeTitle = "Sharp & Dense (Code & Utilitarian Tools)";
-            archetypeBadgeColor = "bg-[#F4F4F6] text-[#0A0D14] border-[#E2E4E9]";
-            archetypeDesc = "Micro-radii (<=2px) create a dense, functional, terminal-adjacent look common in developer tools (Linear, VS Code).";
-          } else if (controlPx >= 8 || cardPx >= 10) {
-            archetypeTitle = "Friendly & Approachable (Creative & Editorial)";
-            archetypeBadgeColor = "bg-[#FAF5FF] text-[#7E22CE] border-[#E9D5FF]";
-            archetypeDesc = "Generous 8px+ radii and rounded pills create an approachable, soft aesthetic common in creative studios and illustration sites (VectorUI).";
-          }
-
-          return (
-            <div className="space-y-6">
-              {/* Geometry Archetype Banner */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <div>
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase">
-                      Physical Geometry Archetype:
-                    </span>
-                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded border ${archetypeBadgeColor}`}>
-                      {archetypeTitle}
-                    </span>
-                  </div>
-                  <p className="text-xs text-[#525866]">
-                    {archetypeDesc}
-                  </p>
-                </div>
-
-                <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setShowGridOverlay(!showGridOverlay)}
-                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono font-semibold rounded-[5px] border transition-all cursor-pointer ${
-                      showGridOverlay
-                        ? "bg-[#FF4800] text-white border-[#FF4800] shadow-xs"
-                        : "bg-white text-[#525866] border-[#E2E4E9] hover:text-[#0A0D14]"
-                    }`}
-                  >
-                    <GridFour size={14} weight={showGridOverlay ? "fill" : "regular"} />
-                    <span>{showGridOverlay ? "Hide 8pt Grid Overlay" : "Show 8pt Grid Overlay"}</span>
-                  </button>
-                </div>
-              </div>
-
-              {/* Real Visual Radius Hierarchy Specimens */}
-              <div>
-                <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block mb-1">
-                  Corner Radius Hierarchy & Concentricity
-                </span>
-                <p className="text-xs text-[#525866] mb-3">
-                  Prevents AI slop where arbitrary radii cause nested containers to clip and misalign:
-                </p>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Specimen 1: Controls */}
-                  <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-4 space-y-3">
-                    <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="text-[#868C98]">Controls Radius</span>
-                      <span className="font-bold text-[#0A0D14] bg-[#F4F4F6] px-2 py-0.5 rounded">{controlPx}px</span>
-                    </div>
-                    <div className="p-3 bg-[#FAFAFA] rounded-[6px] border border-[#E2E4E9] flex flex-col gap-2">
-                      <button
-                        type="button"
-                        style={{ borderRadius: `${controlPx}px` }}
-                        className="w-full py-2 px-3 text-xs font-semibold bg-[#0A0D14] text-white shadow-xs cursor-pointer"
-                      >
-                        Action Button ({controlPx}px)
-                      </button>
-                      <input
-                        type="text"
-                        readOnly
-                        value={`Input Field (${controlPx}px)`}
-                        style={{ borderRadius: `${controlPx}px` }}
-                        className="w-full py-1.5 px-3 text-xs font-mono bg-white border border-[#E2E4E9] text-[#525866]"
-                      />
-                    </div>
-                    <p className="text-[11px] text-[#868C98]">
-                      Applied to buttons, text inputs, dropdowns, and segmented toggles.
-                    </p>
-                  </div>
-
-                  {/* Specimen 2: Containers */}
-                  <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-4 space-y-3">
-                    <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="text-[#868C98]">Container Card Radius</span>
-                      <span className="font-bold text-[#0A0D14] bg-[#F4F4F6] px-2 py-0.5 rounded">{cardPx}px</span>
-                    </div>
-                    <div
-                      style={{ borderRadius: `${cardPx}px` }}
-                      className="p-3.5 bg-[#FAFAFA] border border-[#E2E4E9] space-y-2 shadow-xs"
-                    >
-                      <div className="flex items-center justify-between text-xs font-bold text-[#0A0D14]">
-                        <span>Card Surface</span>
-                        <span className="text-[10px] font-mono text-[#868C98]">r = {cardPx}px</span>
-                      </div>
-                      <div
-                        style={{ borderRadius: `${Math.max(2, cardPx - 4)}px` }}
-                        className="p-2 bg-white border border-[#E2E4E9] text-[11px] font-mono text-[#525866]"
-                      >
-                        Concentric child (r = {Math.max(2, cardPx - 4)}px)
-                      </div>
-                    </div>
-                    <p className="text-[11px] text-[#868C98]">
-                      Formula: R(inner) = R(outer) - Padding prevents inner corners from clipping.
-                    </p>
-                  </div>
-
-                  {/* Specimen 3: Pills & Badges */}
-                  <div className="rounded-[8px] border border-[#E2E4E9] bg-white p-4 space-y-3">
-                    <div className="flex items-center justify-between font-mono text-xs">
-                      <span className="text-[#868C98]">Pills & Badges</span>
-                      <span className="font-bold text-[#0A0D14] bg-[#F4F4F6] px-2 py-0.5 rounded">9999px</span>
-                    </div>
-                    <div className="p-4 bg-[#FAFAFA] rounded-[6px] border border-[#E2E4E9] flex flex-wrap items-center justify-center gap-2">
-                      <span className="rounded-full bg-[#E9D5FF] text-[#7E22CE] px-3 py-1 text-xs font-semibold">
-                        Status Pill
-                      </span>
-                      <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#0A0D14] text-white font-mono text-xs font-bold">
-                        1
-                      </span>
-                      <span className="rounded-full border border-[#E2E4E9] bg-white px-2.5 py-0.5 text-[11px] font-mono text-[#525866]">
-                        rounded-full
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-[#868C98]">
-                      Full geometric arc reserved for status badges, counters, and chips.
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* 8pt Spatial Grid & Rhythm Ramp with Interactive Drafting Overlay */}
-              <div className="relative rounded-[8px] border border-[#E2E4E9] bg-white p-5 overflow-hidden">
-                {showGridOverlay && (
-                  <div
-                    className="absolute inset-0 pointer-events-none opacity-25 z-0"
-                    style={{
-                      backgroundImage: `linear-gradient(to right, #FF4800 1px, transparent 1px), linear-gradient(to bottom, #FF4800 1px, transparent 1px)`,
-                      backgroundSize: `8px 8px`,
-                    }}
-                  />
-                )}
-
-                <div className="relative z-10 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block">
-                        8pt Modular Baseline Grid & Spacing Ramp
-                      </span>
-                      <span className="text-xs text-[#525866]">
-                        Every layout step, padding, and gap snaps to multiples of 8px (with 4px micro-half step)
-                      </span>
-                    </div>
-                    {showGridOverlay && (
-                      <span className="text-[10px] font-mono text-[#FF4800] bg-[#FFF1EB] border border-[#FFD6C7] px-2 py-0.5 rounded font-bold">
-                        8px Grid Overlay Active
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Ramp scale items */}
-                  <div className="space-y-2 pt-1">
-                    {system.geometry.spacingRampPx.map((px) => (
-                      <div key={px} className="flex items-center gap-3 font-mono text-xs">
-                        <span className="w-14 text-[#525866] text-right font-bold shrink-0">{px}px</span>
-                        <div className="flex-1 bg-[#F4F4F6] rounded h-5 overflow-hidden relative flex items-center px-2">
-                          <div
-                            className="absolute left-0 top-0 h-full bg-[#FF4800]/80 rounded transition-all duration-300"
-                            style={{ width: `${Math.min(100, Math.max(5, (px / 64) * 100))}%` }}
-                          />
-                          <span className="relative z-10 text-[10px] font-semibold text-white mix-blend-difference">
-                            {px / 8 === Math.floor(px / 8) ? `${px / 8} × 8pt` : `${px / 4} × 4pt`}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          );
-        })()}
 
         {/* TAB: LIVE SPECIMENS (COMPONENTS) */}
         {activeTab === "components" && (

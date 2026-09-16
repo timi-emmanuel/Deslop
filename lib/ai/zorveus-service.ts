@@ -28,7 +28,7 @@ export interface UserCreditSummary {
   externalUserId: string;
   availableBalance: string;
   currency: string;
-  creditMode: string;
+  creditMode?: string;
 }
 
 /**
@@ -47,13 +47,16 @@ export async function grantUserCredits(
     return { success: false, error: "Failed to initialize Zorveus service client" };
   }
 
+  const { appId } = getZorveusConfig();
+
   // Validate decimal string safety for financial amounts
   assertDecimalString(params.amount, "amount");
 
   try {
     const response = await client.productUsers.grantCreditByExternalId(
       {
-        external_user_id: params.externalUserId,
+        appId: appId || "deslop-default",
+        externalUserId: params.externalUserId,
         amount: params.amount,
         currency: params.currency || "USD",
         reason: params.reason || "purchased_credits",
@@ -66,7 +69,7 @@ export async function grantUserCredits(
 
     return {
       success: true,
-      grantId: response.credit_grant?.id,
+      grantId: response.credit_grant?.credit_grant_id,
     };
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : "Failed to grant credits";
@@ -85,17 +88,19 @@ export async function getUserCreditSummary(
 
   const client = getServiceClient();
   if (!client) return null;
+  const { appId } = getZorveusConfig();
 
   try {
     const summary = await client.productUsers.getCreditSummaryByExternalId({
-      external_user_id: externalUserId,
+      appId: appId || "deslop-default",
+      externalUserId: externalUserId,
     });
 
     return {
       externalUserId,
-      availableBalance: summary.available_balance,
+      availableBalance: summary.available_credits,
       currency: summary.currency,
-      creditMode: summary.credit_mode,
+      creditMode: "active",
     };
   } catch (err: unknown) {
     console.warn(`[Zorveus Service] Could not retrieve credit summary for ${externalUserId}:`, err);

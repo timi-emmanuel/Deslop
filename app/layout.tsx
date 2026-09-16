@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Plus_Jakarta_Sans, JetBrains_Mono, Instrument_Serif } from "next/font/google";
+import { Fredoka, JetBrains_Mono, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
-const jakarta = Plus_Jakarta_Sans({
+const fredoka = Fredoka({
   variable: "--font-sans",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const jetbrainsMono = JetBrains_Mono({
@@ -36,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}>
+    <html lang="en" className={`${fredoka.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}>
       <body className="min-h-screen bg-[#FAFAFA] text-[#0A0D14] font-sans selection:bg-[#FF4800] selection:text-white">
         {children}
       </body>
