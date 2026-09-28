@@ -147,7 +147,7 @@ export async function synthesizeWithZorveus(
   const colorSummary = colors
     .map(
       (c) =>
-        `- ${c.name}: ${c.hex} | Role: ${c.role} | WCAG: ${c.wcagRating} (${c.contrastRatio || c.contrastAgainstCanvas}:1 vs ${c.contrastTarget || "canvas"}) | Coverage: ${c.frequencyPercentage}%`
+        `- ${c.name}: ${c.hex}${c.hover ? ` (hover: ${c.hover})` : ""} | Role: ${c.role} | WCAG: ${c.wcagRating} (${c.contrastRatio || c.contrastAgainstCanvas}:1 vs ${c.contrastTarget || "canvas"}) | Usage: ${c.usageContext || c.role}`
     )
     .join("\n");
 
@@ -169,17 +169,21 @@ Geometry:
 
 ${customPrompt ? `Special User Directive: ${customPrompt}\n` : ""}
 
-CRITICAL GROUND-TRUTH CONSTRAINT:
-You MUST strictly use the exact hex codes provided above. NEVER invent, hallucinate, or alter hex codes.
+CRITICAL GROUND-TRUTH CONSTRAINTS:
+1. You MUST strictly use ONLY the exact color tokens provided above. NEVER invent, hallucinate, rename, duplicate, or alter hex codes.
+2. NEVER invent tokens that are not listed above (e.g. if --bg-surface is not in the list, cards share --bg-canvas; do not add multiple accent variants or unlisted swatches).
+3. If an interactive token has an explicit (hover: #HEX) listed above, use that exact hex for hover states.
 
 Generate an authoritative, production-grade \`design.md\` file that will be dropped into \`.cursorrules\` or Claude Code project instructions.
 
 Structure your output cleanly in Markdown:
 1. # [Domain] — Production Design System & AI Guidelines
 2. ## 1. Brand Visual Identity & Archetype (Identify what makes this site's design unique and disciplined)
-3. ## 2. Semantic Color Token Matrix (Locked hex codes with semantic roles: --bg-canvas, --bg-surface, --accent-primary, --text-primary, --keyline)
+3. ## 2. Semantic Color Token Matrix (Table and CSS variables block containing ONLY the exact tokens listed in the ground-truth above with their locked roles)
 4. ## 3. Anti-Slop Negative Constraints (5 strict "NEVER" rules tailored specifically to this brand)
-5. ## 4. Concrete Component Recipes (Exact Tailwind CSS class strings for Primary Button, Secondary Button, Card Container, Form Input, and Pill Tag. Always ensure text on buttons and tags has high WCAG contrast against the element fill background — for light accent fills use dark text, and for dark fills use light text).
+5. ## 4. Concrete Component Recipes (Exact Tailwind CSS class strings for Primary Button, Secondary Button, Card Container, Form Input, and Pill Tag.
+   - For Primary Button: use accent-primary (and its specified hover hex if present: hover:bg-[#HEX]).
+   - For Badges & Status Pills (e.g. Danger, Success): Always ensure high WCAG contrast. For saturated/dark fills (like red #EA3939 or green), ALWAYS use crisp white text text-[#FFFFFF]; NEVER use dark text on red).
 6. ## 5. Cursor / Claude Drop-In System Directive (A ready-to-paste prompt block for AI coding tools)
 
 Output ONLY the markdown content without preamble or conversational filler.`;

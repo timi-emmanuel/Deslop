@@ -1,266 +1,16 @@
 import {
   ExtractedDesignSystem,
   TypographySpec,
-} from "@/types/tokens";
-import { RawColorOccurence, synthesizeColorPalette } from "../synthesizer/color-clustering";
-import { synthesizeGeometry } from "../synthesizer/grid-quantizer";
-import { generateDesignMarkdown } from "../exporters/design-md";
-import { generateTailwindV4Theme } from "../exporters/tailwind-v4";
-
-/**
- * Pre-computed golden canons for instant, 100% verified design systems.
- */
-const CANONICAL_PRESETS: Record<string, Partial<ExtractedDesignSystem>> = {
-  "woblo.in": {
-    pageTitle: "Woblo: Extract Any Website's Design System, Colors & Fonts",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#FFFFFF", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 35, usageContext: "Base Page Canvas" },
-      { id: "c-2", name: "text-primary", hex: "#101013", role: "text-primary", contrastAgainstCanvas: 18.2, contrastRatio: 18.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 25, usageContext: "Primary Reading & Heading Text" },
-      { id: "c-3", name: "accent-primary", hex: "#0F7FFF", role: "accent-primary", contrastAgainstCanvas: 4.6, contrastRatio: 4.6, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 15, usageContext: "Primary Action CTA Button" },
-      { id: "c-4", name: "bg-surface", hex: "#DBE9FF", role: "surface", contrastAgainstCanvas: 1.25, contrastRatio: 14.5, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 10, usageContext: "Card & Modal Container Fill" },
-      { id: "c-5", name: "accent-hover", hex: "#6BA0EF", role: "accent-hover", contrastAgainstCanvas: 2.1, contrastRatio: 3.2, contrastTarget: "vs #FFFFFF text", wcagRating: "PASS", frequencyPercentage: 6, usageContext: "Primary Button Hover State" },
-      { id: "c-6", name: "accent-amber", hex: "#F5A524", role: "accent", contrastAgainstCanvas: 2.0, contrastRatio: 2.0, contrastTarget: "vs canvas", wcagRating: "PASS", frequencyPercentage: 4, usageContext: "Highlight Badge Fill" },
-      { id: "c-7", name: "accent-success", hex: "#4ADE80", role: "accent-success", contrastAgainstCanvas: 1.4, contrastRatio: 4.2, contrastTarget: "vs #101013 text", wcagRating: "PASS", frequencyPercentage: 3, usageContext: "Verification & Success Status" },
-      { id: "c-8", name: "accent-purple", hex: "#A78BFA", role: "accent", contrastAgainstCanvas: 2.3, contrastRatio: 2.3, contrastTarget: "vs canvas", wcagRating: "PASS", frequencyPercentage: 2, usageContext: "Secondary Decorative Accent" },
-    ],
-    typography: {
-      displayFamily: "Plus Jakarta Sans, system-ui, sans-serif",
-      bodyFamily: "Inter, system-ui, sans-serif",
-      monoFamily: "JetBrains Mono, monospace",
-      scaleName: "Major Second",
-      scaleRatio: 1.125,
-      steps: [
-        { name: "display", sizePx: 56, lineHeightPx: 64, letterSpacing: "-0.035em" },
-        { name: "h1", sizePx: 36, lineHeightPx: 44, letterSpacing: "-0.03em" },
-        { name: "h2", sizePx: 26, lineHeightPx: 34, letterSpacing: "-0.02em" },
-        { name: "body", sizePx: 15, lineHeightPx: 24, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 12, lineHeightPx: 18, letterSpacing: "0.01em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 12, 16, 24, 32, 48, 64],
-      radii: { controlPx: 2, cardPx: 8, pillPx: 9999 },
-      shadows: {
-        subtle: "0 1px 3px rgba(16, 24, 48, 0.08)",
-        elevated: "0 10px 24px rgba(16, 24, 48, 0.16)",
-        keyline: "0 0 0 1px rgba(0, 0, 0, 0.08)",
-      },
-    },
-  },
-  "linear.app": {
-    pageTitle: "Linear — A better way to build products",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#08090A", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 42, usageContext: "Dark Root Canvas" },
-      { id: "c-2", name: "bg-surface", hex: "#141518", role: "surface", contrastAgainstCanvas: 1.2, contrastRatio: 15.1, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 24, usageContext: "Card & Panel Container Fill" },
-      { id: "c-3", name: "accent-primary", hex: "#5E6AD2", role: "accent-primary", contrastAgainstCanvas: 4.8, contrastRatio: 4.8, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 8, usageContext: "Primary Action CTA Button" },
-      { id: "c-4", name: "text-primary", hex: "#F7F8F8", role: "text-primary", contrastAgainstCanvas: 18.2, contrastRatio: 18.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 16, usageContext: "High-Contrast Reading Text" },
-      { id: "c-5", name: "keyline", hex: "#222326", role: "keyline", contrastAgainstCanvas: 1.4, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 10, usageContext: "1px Subtle Structural Border" },
-    ],
-    typography: {
-      displayFamily: "Geist Sans, -apple-system, sans-serif",
-      bodyFamily: "Inter, sans-serif",
-      monoFamily: "JetBrains Mono, monospace",
-      scaleName: "Major Second",
-      scaleRatio: 1.125,
-      steps: [
-        { name: "display", sizePx: 64, lineHeightPx: 72, letterSpacing: "-0.035em" },
-        { name: "h1", sizePx: 40, lineHeightPx: 48, letterSpacing: "-0.03em" },
-        { name: "h2", sizePx: 28, lineHeightPx: 36, letterSpacing: "-0.025em" },
-        { name: "body", sizePx: 15, lineHeightPx: 24, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 12, lineHeightPx: 18, letterSpacing: "0.02em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 12, 16, 24, 32, 48, 64],
-      radii: { controlPx: 6, cardPx: 8, pillPx: 9999 },
-      shadows: {
-        subtle: "0 1px 3px rgba(0, 0, 0, 0.4)",
-        elevated: "0 12px 32px -8px rgba(0, 0, 0, 0.6)",
-        keyline: "0 0 0 1px #222326",
-      },
-    },
-  },
-  "stripe.com": {
-    pageTitle: "Stripe — Financial Infrastructure for the Internet",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#FFFFFF", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 32, usageContext: "Primary Light Page Canvas" },
-      { id: "c-2", name: "bg-surface", hex: "#F6F9FC", role: "surface", contrastAgainstCanvas: 1.05, contrastRatio: 14.1, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 20, usageContext: "Card, Form & Section Fill" },
-      { id: "c-3", name: "bg-canvas-dark", hex: "#0A2540", role: "surface-elevated", contrastAgainstCanvas: 14.8, contrastRatio: 14.8, contrastTarget: "Dark Hero & Code Canvas", wcagRating: "AAA", frequencyPercentage: 15, usageContext: "Midnight Navy Hero & Code Canvas" },
-      { id: "c-4", name: "text-primary", hex: "#0A2540", role: "text-primary", contrastAgainstCanvas: 14.8, contrastRatio: 14.8, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 22, usageContext: "Primary Reading Headlines & Titles" },
-      { id: "c-5", name: "text-secondary", hex: "#425466", role: "text-muted", contrastAgainstCanvas: 7.2, contrastRatio: 7.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 18, usageContext: "Signature Slate Body Paragraphs" },
-      { id: "c-6", name: "text-muted", hex: "#8898AA", role: "text-muted", contrastAgainstCanvas: 3.5, contrastRatio: 3.5, contrastTarget: "vs bg-canvas", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "Subtle Captions & Form Placeholders" },
-      { id: "c-7", name: "accent-primary", hex: "#635BFF", role: "accent-primary", contrastAgainstCanvas: 5.1, contrastRatio: 5.1, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 14, usageContext: "Primary Flagship CTA Button" },
-      { id: "c-8", name: "accent-cyan", hex: "#00D4FF", role: "accent", contrastAgainstCanvas: 8.4, contrastRatio: 8.4, contrastTarget: "vs #0A2540 canvas", wcagRating: "AAA", frequencyPercentage: 6, usageContext: "Cyan Interactive Gradient Accent" },
-      { id: "c-9", name: "accent-warning", hex: "#FF5A1F", role: "accent-danger", contrastAgainstCanvas: 3.4, contrastRatio: 3.4, contrastTarget: "vs #FFFFFF text", wcagRating: "PASS", frequencyPercentage: 4, usageContext: "Radar Alert & Destructive Orange" },
-      { id: "c-10", name: "accent-success", hex: "#00D924", role: "accent-success", contrastAgainstCanvas: 1.6, contrastRatio: 8.9, contrastTarget: "vs #0A2540 text", wcagRating: "AAA", frequencyPercentage: 4, usageContext: "Terminal & Payments Emerald Green" },
-      { id: "c-11", name: "accent-blue", hex: "#0048E5", role: "accent", contrastAgainstCanvas: 6.2, contrastRatio: 6.2, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 5, usageContext: "Connect & API Documentation Blue" },
-      { id: "c-12", name: "accent-lavender", hex: "#F0EFFF", role: "surface", contrastAgainstCanvas: 1.1, contrastRatio: 4.3, contrastTarget: "vs accent-primary", wcagRating: "PASS", frequencyPercentage: 6, usageContext: "Light Purple Badge & Hover Wash" },
-      { id: "c-13", name: "keyline", hex: "#E3E8EE", role: "keyline", contrastAgainstCanvas: 1.25, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 10, usageContext: "1px Subtle Structural Border" },
-    ],
-    typography: {
-      displayFamily: "Söhne Breit, -apple-system, sans-serif",
-      bodyFamily: "Söhne Text, sans-serif",
-      monoFamily: "SF Mono, monospace",
-      scaleName: "Minor Third",
-      scaleRatio: 1.2,
-      steps: [
-        { name: "display", sizePx: 68, lineHeightPx: 76, letterSpacing: "-0.03em" },
-        { name: "h1", sizePx: 44, lineHeightPx: 52, letterSpacing: "-0.025em" },
-        { name: "h2", sizePx: 32, lineHeightPx: 40, letterSpacing: "-0.02em" },
-        { name: "body", sizePx: 16, lineHeightPx: 26, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 13, lineHeightPx: 20, letterSpacing: "0.01em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 16, 24, 36, 48, 64],
-      radii: { controlPx: 8, cardPx: 12, pillPx: 9999 },
-      shadows: {
-        subtle: "0 2px 4px rgba(50, 50, 93, 0.1)",
-        elevated: "0 13px 27px -5px rgba(50, 50, 93, 0.25)",
-        keyline: "0 0 0 1px rgba(50, 50, 93, 0.15)",
-      },
-    },
-  },
-  "supabase.com": {
-    pageTitle: "Supabase — Build in a weekend. Scale to millions.",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#121212", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 40, usageContext: "Dark Neutral Canvas" },
-      { id: "c-2", name: "bg-surface", hex: "#1C1C1C", role: "surface", contrastAgainstCanvas: 1.3, contrastRatio: 14.8, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 22, usageContext: "Elevated Code Panel & Card Surface" },
-      { id: "c-3", name: "accent-primary", hex: "#3ECF8E", role: "accent-primary", contrastAgainstCanvas: 8.9, contrastRatio: 8.9, contrastTarget: "vs #121212 text", wcagRating: "AAA", frequencyPercentage: 12, usageContext: "Emerald Brand CTA Button" },
-      { id: "c-4", name: "text-primary", hex: "#EDEDED", role: "text-primary", contrastAgainstCanvas: 15.4, contrastRatio: 15.4, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 18, usageContext: "High-Contrast Code & Body Text" },
-      { id: "c-5", name: "keyline", hex: "#2E2E2E", role: "keyline", contrastAgainstCanvas: 1.6, contrastRatio: 3.2, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "1px Structural Keyline Divider" },
-    ],
-    typography: {
-      displayFamily: "Circular Sans, system-ui, sans-serif",
-      bodyFamily: "Inter, system-ui, sans-serif",
-      monoFamily: "JetBrains Mono, monospace",
-      scaleName: "Major Second",
-      scaleRatio: 1.125,
-      steps: [
-        { name: "display", sizePx: 60, lineHeightPx: 68, letterSpacing: "-0.03em" },
-        { name: "h1", sizePx: 38, lineHeightPx: 46, letterSpacing: "-0.025em" },
-        { name: "h2", sizePx: 28, lineHeightPx: 36, letterSpacing: "-0.02em" },
-        { name: "body", sizePx: 14, lineHeightPx: 22, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 12, lineHeightPx: 18, letterSpacing: "0.01em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 12, 16, 24, 32, 48, 64],
-      radii: { controlPx: 6, cardPx: 8, pillPx: 9999 },
-      shadows: {
-        subtle: "0 1px 3px rgba(0, 0, 0, 0.5)",
-        elevated: "0 10px 25px -5px rgba(0, 0, 0, 0.7)",
-        keyline: "0 0 0 1px #2E2E2E",
-      },
-    },
-  },
-  "raycast.com": {
-    pageTitle: "Raycast — Your shortcut to everything",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#0C0D0E", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 44, usageContext: "Dark Charcoal Launcher Canvas" },
-      { id: "c-2", name: "bg-surface", hex: "#1B1C1E", role: "surface", contrastAgainstCanvas: 1.25, contrastRatio: 15.0, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 22, usageContext: "Command Palette & Card Fill" },
-      { id: "c-3", name: "accent-primary", hex: "#FF6363", role: "accent-primary", contrastAgainstCanvas: 5.8, contrastRatio: 5.8, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 10, usageContext: "Coral Primary Action Button" },
-      { id: "c-4", name: "text-primary", hex: "#F2F3F5", role: "text-primary", contrastAgainstCanvas: 17.5, contrastRatio: 17.5, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 16, usageContext: "High-Contrast Query & Body Text" },
-      { id: "c-5", name: "keyline", hex: "#2B2D31", role: "keyline", contrastAgainstCanvas: 1.5, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "1px Window Stroke" },
-    ],
-    typography: {
-      displayFamily: "Inter Display, SF Pro Display, sans-serif",
-      bodyFamily: "Inter, SF Pro Text, sans-serif",
-      monoFamily: "SF Mono, JetBrains Mono, monospace",
-      scaleName: "Major Second",
-      scaleRatio: 1.125,
-      steps: [
-        { name: "display", sizePx: 64, lineHeightPx: 72, letterSpacing: "-0.035em" },
-        { name: "h1", sizePx: 40, lineHeightPx: 48, letterSpacing: "-0.03em" },
-        { name: "h2", sizePx: 28, lineHeightPx: 36, letterSpacing: "-0.02em" },
-        { name: "body", sizePx: 14, lineHeightPx: 22, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 11, lineHeightPx: 16, letterSpacing: "0.02em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 12, 16, 24, 32, 48, 64],
-      radii: { controlPx: 6, cardPx: 8, pillPx: 9999 },
-      shadows: {
-        subtle: "0 1px 2px rgba(0, 0, 0, 0.6)",
-        elevated: "0 14px 34px -8px rgba(0, 0, 0, 0.8)",
-        keyline: "0 0 0 1px #2B2D31",
-      },
-    },
-  },
-  "vercel.com": {
-    pageTitle: "Vercel — Build and ship the modern web",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#000000", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 45, usageContext: "True Pitch Black Canvas" },
-      { id: "c-2", name: "bg-surface", hex: "#0A0A0A", role: "surface", contrastAgainstCanvas: 1.1, contrastRatio: 16.2, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 20, usageContext: "Card & Deployment Container Fill" },
-      { id: "c-3", name: "accent-primary", hex: "#0070F3", role: "accent-primary", contrastAgainstCanvas: 4.9, contrastRatio: 4.9, contrastTarget: "vs #FFFFFF text", wcagRating: "AA", frequencyPercentage: 10, usageContext: "Geist Blue CTA Button" },
-      { id: "c-4", name: "text-primary", hex: "#EDEDED", role: "text-primary", contrastAgainstCanvas: 18.0, contrastRatio: 18.0, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 17, usageContext: "Primary Reading & Code Text" },
-      { id: "c-5", name: "keyline", hex: "#262626", role: "keyline", contrastAgainstCanvas: 1.5, contrastRatio: 3.1, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 8, usageContext: "1px Geometric Divider" },
-    ],
-    typography: {
-      displayFamily: "Geist Sans, -apple-system, sans-serif",
-      bodyFamily: "Geist Sans, sans-serif",
-      monoFamily: "Geist Mono, monospace",
-      scaleName: "Major Second",
-      scaleRatio: 1.125,
-      steps: [
-        { name: "display", sizePx: 64, lineHeightPx: 72, letterSpacing: "-0.04em" },
-        { name: "h1", sizePx: 42, lineHeightPx: 50, letterSpacing: "-0.03em" },
-        { name: "h2", sizePx: 30, lineHeightPx: 38, letterSpacing: "-0.02em" },
-        { name: "body", sizePx: 15, lineHeightPx: 24, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 12, lineHeightPx: 18, letterSpacing: "0.01em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 16, 24, 32, 48, 64],
-      radii: { controlPx: 6, cardPx: 8, pillPx: 9999 },
-      shadows: {
-        subtle: "0 1px 3px rgba(0, 0, 0, 0.5)",
-        elevated: "0 12px 30px rgba(0, 0, 0, 0.7)",
-        keyline: "0 0 0 1px #262626",
-      },
-    },
-  },
-  "tailwindcss.com": {
-    pageTitle: "Tailwind CSS — Rapidly build modern websites",
-    colors: [
-      { id: "c-1", name: "bg-canvas", hex: "#0F172A", role: "canvas", contrastAgainstCanvas: 1, contrastRatio: 1, contrastTarget: "base canvas layer", wcagRating: "BASE", frequencyPercentage: 40, usageContext: "Slate 900 Canvas" },
-      { id: "c-2", name: "bg-surface", hex: "#1E293B", role: "surface", contrastAgainstCanvas: 1.3, contrastRatio: 14.5, contrastTarget: "vs text-primary", wcagRating: "AAA", frequencyPercentage: 20, usageContext: "Slate 800 Code Card Container" },
-      { id: "c-3", name: "accent-primary", hex: "#38BDF8", role: "accent-primary", contrastAgainstCanvas: 9.8, contrastRatio: 9.8, contrastTarget: "vs #0F172A text", wcagRating: "AAA", frequencyPercentage: 12, usageContext: "Sky 400 Action Button" },
-      { id: "c-4", name: "text-primary", hex: "#F8FAFC", role: "text-primary", contrastAgainstCanvas: 17.2, contrastRatio: 17.2, contrastTarget: "vs bg-canvas", wcagRating: "AAA", frequencyPercentage: 18, usageContext: "Slate 50 High-Contrast Text" },
-      { id: "c-5", name: "keyline", hex: "#334155", role: "keyline", contrastAgainstCanvas: 1.7, contrastRatio: 3.3, contrastTarget: "vs canvas boundary", wcagRating: "PASS", frequencyPercentage: 10, usageContext: "Slate 700 Keyline Border" },
-    ],
-    typography: {
-      displayFamily: "Inter, system-ui, sans-serif",
-      bodyFamily: "Inter, system-ui, sans-serif",
-      monoFamily: "Fira Code, monospace",
-      scaleName: "Major Second",
-      scaleRatio: 1.125,
-      steps: [
-        { name: "display", sizePx: 60, lineHeightPx: 68, letterSpacing: "-0.03em" },
-        { name: "h1", sizePx: 38, lineHeightPx: 46, letterSpacing: "-0.025em" },
-        { name: "h2", sizePx: 28, lineHeightPx: 36, letterSpacing: "-0.02em" },
-        { name: "body", sizePx: 15, lineHeightPx: 24, letterSpacing: "-0.01em" },
-        { name: "caption", sizePx: 12, lineHeightPx: 18, letterSpacing: "0.01em" },
-      ],
-    },
-    geometry: {
-      baseGridPx: 8,
-      spacingRampPx: [4, 8, 12, 16, 24, 32, 48, 64],
-      radii: { controlPx: 8, cardPx: 12, pillPx: 9999 },
-      shadows: {
-        subtle: "0 1px 3px rgba(0, 0, 0, 0.4)",
-        elevated: "0 10px 25px rgba(0, 0, 0, 0.5)",
-        keyline: "0 0 0 1px #334155",
-      },
-    },
-  },
-};
+} from "../../types/tokens.ts";
+import {
+  synthesizeTokens,
+  convertSynthesizedToColorTokens,
+  RawColorObservation,
+  DomElementSample,
+} from "../synthesizer/token-synthesis.ts";
+import { synthesizeGeometry } from "../synthesizer/grid-quantizer.ts";
+import { generateDesignMarkdown } from "../exporters/design-md.ts";
+import { generateTailwindV4Theme } from "../exporters/tailwind-v4.ts";
 
 /**
  * Converts CSS rgb/rgba strings into standardized uppercase hex.
@@ -334,40 +84,7 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
   const parsedUrl = new URL(targetUrl);
   const domain = parsedUrl.hostname.replace(/^www\./, "").toLowerCase();
 
-  // 1. Check pre-calibrated canonical preset for instant 0ms responses
-  const canonicalKey = Object.keys(CANONICAL_PRESETS).find(
-    (key) => domain === key || domain.endsWith(`.${key}`) || domain.includes(key.split(".")[0])
-  );
-
-  if (canonicalKey && CANONICAL_PRESETS[canonicalKey]) {
-    const preset = CANONICAL_PRESETS[canonicalKey];
-    const colors = preset.colors!;
-    const typography = preset.typography!;
-    const geometry = preset.geometry!;
-
-    return {
-      id: `extract-${domain.replace(/[^a-z0-9]/g, "-")}`,
-      url: targetUrl,
-      domain,
-      pageTitle: preset.pageTitle || domain,
-      extractedAt: new Date().toISOString(),
-      colors,
-      typography,
-      geometry,
-      designMd: generateDesignMarkdown({ domain, colors, typography, geometry, url: targetUrl }),
-      tailwindCss: generateTailwindV4Theme({ colors, typography, geometry }),
-      diagnostics: {
-        timingMs: Math.max(80, Date.now() - startTime),
-        rawColorsScanned: 54,
-        tokensNormalized: colors.length,
-        rawPaddingsObserved: 32,
-        slopScore: 98,
-        warnings: [],
-      },
-    };
-  }
-
-  // 2. Live URL Extraction via HTTP fetch & CSS parsing
+  // Live URL Extraction via HTTP fetch & CSS parsing
   let html = "";
   let pageTitle = domain;
   let aggregatedCss = "";
@@ -431,87 +148,153 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
     .join("\n");
   const combinedPayload = `${html}\n${styleTags}\n${aggregatedCss}`;
 
-  // 3. Harvest Theme Variables & Colors
-  const colorMap = new Map<string, number>();
+  // 3. Harvest Theme Variables & Colors using Stage 3 Token Synthesis
+  const observationMap = new Map<string, RawColorObservation>();
 
-  // A. High-Priority Author Tokens from CSS Variables (e.g. shadcn/ui, Tailwind, CSS variables)
-  // Matches: --primary: 255 70% 90%; or --brand: #0F7FFF; or --accent: hsl(...);
-  const cssVarRegex = /--(primary|brand|accent|background|foreground|card|surface|canvas|text|destructive|secondary|ring)[a-zA-Z0-9-]*:\s*([^;}{]+)/gi;
+  const addObservation = (hex: string, element: DomElementSample, weight = 1) => {
+    const norm = hex.toUpperCase();
+    if (!observationMap.has(norm)) {
+      observationMap.set(norm, {
+        hex: norm,
+        occurrences: 0,
+        elements: [],
+      });
+    }
+    const obs = observationMap.get(norm)!;
+    obs.occurrences += weight;
+    if (obs.elements.length < 15) {
+      obs.elements.push(element);
+    }
+  };
+
+  // A. High-Priority Author Tokens from CSS Variables (shadcn/ui, Tailwind, design tokens)
+  const cssVarRegex = /--(primary|brand|accent|background|foreground|card|surface|canvas|text|destructive|danger|secondary|ring|border)[a-zA-Z0-9-]*:\s*([^;}{]+)/gi;
   let varMatch: RegExpExecArray | null;
   while ((varMatch = cssVarRegex.exec(combinedPayload)) !== null) {
+    const varName = varMatch[1].toLowerCase();
     const rawValue = varMatch[2].trim();
+    let hex: string | null = null;
 
-    // Check if HSL / shadcn raw channels (e.g. "255 70% 90%")
     const hslHex = parseHslToHex(rawValue);
     if (hslHex) {
-      colorMap.set(hslHex, (colorMap.get(hslHex) || 0) + 60);
-      continue;
+      hex = hslHex;
+    } else {
+      const rgbHex = parseRgbToHex(rawValue);
+      if (rgbHex) {
+        hex = rgbHex;
+      } else {
+        const hexMatch = rawValue.match(/#([0-9a-fA-F]{3,8})\b/);
+        if (hexMatch) {
+          hex = hexMatch[0].length === 4
+            ? `#${hexMatch[0][1]}${hexMatch[0][1]}${hexMatch[0][2]}${hexMatch[0][2]}${hexMatch[0][3]}${hexMatch[0][3]}`.toUpperCase()
+            : hexMatch[0].toUpperCase();
+        }
+      }
     }
 
-    // Check if RGB
-    const rgbHex = parseRgbToHex(rawValue);
-    if (rgbHex) {
-      colorMap.set(rgbHex, (colorMap.get(rgbHex) || 0) + 60);
-      continue;
-    }
-
-    // Check if hex
-    const hexMatch = rawValue.match(/#([0-9a-fA-F]{3,8})\b/);
-    if (hexMatch) {
-      const hex = hexMatch[0].length === 4
-        ? `#${hexMatch[0][1]}${hexMatch[0][1]}${hexMatch[0][2]}${hexMatch[0][2]}${hexMatch[0][3]}${hexMatch[0][3]}`.toUpperCase()
-        : hexMatch[0].toUpperCase();
-      colorMap.set(hex, (colorMap.get(hex) || 0) + 60);
-      continue;
-    }
-  }
-
-  // B. Standard Hex, RGB, and HSL occurrences throughout document
-  const hexMatches = combinedPayload.match(/#([0-9a-fA-F]{3,8})\b/g) || [];
-  const rgbMatches = combinedPayload.match(/rgba?\(\s*\d+\s*,\s*\d+\s*,\s*\d+[^)]*\)/gi) || [];
-  const hslMatches = combinedPayload.match(/hsla?\([^)]+\)/gi) || [];
-
-  for (const hex of hexMatches) {
-    if (hex.length === 4 || hex.length === 7) {
-      const normalized = hex.length === 4
-        ? `#${hex[1]}${hex[1]}${hex[2]}${hex[2]}${hex[3]}${hex[3]}`.toUpperCase()
-        : hex.toUpperCase();
-      colorMap.set(normalized, (colorMap.get(normalized) || 0) + 1);
-    }
-  }
-
-  for (const rgb of rgbMatches) {
-    const hex = parseRgbToHex(rgb);
     if (hex) {
-      colorMap.set(hex, (colorMap.get(hex) || 0) + 1);
+      let selector = "div";
+      let property = "background-color";
+
+      if (varName.includes("background") || varName.includes("canvas")) {
+        selector = "body";
+        property = "background-color";
+      } else if (varName.includes("surface") || varName.includes("card")) {
+        selector = "div.card";
+        property = "background-color";
+      } else if (varName.includes("foreground") || varName.includes("text")) {
+        selector = "p";
+        property = "color";
+      } else if (varName.includes("primary") || varName.includes("brand") || varName.includes("accent")) {
+        selector = "button.primary";
+        property = "background-color";
+      } else if (varName.includes("secondary")) {
+        selector = "button.secondary";
+        property = "background-color";
+      } else if (varName.includes("destructive") || varName.includes("danger")) {
+        selector = "div.alert.badge-danger";
+        property = "background-color";
+      } else if (varName.includes("border") || varName.includes("ring")) {
+        selector = "div.border";
+        property = "border-color";
+      }
+
+      addObservation(hex, { selector, property }, 40);
     }
   }
 
-  for (const hsl of hslMatches) {
-    const hex = parseHslToHex(hsl);
-    if (hex) {
-      colorMap.set(hex, (colorMap.get(hex) || 0) + 1);
+  // B. Comprehensive Property & Selector Scanning across HTML & CSS
+  const propHexRegex = /(background-color|background|color|border-color|border|outline-color|outline|fill|stroke)\s*:\s*([^;}{]*#[0-9a-fA-F]{3,8}[^;}{]*)/gi;
+  let propMatch: RegExpExecArray | null;
+  while ((propMatch = propHexRegex.exec(combinedPayload)) !== null) {
+    const propName = propMatch[1].toLowerCase();
+    const val = propMatch[2];
+    const hexes = val.match(/#[0-9a-fA-F]{3,8}\b/g) || [];
+    for (const h of hexes) {
+      const normProp =
+        propName.includes("border") ? "border-color" :
+        propName.includes("outline") ? "outline-color" :
+        propName.includes("background") ? "background-color" :
+        propName.includes("color") ? "color" : "decorative";
+
+      const startIdx = Math.max(0, propMatch.index - 120);
+      const pre = combinedPayload.slice(startIdx, propMatch.index);
+      const selMatch = pre.match(/([.#a-zA-Z0-9_\-: >+~]+)\s*\{[^}]*$/);
+      const selector = selMatch ? selMatch[1].trim().slice(-50) : "div";
+
+      addObservation(h, { selector, property: normProp }, 2);
     }
   }
 
-  // Fallback if site had 0 direct CSS matches (e.g. canvas/SVG rendered)
-  if (colorMap.size < 3) {
-    // Generate intelligent seeded palette based on domain string
+  // Also scan for rgb/rgba and hsl declarations
+  const propColorFuncRegex = /(background-color|background|color|border-color|border|outline-color|outline)\s*:\s*([^;}{]*(?:rgba?|hsla?)\([^)]+\)[^;}{]*)/gi;
+  let funcMatch: RegExpExecArray | null;
+  while ((funcMatch = propColorFuncRegex.exec(combinedPayload)) !== null) {
+    const propName = funcMatch[1].toLowerCase();
+    const val = funcMatch[2];
+    const colorFuncMatch = val.match(/(rgba?\([^)]+\)|hsla?\([^)]+\))/i);
+    if (colorFuncMatch) {
+      const hex = parseRgbToHex(colorFuncMatch[0]) || parseHslToHex(colorFuncMatch[0]);
+      if (hex) {
+        const normProp =
+          propName.includes("border") ? "border-color" :
+          propName.includes("outline") ? "outline-color" :
+          propName.includes("background") ? "background-color" : "color";
+
+        const startIdx = Math.max(0, funcMatch.index - 120);
+        const pre = combinedPayload.slice(startIdx, funcMatch.index);
+        const selMatch = pre.match(/([.#a-zA-Z0-9_\-: >+~]+)\s*\{[^}]*$/);
+        const selector = selMatch ? selMatch[1].trim().slice(-50) : "div";
+
+        addObservation(hex, { selector, property: normProp }, 2);
+      }
+    }
+  }
+
+  // C. Fallback for document-wide occurrences if rules were sparse
+  if (observationMap.size < 4) {
+    const hexMatches = combinedPayload.match(/#([0-9a-fA-F]{3,8})\b/g) || [];
+    for (const hex of hexMatches) {
+      addObservation(hex, { selector: "div", property: "background-color" }, 1);
+    }
+  }
+
+  // D. Fallback if site had 0 direct CSS matches
+  if (observationMap.size < 3) {
     const domainHash = domain.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
     const accentHue = domainHash % 360;
-    
-    colorMap.set("#0A0D14", 30);
-    colorMap.set("#FFFFFF", 25);
-    colorMap.set("#16181D", 15);
-    colorMap.set("#E2E4E9", 12);
-    colorMap.set(accentHue < 180 ? "#FF4800" : "#3B82F6", 10);
+    const fallbackAccent = accentHue < 180 ? "#FF4800" : "#3B82F6";
+
+    addObservation("#0A0D14", { selector: "p", property: "color" }, 25);
+    addObservation("#FFFFFF", { selector: "body", property: "background-color" }, 30);
+    addObservation("#16181D", { selector: "div.card", property: "background-color" }, 15);
+    addObservation("#E2E4E9", { selector: "div.border", property: "border-color" }, 12);
+    addObservation(fallbackAccent, { selector: "button.primary", property: "background-color" }, 10);
   }
 
-  const rawOccurences: RawColorOccurence[] = Array.from(colorMap.entries()).map(
-    ([hex, count]) => ({ hex, count })
-  );
-
-  const colors = synthesizeColorPalette(rawOccurences);
+  const rawObservations: RawColorObservation[] = Array.from(observationMap.values());
+  const synthesizedTokensOutput = synthesizeTokens(rawObservations);
+  const colors = convertSynthesizedToColorTokens(synthesizedTokensOutput);
 
   // 4. Harvest Fonts with Multi-Family and Display/Body Pairing
   const fontMatches = combinedPayload.match(/font-family:\s*([^;}{]+)/gi) || [];
@@ -632,13 +415,13 @@ export async function extractDesignSystem(targetUrl: string): Promise<ExtractedD
     tailwindCss,
     diagnostics: {
       timingMs: Date.now() - startTime,
-      rawColorsScanned: colorMap.size,
+      rawColorsScanned: observationMap.size,
       tokensNormalized: colors.length,
       rawPaddingsObserved: paddingMatches.length,
-      slopScore: Math.min(100, Math.max(85, 100 - (colorMap.size > 20 ? 8 : 0))),
+      slopScore: Math.min(100, Math.max(85, 100 - (observationMap.size > 20 ? 8 : 0))),
       warnings:
-        colorMap.size > 20
-          ? [`Scanned ${colorMap.size} raw color occurrences; clustered into ${colors.length} semantic roles`]
+        observationMap.size > 20
+          ? [`Scanned ${observationMap.size} raw color occurrences; synthesized into ${colors.length} disciplined semantic tokens`]
           : [],
     },
   };

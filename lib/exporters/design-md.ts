@@ -15,13 +15,15 @@ export function generateDesignMarkdown(params: {
 
   const colorRows = colors
     .map((c) => {
+      const hoverStr = c.hover ? ` (hover: \`${c.hover}\`)` : "";
       const targetStr = c.contrastTarget ? ` (${c.wcagRating}, ${c.contrastRatio || c.contrastAgainstCanvas}:1 ${c.contrastTarget})` : "";
       const usageStr = c.usageContext ? ` | ${c.usageContext}` : "";
-      return `- \`--${c.name}\`: \`${c.hex}\` // Role: ${c.role}${usageStr}${targetStr}`;
+      return `- \`--${c.name}\`: \`${c.hex}\`${hoverStr} // Role: ${c.role}${usageStr}${targetStr}`;
     })
     .join("\n");
 
   const spacingList = geometry.spacingRampPx.map((s) => `${s}px`).join(", ");
+  const hasSurface = colors.some((c) => c.name === "bg-surface");
 
   return `# ${domain} — Production Design System & AI Guidelines
 > Extracted from ${url} by Deslop.
@@ -35,10 +37,10 @@ ${colorRows}
 ### AI Color Rules:
 - NEVER invent unmapped hex codes outside this locked palette.
 - Use \`--bg-canvas\` exclusively for root body background.
-- Use \`--bg-surface\` for elevated card containers, panels, and modals.
+${hasSurface ? "- Use `--bg-surface` for elevated card containers, panels, and modals." : "- If no distinct surface token is declared, card containers share `--bg-canvas` with subtle stroke keylines."}
 - Use \`--accent-primary\` exclusively for primary CTA buttons and active focus indicators.
-- Use \`--accent-secondary\` for ghost controls and secondary action badges.
-- Use \`--accent-danger\` (if present) exclusively for destructive actions, error banners, and delete dialogs.
+- Use \`--accent-secondary\` (if declared) for secondary actions and links.
+- Use \`--accent-danger\` (if declared) exclusively for destructive actions and error states with crisp white text.
 - Use \`--text-primary\` for high-contrast reading text, headings, and data labels.
 - Forbid generic interchangeable accent usage: each accent has a locked semantic purpose.
 
