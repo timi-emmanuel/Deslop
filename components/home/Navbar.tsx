@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Crosshair, GithubLogo } from "@phosphor-icons/react";
+import { ArrowRight, Crosshair, GithubLogo, User, Clock } from "@phosphor-icons/react";
+import { useAuth } from "@/lib/auth/auth-context";
 
 export function Navbar() {
+  const { user } = useAuth();
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-keyline bg-canvas/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
@@ -29,9 +32,10 @@ export function Navbar() {
           <a href="#pricing" className="hover:text-ink transition-colors">
             Pricing
           </a>
-          <a href="#faq" className="hover:text-ink transition-colors">
-            FAQ
-          </a>
+          <Link href="/history" className="hover:text-ink transition-colors flex items-center gap-1">
+            <Clock size={13} />
+            <span>History</span>
+          </Link>
         </nav>
 
         {/* Actions */}
@@ -45,6 +49,23 @@ export function Navbar() {
             <GithubLogo size={14} weight="bold" />
             <span>Star</span>
           </a>
+
+          {user ? (
+            <Link
+              href="/history"
+              className="inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-3 text-xs font-medium text-ink cursor-pointer"
+            >
+              <User size={14} className="text-accent" />
+              <span className="max-w-[100px] truncate">{user.name || user.email.split("@")[0]}</span>
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2 py-1"
+            >
+              Sign In
+            </Link>
+          )}
 
           <Link
             href="/inspect"

@@ -24,6 +24,8 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
+import { AuthProvider } from "@/lib/auth/auth-context";
+
 export const metadata: Metadata = {
   title: "deslop",
   description:
@@ -38,7 +40,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fredoka.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}>
       <body className="min-h-screen bg-[#FAFAFA] text-[#0A0D14] font-sans selection:bg-[#FF4800] selection:text-white">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
