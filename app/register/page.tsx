@@ -84,7 +84,7 @@ function RegisterForm() {
                 Full Name
               </label>
               <div className="relative flex items-center">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-subtle">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-subtle pointer-events-none flex items-center justify-center">
                   <User size={16} />
                 </div>
                 <input
@@ -92,7 +92,8 @@ function RegisterForm() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Alex Rivera"
-                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-10 pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
+                  style={{ paddingLeft: "42px" }}
+                  className="input-with-icon w-full rounded-[8px] border border-keyline bg-canvas pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -102,7 +103,7 @@ function RegisterForm() {
                 Email Address
               </label>
               <div className="relative flex items-center">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-subtle">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-subtle pointer-events-none flex items-center justify-center">
                   <Envelope size={16} />
                 </div>
                 <input
@@ -111,7 +112,8 @@ function RegisterForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@company.com"
-                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-10 pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
+                  style={{ paddingLeft: "42px" }}
+                  className="input-with-icon w-full rounded-[8px] border border-keyline bg-canvas pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -121,7 +123,7 @@ function RegisterForm() {
                 Password (min 8 characters)
               </label>
               <div className="relative flex items-center">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-subtle">
+                <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-ink-subtle pointer-events-none flex items-center justify-center">
                   <Lock size={16} />
                 </div>
                 <input
@@ -131,7 +133,8 @@ function RegisterForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-10 pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
+                  style={{ paddingLeft: "42px" }}
+                  className="input-with-icon w-full rounded-[8px] border border-keyline bg-canvas pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
             </div>

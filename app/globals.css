@@ -1,4 +1,12 @@
 @import "tailwindcss";
+@source "../app";
+@source "../components";
+@source "../lib";
+
+/* Guaranteed left-padding for form inputs with icon prefixes */
+.input-with-icon {
+  padding-left: 42px !important;
+}
 
 :root {
   --color-canvas: #F5F2EB;
