@@ -217,6 +217,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             <span>Typography</span>
           </button>
 
+          {/* LIVE SPECIMENS TAB - COMMENTED OUT
           <button
             onClick={() => setActiveTab("components")}
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
@@ -228,6 +229,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
             <Browsers size={14} className={activeTab === "components" ? "text-accent" : ""} />
             <span>Live Specimens</span>
           </button>
+          */}
 
           <button
             onClick={() => setActiveTab("markdown")}
@@ -501,8 +503,8 @@ export function TokenTabs({ system }: TokenTabsProps) {
           </div>
         )}
 
-        {/* TAB: LIVE SPECIMENS (COMPONENTS) */}
-        {activeTab === "components" && (
+        {/* TAB: LIVE SPECIMENS (COMPONENTS) - DISABLED / COMMENTED OUT */}
+        {false && activeTab === "components" && (
           <div className="space-y-6">
             <div className="flex items-center justify-between text-xs text-ink-muted pb-2 border-b border-keyline">
               <span>Real computed component specimens styled with this site&apos;s exact tokens</span>
