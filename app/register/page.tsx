@@ -84,7 +84,7 @@ function RegisterForm() {
                 Full Name
               </label>
               <div className="relative flex items-center">
-                <div className="pl-3 text-ink-subtle pointer-events-none absolute left-0">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-subtle">
                   <User size={16} />
                 </div>
                 <input
@@ -92,7 +92,7 @@ function RegisterForm() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   placeholder="Alex Rivera"
-                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-9 pr-3.5 py-2 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
+                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-10 pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -102,7 +102,7 @@ function RegisterForm() {
                 Email Address
               </label>
               <div className="relative flex items-center">
-                <div className="pl-3 text-ink-subtle pointer-events-none absolute left-0">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-subtle">
                   <Envelope size={16} />
                 </div>
                 <input
@@ -111,7 +111,7 @@ function RegisterForm() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="alex@company.com"
-                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-9 pr-3.5 py-2 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
+                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-10 pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
             </div>
@@ -121,7 +121,7 @@ function RegisterForm() {
                 Password (min 8 characters)
               </label>
               <div className="relative flex items-center">
-                <div className="pl-3 text-ink-subtle pointer-events-none absolute left-0">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-ink-subtle">
                   <Lock size={16} />
                 </div>
                 <input
@@ -131,7 +131,7 @@ function RegisterForm() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-9 pr-3.5 py-2 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
+                  className="w-full rounded-[8px] border border-keyline bg-canvas pl-10 pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
             </div>
