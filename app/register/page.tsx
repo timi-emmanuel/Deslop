@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Crosshair, ArrowRight, Warning, Lock, Envelope, User } from "@phosphor-icons/react";
@@ -11,12 +11,18 @@ function RegisterForm() {
   const searchParams = useSearchParams();
   const redirectUrl = searchParams.get("redirect") || "/history";
 
-  const { register } = useAuth();
+  const { user, register, isLoading: authLoading } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push(redirectUrl);
+    }
+  }, [user, authLoading, redirectUrl, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

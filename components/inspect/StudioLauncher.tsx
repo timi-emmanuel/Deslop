@@ -14,7 +14,11 @@ import {
   TextAa,
   Ruler,
   FileCode,
+  User,
+  Clock,
+  SignOut,
 } from "@phosphor-icons/react";
+import { useAuth } from "@/lib/auth/auth-context";
 
 const QUICK_PRESETS = [
   { name: "Woblo", url: "https://woblo.in", accent: "#0F7FFF", font: "Plus Jakarta" },
@@ -27,6 +31,7 @@ const QUICK_PRESETS = [
 
 export function StudioLauncher() {
   const router = useRouter();
+  const { user, logout } = useAuth();
   const [inputUrl, setInputUrl] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,23 +53,55 @@ export function StudioLauncher() {
       <header className="border-b border-keyline bg-canvas/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Left: Branding */}
-          <div className="flex items-center gap-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-accent text-white shadow-xs">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-accent text-white shadow-xs transition-transform group-hover:scale-105">
               <Crosshair size={14} weight="bold" />
             </div>
             <span className="font-bold text-xs tracking-tight text-ink uppercase font-mono">
               Deslop Studio
             </span>
-          </div>
-
-          {/* Right: Return to Home */}
-          <Link
-            href="/"
-            className="flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
-          >
-            <ArrowLeft size={14} />
-            <span>Back to Home</span>
           </Link>
+
+          {/* Right: Navigation & Auth */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
+            >
+              <ArrowLeft size={14} />
+              <span className="hidden sm:inline">Back to Home</span>
+            </Link>
+
+            <Link
+              href="/history"
+              className="flex items-center gap-1.5 text-xs font-mono text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
+            >
+              <Clock size={13} />
+              <span>History</span>
+            </Link>
+
+            {user ? (
+              <div className="inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-2.5 text-xs font-medium text-ink">
+                <User size={14} className="text-accent" />
+                <span className="max-w-[100px] truncate">{user.name || user.email.split("@")[0]}</span>
+                <button
+                  type="button"
+                  onClick={() => logout()}
+                  title="Sign Out"
+                  className="ml-1 text-ink-muted hover:text-[#DC2626] transition-colors cursor-pointer"
+                >
+                  <SignOut size={13} />
+                </button>
+              </div>
+            ) : (
+              <Link
+                href="/login?redirect=/inspect"
+                className="inline-flex items-center btn-gloss-orange h-8 px-3 text-xs font-semibold cursor-pointer"
+              >
+                Sign In
+              </Link>
+            )}
+          </div>
         </div>
       </header>
 

@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Crosshair, GithubLogo, User, Clock } from "@phosphor-icons/react";
+import { ArrowRight, Crosshair, GithubLogo, User, Clock, SignOut } from "@phosphor-icons/react";
 import { useAuth } from "@/lib/auth/auth-context";
 
 export function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-keyline bg-canvas/90 backdrop-blur-md">
@@ -51,13 +51,20 @@ export function Navbar() {
           </a>
 
           {user ? (
-            <Link
-              href="/history"
-              className="inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-3 text-xs font-medium text-ink cursor-pointer"
-            >
-              <User size={14} className="text-accent" />
-              <span className="max-w-[100px] truncate">{user.name || user.email.split("@")[0]}</span>
-            </Link>
+            <div className="inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-2.5 text-xs font-medium text-ink">
+              <Link href="/history" className="flex items-center gap-1.5 hover:text-accent transition-colors" title="View scan history">
+                <User size={14} className="text-accent" />
+                <span className="max-w-[100px] truncate">{user.name || user.email.split("@")[0]}</span>
+              </Link>
+              <button
+                type="button"
+                onClick={() => logout()}
+                title="Sign Out"
+                className="ml-1 text-ink-muted hover:text-[#DC2626] transition-colors cursor-pointer"
+              >
+                <SignOut size={13} />
+              </button>
+            </div>
           ) : (
             <Link
               href="/login"

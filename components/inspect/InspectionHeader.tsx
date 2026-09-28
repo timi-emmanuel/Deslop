@@ -13,8 +13,12 @@ import {
   ShareNetwork,
   MagnifyingGlass,
   X,
+  User,
+  Clock,
+  SignOut,
 } from "@phosphor-icons/react";
 import { ExtractedDesignSystem, UserQuota } from "@/types/tokens";
+import { useAuth } from "@/lib/auth/auth-context";
 
 import { ExportModal } from "./ExportModal";
 
@@ -26,6 +30,7 @@ interface InspectionHeaderProps {
 
 export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHeaderProps) {
   const router = useRouter();
+  const { user, logout } = useAuth();
   const [copiedFormat, setCopiedFormat] = useState<string | null>(null);
   const [isExportOpen, setIsExportOpen] = useState<boolean>(false);
   const [isSwitchingUrl, setIsSwitchingUrl] = useState<boolean>(false);
@@ -159,6 +164,42 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
               <DownloadSimple size={14} weight="bold" />
               <span>Export Rules</span>
             </button>
+
+            {/* Auth Controls */}
+            <div className="h-4 w-px bg-keyline hidden sm:block" />
+
+            {user ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/history"
+                  className="hidden sm:inline-flex items-center gap-1 text-xs font-mono text-ink-muted hover:text-ink transition-colors px-2 py-1 rounded hover:bg-surface-sunken"
+                  title="View scan history"
+                >
+                  <Clock size={13} />
+                  <span>History</span>
+                </Link>
+
+                <div className="inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-2.5 text-xs font-medium text-ink">
+                  <User size={14} className="text-accent" />
+                  <span className="max-w-[80px] sm:max-w-[120px] truncate">{user.name || user.email.split("@")[0]}</span>
+                  <button
+                    type="button"
+                    onClick={() => logout()}
+                    title="Sign Out"
+                    className="ml-1 text-ink-muted hover:text-[#DC2626] transition-colors cursor-pointer"
+                  >
+                    <SignOut size={13} />
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link
+                href="/login"
+                className="text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2 py-1"
+              >
+                Sign In
+              </Link>
+            )}
           </div>
         </div>
       </header>
