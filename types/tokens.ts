@@ -14,10 +14,12 @@ export type SemanticColorRole =
   | "accent-secondary"
   | "accent-danger"
   | "accent-success"
+  | "accent-warning"
   | "accent-hover"
   | "accent-wash"
   | "text-primary"
   | "text-muted"
+  | "stroke"
   | "keyline"
   | "keyline-strong";
 
@@ -25,6 +27,7 @@ export interface ColorToken {
   id: string;
   name: string;
   hex: string;
+  hover?: string;
   oklch?: string;
   role: SemanticColorRole;
   contrastAgainstCanvas: number;
