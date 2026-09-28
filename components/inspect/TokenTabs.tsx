@@ -129,19 +129,19 @@ export function TokenTabs({ system }: TokenTabsProps) {
   };
 
   return (
-    <div className="rounded-[8px] border border-[#E2E4E9] bg-white shadow-keyline overflow-hidden">
+    <div className="rounded-[8px] border border-keyline bg-white shadow-keyline overflow-hidden">
       {/* Tab Navigation */}
-      <div className="flex items-center justify-between border-b border-[#E2E4E9] bg-[#FAFAFA] px-4 py-2 overflow-x-auto">
+      <div className="flex items-center justify-between border-b border-keyline bg-canvas px-4 py-2 overflow-x-auto">
         <div className="flex items-center gap-1">
           <button
             onClick={() => setActiveTab("colors")}
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "colors"
-                ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
+                ? "bg-white text-ink border border-keyline shadow-xs"
+                : "text-ink-muted hover:text-accent cursor-pointer"
             }`}
           >
-            <Palette size={14} className={activeTab === "colors" ? "text-[#FF4800]" : ""} />
+            <Palette size={14} className={activeTab === "colors" ? "text-accent" : ""} />
             <span>Colors ({system.colors.length})</span>
           </button>
 
@@ -149,11 +149,11 @@ export function TokenTabs({ system }: TokenTabsProps) {
             onClick={() => setActiveTab("typography")}
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "typography"
-                ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
+                ? "bg-white text-ink border border-keyline shadow-xs"
+                : "text-ink-muted hover:text-accent cursor-pointer"
             }`}
           >
-            <TextAa size={14} className={activeTab === "typography" ? "text-[#FF4800]" : ""} />
+            <TextAa size={14} className={activeTab === "typography" ? "text-accent" : ""} />
             <span>Typography</span>
           </button>
 
@@ -161,11 +161,11 @@ export function TokenTabs({ system }: TokenTabsProps) {
             onClick={() => setActiveTab("components")}
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "components"
-                ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
+                ? "bg-white text-ink border border-keyline shadow-xs"
+                : "text-ink-muted hover:text-accent cursor-pointer"
             }`}
           >
-            <Browsers size={14} className={activeTab === "components" ? "text-[#FF4800]" : ""} />
+            <Browsers size={14} className={activeTab === "components" ? "text-accent" : ""} />
             <span>Live Specimens</span>
           </button>
 
@@ -173,17 +173,17 @@ export function TokenTabs({ system }: TokenTabsProps) {
             onClick={() => setActiveTab("markdown")}
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "markdown"
-                ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
+                ? "bg-white text-ink border border-keyline shadow-xs"
+                : "text-ink-muted hover:text-accent cursor-pointer"
             }`}
           >
-            <Code size={14} className={activeTab === "markdown" ? "text-[#FF4800]" : ""} />
+            <Code size={14} className={activeTab === "markdown" ? "text-accent" : ""} />
             <span>design.md</span>
             {isSynthesizing && (
-              <span className="flex h-1.5 w-1.5 rounded-full bg-[#FF4800] animate-ping ml-0.5" title="AI synthesis running..." />
+              <span className="flex h-1.5 w-1.5 rounded-full bg-accent animate-ping ml-0.5" title="AI synthesis running..." />
             )}
             {synthesisBadge?.includes("ZORVEUS") && !isSynthesizing && (
-              <span className="text-[9px] font-bold text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-1 rounded ml-0.5">
+              <span className="text-[9px] font-bold text-pass bg-pass-wash border border-[#A7F3D0] px-1 rounded ml-0.5">
                 AI
               </span>
             )}
@@ -193,11 +193,11 @@ export function TokenTabs({ system }: TokenTabsProps) {
             onClick={() => setActiveTab("tailwind")}
             className={`flex items-center gap-1.5 rounded-[5px] px-3 py-1.5 font-mono text-xs font-semibold transition-all ${
               activeTab === "tailwind"
-                ? "bg-white text-[#0A0D14] border border-[#E2E4E9] shadow-xs"
-                : "text-[#525866] hover:text-[#FF4800] cursor-pointer"
+                ? "bg-white text-ink border border-keyline shadow-xs"
+                : "text-ink-muted hover:text-accent cursor-pointer"
             }`}
           >
-            <FileCode size={14} className={activeTab === "tailwind" ? "text-[#FF4800]" : ""} />
+            <FileCode size={14} className={activeTab === "tailwind" ? "text-accent" : ""} />
             <span>Tailwind v4</span>
           </button>
         </div>
@@ -217,7 +217,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
               {system.colors.map((c) => (
                 <div
                   key={c.id}
-                  className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-3 text-xs flex flex-col justify-between"
+                  className="rounded-[6px] border border-keyline bg-canvas p-3 text-xs flex flex-col justify-between"
                 >
                   <div>
                     <div
@@ -275,45 +275,45 @@ export function TokenTabs({ system }: TokenTabsProps) {
           <div className="space-y-6">
             {/* Font Stacks Overview */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">Display Stack</span>
+              <div className="rounded-[6px] border border-keyline bg-canvas p-4">
+                <span className="font-mono text-[10px] text-ink-subtle uppercase block">Display Stack</span>
                 <span
                   style={{ fontFamily: system.typography.displayFamily }}
-                  className="font-bold text-[#0A0D14] text-base mt-1 block truncate"
+                  className="font-bold text-ink text-base mt-1 block truncate"
                 >
                   {system.typography.displayFamily.split(",")[0].replace(/['"]/g, "")}
                 </span>
-                <span className="font-mono text-[10px] text-[#525866] mt-1 block truncate">
+                <span className="font-mono text-[10px] text-ink-muted mt-1 block truncate">
                   Full stack: {system.typography.displayFamily}
                 </span>
               </div>
 
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">Body Stack</span>
+              <div className="rounded-[6px] border border-keyline bg-canvas p-4">
+                <span className="font-mono text-[10px] text-ink-subtle uppercase block">Body Stack</span>
                 <span
                   style={{ fontFamily: system.typography.bodyFamily }}
-                  className="font-bold text-[#0A0D14] text-base mt-1 block truncate"
+                  className="font-bold text-ink text-base mt-1 block truncate"
                 >
                   {system.typography.bodyFamily.split(",")[0].replace(/['"]/g, "")}
                 </span>
-                <span className="font-mono text-[10px] text-[#525866] mt-1 block truncate">
+                <span className="font-mono text-[10px] text-ink-muted mt-1 block truncate">
                   Full stack: {system.typography.bodyFamily}
                 </span>
               </div>
 
-              <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-[10px] text-[#868C98] uppercase block">Modular Ratio</span>
-                <span className="font-bold text-[#0A0D14] text-base mt-1 block">
+              <div className="rounded-[6px] border border-keyline bg-canvas p-4">
+                <span className="font-mono text-[10px] text-ink-subtle uppercase block">Modular Ratio</span>
+                <span className="font-bold text-ink text-base mt-1 block">
                   {system.typography.scaleName}
                 </span>
-                <span className="font-mono text-[10px] text-[#525866] mt-1 block">
+                <span className="font-mono text-[10px] text-ink-muted mt-1 block">
                   Factor: {system.typography.scaleRatio}
                 </span>
               </div>
             </div>
 
             {/* Interactive Preview Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-[6px] border border-keyline bg-canvas">
               <span className="font-mono text-xs text-[#525866] shrink-0">
                 Interactive Specimen Test:
               </span>
@@ -408,19 +408,19 @@ export function TokenTabs({ system }: TokenTabsProps) {
             </div>
 
             {/* Glyphs & Character Set Specimen */}
-            <div className="rounded-[6px] border border-[#E2E4E9] bg-[#FAFAFA] p-4 space-y-2">
-              <span className="font-mono text-[10px] text-[#868C98] uppercase block">
+            <div className="rounded-[6px] border border-keyline bg-canvas p-4 space-y-2">
+              <span className="font-mono text-[10px] text-ink-subtle uppercase block">
                 Extracted Typeface Character Glyphs ({system.typography.displayFamily.split(",")[0].replace(/['"]/g, "")})
               </span>
               <div
                 style={{ fontFamily: system.typography.displayFamily, fontWeight: 700 }}
-                className="text-lg text-[#0A0D14] tracking-wider leading-relaxed select-all"
+                className="text-lg text-ink tracking-wider leading-relaxed select-all"
               >
                 A B C D E F G H I J K L M N O P Q R S T U V W X Y Z
               </div>
               <div
                 style={{ fontFamily: system.typography.displayFamily }}
-                className="text-base text-[#525866] tracking-wider leading-relaxed select-all"
+                className="text-base text-ink-muted tracking-wider leading-relaxed select-all"
               >
                 a b c d e f g h i j k l m n o p q r s t u v w x y z 0 1 2 3 4 5 6 7 8 9 ! @ # $ % &
               </div>
@@ -431,16 +431,16 @@ export function TokenTabs({ system }: TokenTabsProps) {
         {/* TAB: LIVE SPECIMENS (COMPONENTS) */}
         {activeTab === "components" && (
           <div className="space-y-6">
-            <div className="flex items-center justify-between text-xs text-[#525866] pb-2 border-b border-[#E2E4E9]">
+            <div className="flex items-center justify-between text-xs text-ink-muted pb-2 border-b border-keyline">
               <span>Real computed component specimens styled with this site&apos;s exact tokens</span>
-              <span className="font-mono text-[11px] text-[#059669]">
+              <span className="font-mono text-[11px] text-pass">
                 RADIUS: {system.geometry.radii.controlPx}px CONTROLS / {system.geometry.radii.cardPx}px CONTAINERS
               </span>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
               {/* Column 1: Action Controls */}
-              <div className="space-y-4 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
+              <div className="space-y-4 rounded-[8px] border border-keyline bg-canvas p-4">
                 <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block">
                   Buttons & Controls
                 </span>
@@ -502,8 +502,8 @@ export function TokenTabs({ system }: TokenTabsProps) {
               </div>
 
               {/* Column 2: Surface Card Specimen */}
-              <div className="space-y-4 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block">
+              <div className="space-y-4 rounded-[8px] border border-keyline bg-canvas p-4">
+                <span className="font-mono text-xs font-bold text-ink uppercase block">
                   Container Card
                 </span>
 
@@ -511,7 +511,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
                   style={{
                     backgroundColor: surfaceColor.hex,
                     borderRadius: `${system.geometry.radii.cardPx}px`,
-                    borderColor: "#E2E4E9",
+                    borderColor: "#E2DDD2",
                   }}
                   className="p-4 border shadow-xs space-y-3"
                 >
@@ -526,7 +526,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
                     >
                       LIVE SPECIMEN
                     </span>
-                    <span className="font-mono text-[10px] text-[#868C98]">
+                    <span className="font-mono text-[10px] text-ink-subtle">
                       {system.geometry.radii.cardPx}px card radius
                     </span>
                   </div>
@@ -542,22 +542,22 @@ export function TokenTabs({ system }: TokenTabsProps) {
                   </h4>
 
                   <p
-                    className="text-xs text-[#525866] leading-relaxed"
+                    className="text-xs text-ink-muted leading-relaxed"
                     style={{ fontFamily: system.typography.bodyFamily }}
                   >
                     Every padding and margin aligns strictly to the {system.geometry.baseGridPx}pt baseline grid.
                   </p>
 
-                  <div className="pt-2 border-t border-[#E2E4E9] flex items-center justify-between text-[11px] font-mono">
-                    <span className="text-[#868C98]">Accent: {primaryAccent.hex}</span>
-                    <span className="text-[#059669] font-semibold">100% Locked</span>
+                  <div className="pt-2 border-t border-keyline flex items-center justify-between text-[11px] font-mono">
+                    <span className="text-ink-subtle">Accent: {primaryAccent.hex}</span>
+                    <span className="text-pass font-semibold">100% Locked</span>
                   </div>
                 </div>
               </div>
 
               {/* Column 3: Badges, Status & Contrast Matrix */}
-              <div className="space-y-4 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA] p-4">
-                <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase block">
+              <div className="space-y-4 rounded-[8px] border border-keyline bg-canvas p-4">
+                <span className="font-mono text-xs font-bold text-ink uppercase block">
                   Pill Badges & Tags
                 </span>
 
@@ -606,22 +606,22 @@ export function TokenTabs({ system }: TokenTabsProps) {
         {activeTab === "markdown" && (
           <div className="space-y-3">
             {/* Zorveus AI Action Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA]">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-[8px] border border-keyline bg-canvas">
               <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-[#FFF1EB] border border-[#FFD6C7] text-[#FF4800]">
+                <span className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-accent-wash border border-accent-border text-accent">
                   <Sparkle size={13} weight="fill" />
                 </span>
                 <div className="flex items-center gap-2">
-                  <span className="font-mono text-xs font-bold text-[#0A0D14] uppercase">
+                  <span className="font-mono text-xs font-bold text-ink uppercase">
                     AI Design Compiler
                   </span>
                   {isSynthesizing ? (
-                    <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-[#FF4800] bg-[#FFF1EB] border border-[#FFD6C7] px-2 py-0.5 rounded font-medium">
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-mono text-accent bg-accent-wash border border-accent-border px-2 py-0.5 rounded font-medium">
                       <ArrowClockwise size={11} className="animate-spin" />
                       <span>Synthesizing in background...</span>
                     </span>
                   ) : synthesisBadge?.includes("ZORVEUS") ? (
-                    <span className="inline-flex items-center gap-1 text-[11px] font-mono text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-2 py-0.5 rounded font-bold">
+                    <span className="inline-flex items-center gap-1 text-[11px] font-mono text-pass bg-pass-wash border border-[#A7F3D0] px-2 py-0.5 rounded font-bold">
                       <CheckCircle size={11} weight="fill" />
                       <span>{synthesisBadge}</span>
                     </span>

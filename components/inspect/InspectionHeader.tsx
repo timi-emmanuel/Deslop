@@ -50,43 +50,43 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-[#E2E4E9] bg-white/95 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-keyline bg-canvas/90 backdrop-blur-md">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
           {/* Left: Return to Home & Target Info */}
           <div className="flex items-center gap-4">
             <Link
               href="/inspect"
-              className="flex items-center gap-1.5 text-xs font-medium text-[#525866] hover:text-[#0A0D14] transition-colors p-1.5 rounded-[4px] hover:bg-[#F4F4F6]"
+              className="flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors p-1.5 rounded-[4px] hover:bg-surface-sunken"
               title="Return to Studio Launcher"
             >
               <ArrowLeft size={15} />
               <span className="hidden sm:inline">Studio</span>
             </Link>
 
-            <div className="h-4 w-px bg-[#E2E4E9]" />
+            <div className="h-4 w-px bg-keyline" />
 
             {!isSwitchingUrl ? (
               <div className="flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-[#F4F4F6] border border-[#E2E4E9] text-[#0A0D14]">
+                <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-surface-sunken border border-keyline text-ink">
                   <Globe size={15} />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h1 className="font-bold text-sm text-[#0A0D14] tracking-tight">{system.domain}</h1>
-                    <span className="font-mono text-[10px] text-[#059669] bg-[#ECFDF5] border border-[#A7F3D0] px-1.5 py-0.5 rounded-[3px] font-semibold">
+                    <h1 className="font-bold text-sm text-ink tracking-tight">{system.domain}</h1>
+                    <span className="font-mono text-[10px] text-pass bg-pass-wash border border-[#A7F3D0] px-1.5 py-0.5 rounded-[3px] font-semibold">
                       {system.diagnostics.slopScore}% CALIBRATED
                     </span>
                     <button
                       type="button"
                       onClick={() => setIsSwitchingUrl(true)}
-                      className="ml-1 inline-flex items-center gap-1 text-[11px] font-mono text-[#525866] hover:text-[#FF4800] bg-[#F4F4F6] hover:bg-[#FFF1EB] px-2 py-0.5 rounded border border-[#E2E4E9] transition-colors cursor-pointer"
+                      className="ml-1 inline-flex items-center gap-1 text-[11px] font-mono text-ink-muted hover:text-accent bg-surface-sunken hover:bg-accent-wash px-2 py-0.5 rounded border border-keyline transition-colors cursor-pointer"
                       title="Inspect another website"
                     >
                       <MagnifyingGlass size={11} />
                       <span className="hidden md:inline">Switch URL</span>
                     </button>
                   </div>
-                  <p className="text-[11px] text-[#868C98] font-mono hidden sm:block truncate max-w-xs">
+                  <p className="text-[11px] text-ink-subtle font-mono hidden sm:block truncate max-w-xs">
                     {system.url}
                   </p>
                 </div>
@@ -99,7 +99,7 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
                   value={switchUrlInput}
                   onChange={(e) => setSwitchUrlInput(e.target.value)}
                   placeholder="Paste URL (e.g. woblo.in or stripe.com)"
-                  className="rounded-[6px] border border-[#FF4800] bg-white px-2.5 py-1 text-xs text-[#0A0D14] placeholder-[#868C98] font-mono focus:outline-none w-56 sm:w-72 shadow-xs"
+                  className="rounded-[6px] border border-accent bg-white px-2.5 py-1 text-xs text-ink placeholder-ink-subtle font-mono focus:outline-none w-56 sm:w-72 shadow-xs"
                 />
                 <button
                   type="submit"
@@ -110,7 +110,7 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
                 <button
                   type="button"
                   onClick={() => setIsSwitchingUrl(false)}
-                  className="text-[#868C98] hover:text-[#0A0D14] p-1 cursor-pointer"
+                  className="text-ink-subtle hover:text-ink p-1 cursor-pointer"
                 >
                   <X size={14} />
                 </button>
@@ -124,9 +124,9 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
             {quota && !quota.isPro && (
               <button
                 onClick={onOpenPaywall}
-                className="hidden md:flex items-center gap-1.5 font-mono text-[10px] border border-[#E2E4E9] bg-[#F4F4F6] px-2.5 py-1.5 rounded-[6px] text-[#525866] hover:border-[#FFD6C7] hover:text-[#FF4800] transition-colors cursor-pointer"
+                className="hidden md:flex items-center gap-1.5 font-mono text-[10px] border border-keyline bg-surface-sunken px-2.5 py-1.5 rounded-[6px] text-ink-muted hover:border-accent-border hover:text-accent transition-colors cursor-pointer"
               >
-                <Sparkle size={12} className="text-[#FF4800]" />
+                <Sparkle size={12} className="text-accent" />
                 <span>
                   {quota.remainingScans} of {quota.allowedScans} FREE SCANS LEFT
                 </span>

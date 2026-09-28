@@ -32,8 +32,8 @@ export function PaywallModal({ isOpen, onClose, onUnlockDemo }: PaywallModalProp
         </p>
 
         {/* Pro Benefits List */}
-        <div className="space-y-2.5 rounded-[8px] border border-[#E2E4E9] bg-[#FAFAFA] p-4 text-xs">
-          <div className="flex items-center gap-2.5 text-[#0A0D14] font-medium">
+        <div className="space-y-2.5 rounded-[8px] border border-keyline bg-canvas p-4 text-xs">
+          <div className="flex items-center gap-2.5 text-ink font-medium">
             <CheckCircle size={16} weight="fill" className="text-[#059669] shrink-0" />
             <span>Unlimited live website & SPA headless extractions</span>
           </div>

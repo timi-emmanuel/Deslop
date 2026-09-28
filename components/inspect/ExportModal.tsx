@@ -128,18 +128,18 @@ export function ExportModal({ isOpen, onClose, system }: ExportModalProps) {
                   onClick={() => setSelectedFormat("design-md")}
                   className={`flex items-start gap-2.5 rounded-[8px] border p-3 text-left transition-all ${
                     selectedFormat === "design-md"
-                      ? "border-[#FF4800] bg-[#FFF1EB] shadow-xs"
-                      : "border-[#E2E4E9] bg-[#FAFAFA] hover:bg-white"
+                      ? "border-accent bg-accent-wash shadow-xs"
+                      : "border-keyline bg-canvas hover:bg-white"
                   }`}
                 >
                   <FileText
                     size={18}
                     weight={selectedFormat === "design-md" ? "fill" : "regular"}
-                    className={selectedFormat === "design-md" ? "text-[#FF4800]" : "text-[#868C98]"}
+                    className={selectedFormat === "design-md" ? "text-accent" : "text-ink-subtle"}
                   />
                   <div>
-                    <div className="font-bold text-xs text-[#0A0D14]">design.md</div>
-                    <div className="text-[11px] text-[#525866] mt-0.5">Universal AI system rules</div>
+                    <div className="font-bold text-xs text-ink">design.md</div>
+                    <div className="text-[11px] text-ink-muted mt-0.5">Universal AI system rules</div>
                   </div>
                 </button>
 
@@ -148,18 +148,18 @@ export function ExportModal({ isOpen, onClose, system }: ExportModalProps) {
                   onClick={() => setSelectedFormat("cursorrules")}
                   className={`flex items-start gap-2.5 rounded-[8px] border p-3 text-left transition-all ${
                     selectedFormat === "cursorrules"
-                      ? "border-[#FF4800] bg-[#FFF1EB] shadow-xs"
-                      : "border-[#E2E4E9] bg-[#FAFAFA] hover:bg-white"
+                      ? "border-accent bg-accent-wash shadow-xs"
+                      : "border-keyline bg-canvas hover:bg-white"
                   }`}
                 >
                   <Sparkle
                     size={18}
                     weight={selectedFormat === "cursorrules" ? "fill" : "regular"}
-                    className={selectedFormat === "cursorrules" ? "text-[#FF4800]" : "text-[#868C98]"}
+                    className={selectedFormat === "cursorrules" ? "text-accent" : "text-ink-subtle"}
                   />
                   <div>
-                    <div className="font-bold text-xs text-[#0A0D14]">.cursorrules</div>
-                    <div className="text-[11px] text-[#525866] mt-0.5">Auto-loaded by Cursor IDE</div>
+                    <div className="font-bold text-xs text-ink">.cursorrules</div>
+                    <div className="text-[11px] text-ink-muted mt-0.5">Auto-loaded by Cursor IDE</div>
                   </div>
                 </button>
 
@@ -168,18 +168,18 @@ export function ExportModal({ isOpen, onClose, system }: ExportModalProps) {
                   onClick={() => setSelectedFormat("tailwind")}
                   className={`flex items-start gap-2.5 rounded-[8px] border p-3 text-left transition-all ${
                     selectedFormat === "tailwind"
-                      ? "border-[#FF4800] bg-[#FFF1EB] shadow-xs"
-                      : "border-[#E2E4E9] bg-[#FAFAFA] hover:bg-white"
+                      ? "border-accent bg-accent-wash shadow-xs"
+                      : "border-keyline bg-canvas hover:bg-white"
                   }`}
                 >
                   <FileCode
                     size={18}
                     weight={selectedFormat === "tailwind" ? "fill" : "regular"}
-                    className={selectedFormat === "tailwind" ? "text-[#FF4800]" : "text-[#868C98]"}
+                    className={selectedFormat === "tailwind" ? "text-accent" : "text-ink-subtle"}
                   />
                   <div>
-                    <div className="font-bold text-xs text-[#0A0D14]">Tailwind v4</div>
-                    <div className="text-[11px] text-[#525866] mt-0.5">CSS @theme tokens block</div>
+                    <div className="font-bold text-xs text-ink">Tailwind v4</div>
+                    <div className="text-[11px] text-ink-muted mt-0.5">CSS @theme tokens block</div>
                   </div>
                 </button>
 
@@ -188,14 +188,14 @@ export function ExportModal({ isOpen, onClose, system }: ExportModalProps) {
                   onClick={() => setSelectedFormat("json")}
                   className={`flex items-start gap-2.5 rounded-[8px] border p-3 text-left transition-all ${
                     selectedFormat === "json"
-                      ? "border-[#FF4800] bg-[#FFF1EB] shadow-xs"
-                      : "border-[#E2E4E9] bg-[#FAFAFA] hover:bg-white"
+                      ? "border-accent bg-accent-wash shadow-xs"
+                      : "border-keyline bg-canvas hover:bg-white"
                   }`}
                 >
                   <BracketsCurly
                     size={18}
                     weight={selectedFormat === "json" ? "fill" : "regular"}
-                    className={selectedFormat === "json" ? "text-[#FF4800]" : "text-[#868C98]"}
+                    className={selectedFormat === "json" ? "text-accent" : "text-ink-subtle"}
                   />
                   <div>
                     <div className="font-bold text-xs text-[#0A0D14]">JSON Tokens</div>

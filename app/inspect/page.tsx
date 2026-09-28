@@ -49,7 +49,7 @@ function InspectionStudioContent() {
 
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#0A0D14] flex flex-col">
+    <div className="min-h-screen bg-canvas text-ink flex flex-col">
       {system && (
         <InspectionHeader
           system={system}
@@ -62,16 +62,16 @@ function InspectionStudioContent() {
         {/* Loading State */}
         {isLoading && (
           <div className="flex flex-col items-center justify-center py-28 text-center">
-            <div className="flex h-12 w-12 items-center justify-center rounded-[8px] bg-[#FFF1EB] border border-[#FFD6C7] text-[#FF4800] mb-4 shadow-sm animate-pulse">
+            <div className="flex h-12 w-12 items-center justify-center rounded-[8px] bg-accent-wash border border-accent-border text-accent mb-4 shadow-sm animate-pulse">
               <Sparkle size={24} weight="fill" />
             </div>
-            <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#FF4800]">
+            <div className="font-mono text-xs font-bold uppercase tracking-wider text-accent">
               {loadingStep}
             </div>
-            <h2 className="text-xl font-bold text-[#0A0D14] mt-2">
+            <h2 className="text-xl font-bold text-ink mt-2">
               Analyzing and deslopping {rawUrl}
             </h2>
-            <p className="text-xs text-[#525866] mt-1 max-w-sm">
+            <p className="text-xs text-ink-muted mt-1 max-w-sm">
               Extracting real computed styles, deduplicating colors, and generating your AI constraints.
             </p>
           </div>
@@ -92,7 +92,7 @@ function InspectionStudioContent() {
               </button>
               <Link
                 href="/"
-                className="rounded-[6px] border border-[#E2E4E9] bg-white px-4 py-2 text-xs font-medium text-[#525866] hover:text-[#0A0D14]"
+                className="rounded-[6px] border border-keyline bg-white px-4 py-2 text-xs font-medium text-ink-muted hover:text-ink"
               >
                 Return Home
               </Link>
@@ -127,7 +127,7 @@ export default function InspectionPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-[#FAFAFA] flex items-center justify-center font-mono text-xs text-[#868C98]">
+        <div className="min-h-screen bg-canvas flex items-center justify-center font-mono text-xs text-ink-subtle">
           LOADING STUDIO...
         </div>
       }
