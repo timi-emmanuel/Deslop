@@ -11,7 +11,7 @@ import { FastifyInstance, FastifyPluginAsync } from "fastify";
  * - Any error or timeout: Unhealthy, stop sending traffic and trigger an auto-restart.
  */
 export const healthRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
-  app.get("/health", async (request, reply) => {
+  const handler = async (request: any, reply: any) => {
     return reply.status(200).send({
       status: "ok",
       service: "@deslop/api",
@@ -22,5 +22,8 @@ export const healthRoutes: FastifyPluginAsync = async (app: FastifyInstance) => 
         heapUsedMb: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
       },
     });
-  });
+  };
+
+  app.get("/health", handler);
+  app.get("/api/health", handler);
 };
