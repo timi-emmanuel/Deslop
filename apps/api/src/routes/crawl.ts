@@ -100,13 +100,21 @@ export const crawlRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
 
       const { url } = parseResult.data;
 
-      // 1. Establish SSE Connection Headers
-      reply.raw.writeHead(200, {
+      // 1. Establish SSE Connection Headers with explicit CORS support
+      const origin = request.headers.origin;
+      const sseHeaders: Record<string, string> = {
         "Content-Type": "text/event-stream; charset=utf-8",
         "Cache-Control": "no-cache, no-transform",
         "Connection": "keep-alive",
         "X-Accel-Buffering": "no", // Disables buffering on Nginx/Cloudflare
-      });
+      };
+
+      if (origin) {
+        sseHeaders["Access-Control-Allow-Origin"] = origin;
+        sseHeaders["Access-Control-Allow-Credentials"] = "true";
+      }
+
+      reply.raw.writeHead(200, sseHeaders);
 
       const sendEvent = (event: string, payload: unknown) => {
         if (!reply.raw.writableEnded) {

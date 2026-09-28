@@ -18,10 +18,18 @@ import { config } from "../config.js";
 export async function registerCors(app: FastifyInstance) {
   await app.register(fastifyCors, {
     origin: (origin, cb) => {
-      // Allow requests with no origin (like curl, mobile apps, or Postman)
+      // Allow requests with no origin (like curl, mobile apps, or server-to-server)
       if (!origin) return cb(null, true);
 
-      // Check if the requesting origin matches our allowed origins
+      // In development, automatically allow any localhost or 127.0.0.1 port (Next.js 3000/3001, Vite 5173, etc.)
+      if (
+        config.NODE_ENV === "development" &&
+        (/^https?:\/\/localhost(:\d+)?$/.test(origin) || /^https?:\/\/127\.0\.0\.1(:\d+)?$/.test(origin))
+      ) {
+        return cb(null, true);
+      }
+
+      // Check if the requesting origin matches our explicitly configured allowed origins
       const isAllowed = config.CORS_ORIGINS.some((allowed) => {
         return origin === allowed || allowed === "*";
       });
@@ -29,7 +37,8 @@ export async function registerCors(app: FastifyInstance) {
       if (isAllowed) {
         cb(null, true);
       } else {
-        cb(new Error(`CORS Error: Origin '${origin}' is not permitted.`), false);
+        // Calling cb(null, false) denies CORS cleanly without crashing the request with a 500
+        cb(null, false);
       }
     },
     credentials: true,
