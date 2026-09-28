@@ -41,28 +41,48 @@ export function TokenTabs({ system }: TokenTabsProps) {
 
   // Dynamic Web Font Loader: Injects Google Fonts into document head for extracted typefaces
   useEffect(() => {
+    // Fonts that are commercial/proprietary or system-bundled and definitely not on Google Fonts
+    const NON_GOOGLE_FONTS = new Set([
+      "sohne", "sohne-var", "sohne-mono", "circular", "gt america", "gt walsheim",
+      "sf pro", "sf pro display", "sf pro text", "new york",
+      "helvetica", "helvetica neue", "arial", "segoe ui", "proxima nova",
+      "avenir", "avenir next", "gotham", "gill sans", "optima", "calibri",
+      "cambria", "georgia", "times new roman", "times", "verdana", "tahoma",
+      "trebuchet ms", "impact", "futura", "din", "frutiger", "univers",
+      "cascadia code", "menlo", "consolas", "monaco", "geist", "geist mono",
+      "system-ui", "-apple-system", "sans-serif", "serif", "monospace", "inherit"
+    ]);
+
     const cleanFontName = (family: string) =>
       family ? family.split(",")[0].replace(/['"]/g, "").trim() : "";
     const display = cleanFontName(system.typography.displayFamily);
     const body = cleanFontName(system.typography.bodyFamily);
 
     const fontsToLoad = Array.from(new Set([display, body])).filter(
-      (f) => f && !["system-ui", "-apple-system", "sans-serif", "serif", "monospace", "inherit"].includes(f)
+      (f) => f && !NON_GOOGLE_FONTS.has(f.toLowerCase()) && !f.toLowerCase().includes("sohne")
     );
+
+    const linkId = `dynamic-google-font-${system.id}`;
+    const existingLink = document.getElementById(linkId) as HTMLLinkElement | null;
 
     if (fontsToLoad.length > 0 && typeof document !== "undefined") {
       const familyParams = fontsToLoad
         .map((f) => `family=${encodeURIComponent(f)}:ital,wght@0,400;0,600;0,700;0,800;1,400`)
         .join("&");
-      const linkId = `dynamic-google-font-${system.id}`;
-      let link = document.getElementById(linkId) as HTMLLinkElement;
+      let link = existingLink;
       if (!link) {
         link = document.createElement("link");
         link.id = linkId;
         link.rel = "stylesheet";
+        link.onerror = () => {
+          // If Google Fonts doesn't host this font, silently remove the link tag
+          link?.remove();
+        };
         document.head.appendChild(link);
       }
       link.href = `https://fonts.googleapis.com/css2?${familyParams}&display=swap`;
+    } else if (existingLink) {
+      existingLink.remove();
     }
   }, [system.id, system.typography.displayFamily, system.typography.bodyFamily]);
 
