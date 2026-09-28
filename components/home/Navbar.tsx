@@ -5,31 +5,31 @@ import { ArrowRight, Crosshair, GithubLogo } from "@phosphor-icons/react";
 
 export function Navbar() {
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-[#E2E4E9] bg-white/95 backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full border-b border-keyline bg-canvas/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-[#FF4800] text-white shadow-sm transition-transform group-hover:scale-105">
+          <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
             <Crosshair size={16} weight="bold" />
           </div>
-          <span className="font-bold text-base tracking-tight text-[#0A0D14]">deslop</span>
+          <span className="font-bold text-base tracking-tight text-ink">deslop</span>
         </Link>
 
         {/* Links */}
-        <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-[#525866]">
-          <a href="#how-it-works" className="hover:text-[#0A0D14] transition-colors">
+        <nav className="hidden md:flex items-center gap-8 text-xs font-medium text-ink-muted">
+          <a href="#how-it-works" className="hover:text-ink transition-colors">
             How it works
           </a>
-          <a href="#features" className="hover:text-[#0A0D14] transition-colors">
+          <a href="#features" className="hover:text-ink transition-colors">
             Features
           </a>
-          <a href="#presets" className="hover:text-[#0A0D14] transition-colors">
+          <a href="#presets" className="hover:text-ink transition-colors">
             Presets
           </a>
-          <a href="#pricing" className="hover:text-[#0A0D14] transition-colors">
+          <a href="#pricing" className="hover:text-ink transition-colors">
             Pricing
           </a>
-          <a href="#faq" className="hover:text-[#0A0D14] transition-colors">
+          <a href="#faq" className="hover:text-ink transition-colors">
             FAQ
           </a>
         </nav>

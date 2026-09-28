@@ -38,13 +38,13 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" className="py-24 border-b border-[#E2E4E9] bg-[#FAFAFA]">
+    <section id="faq" className="py-24 border-b border-keyline bg-canvas">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
         <div className="text-center mb-14">
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0A0D14]">
+          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-ink">
             Questions? Answers.
           </h2>
-          <p className="mt-3 text-sm text-[#525866]">
+          <p className="mt-3 text-sm text-ink-muted">
             Everything you need to know about Deslop and AI design system constraints.
           </p>
         </div>
@@ -56,24 +56,24 @@ export function Faq() {
             return (
               <div
                 key={idx}
-                className="rounded-[6px] border border-[#E2E4E9] bg-white shadow-xs overflow-hidden transition-all"
+                className="rounded-[6px] border border-keyline bg-white shadow-xs overflow-hidden transition-all"
               >
                 <button
                   type="button"
                   onClick={() => toggle(idx)}
-                  className="w-full flex items-center justify-between p-5 text-left font-bold text-sm sm:text-base text-[#0A0D14] hover:text-[#FF4800] transition-colors"
+                  className="w-full flex items-center justify-between p-5 text-left font-bold text-sm sm:text-base text-ink hover:text-accent transition-colors"
                 >
                   <span>{item.q}</span>
                   <CaretDown
                     size={16}
-                    className={`shrink-0 text-[#868C98] transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-[#FF4800]" : ""
+                    className={`shrink-0 text-ink-subtle transition-transform duration-200 ${
+                      isOpen ? "rotate-180 text-accent" : ""
                     }`}
                   />
                 </button>
 
                 {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#525866] leading-relaxed border-t border-[#F4F4F6]">
+                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-ink-muted leading-relaxed border-t border-surface-sunken">
                     {item.a}
                   </div>
                 )}

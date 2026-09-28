@@ -1,23 +1,23 @@
-import { Navbar } from "@/components/Navbar";
-import { Hero } from "@/components/Hero";
-import { SocialProof } from "@/components/SocialProof";
-import { FeatureMatrix } from "@/components/FeatureMatrix";
-import { HowItWorks } from "@/components/HowItWorks";
-import { TemplateGallery } from "@/components/TemplateGallery";
-import { Pricing } from "@/components/Pricing";
-import { Faq } from "@/components/Faq";
-import { TestimonialsAndCta } from "@/components/TestimonialsAndCta";
+import { Navbar } from "@/components/home/Navbar";
+import { Hero } from "@/components/home/Hero";
+import { SocialProof } from "@/components/home/SocialProof";
+import { FeatureMatrix } from "@/components/home/FeatureMatrix";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { TemplateGallery } from "@/components/home/TemplateGallery";
+import { Pricing } from "@/components/home/Pricing";
+import { Faq } from "@/components/home/Faq";
+import { TestimonialsAndCta } from "@/components/home/TestimonialsAndCta";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-white text-[#0A0D14] selection:bg-[#FF4800] selection:text-white">
+    <div className="min-h-screen bg-canvas text-ink selection:bg-accent selection:text-white">
       <Navbar />
       <main>
         <Hero />
         <SocialProof />
         <FeatureMatrix />
         <HowItWorks />
-        <TemplateGallery />
+        {/* <TemplateGallery /> */}
         {/* <Pricing /> */}
         <Faq />
         <TestimonialsAndCta />

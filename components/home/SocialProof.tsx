@@ -1,0 +1,71 @@
+"use client";
+
+interface SupportedTool {
+  name: string;
+  file: string;
+}
+
+const TOOLS: SupportedTool[] = [
+  { name: "Cursor", file: ".cursorrules" },
+  { name: "Claude Code", file: "CLAUDE.md" },
+  { name: "v0 System", file: "v0.dev" },
+  { name: "GitHub Copilot", file: "AGENTS.md" },
+  { name: "Windsurf", file: ".windsurfrules" },
+  { name: "Bolt.new", file: "prompt.md" },
+];
+
+export function SocialProof() {
+  return (
+    <section className="border-b border-keyline bg-canvas py-6 sm:py-8 overflow-hidden">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 lg:gap-8">
+          {/* Section Header Label with Status Indicator */}
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pass opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-pass" />
+            </span>
+            <span className="font-mono text-[11px] uppercase tracking-wider text-ink-subtle font-semibold">
+              TRUSTED FOR ZERO-SLOP PROMPT CONTEXT IN:
+            </span>
+          </div>
+
+          {/* Infinite Animated Marquee Ribbon */}
+          <div className="relative flex-1 overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_8%,black_92%,transparent_100%)]">
+            <div className="animate-marquee flex items-center gap-6 sm:gap-8 py-1">
+              {/* Set 1 */}
+              {TOOLS.map((tool) => (
+                <div
+                  key={`t1-${tool.name}`}
+                  className="group flex items-center gap-2 px-3 py-1.5 rounded-[8px] border border-keyline bg-white hover:border-accent transition-all duration-200 shadow-2xs hover:shadow-xs cursor-default select-none shrink-0"
+                >
+                  <span className="font-mono text-[10px] bg-surface-sunken border border-keyline group-hover:border-accent-border group-hover:bg-accent-wash group-hover:text-accent px-1.5 py-0.5 rounded text-ink-muted transition-colors font-semibold">
+                    {tool.file}
+                  </span>
+                  <span className="text-xs font-semibold text-ink group-hover:text-accent transition-colors">
+                    {tool.name}
+                  </span>
+                </div>
+              ))}
+
+              {/* Set 2 (for continuous loop) */}
+              {TOOLS.map((tool) => (
+                <div
+                  key={`t2-${tool.name}`}
+                  className="group flex items-center gap-2 px-3 py-1.5 rounded-[8px] border border-keyline bg-white hover:border-accent transition-all duration-200 shadow-2xs hover:shadow-xs cursor-default select-none shrink-0"
+                >
+                  <span className="font-mono text-[10px] bg-surface-sunken border border-keyline group-hover:border-accent-border group-hover:bg-accent-wash group-hover:text-accent px-1.5 py-0.5 rounded text-ink-muted transition-colors font-semibold">
+                    {tool.file}
+                  </span>
+                  <span className="text-xs font-semibold text-ink group-hover:text-accent transition-colors">
+                    {tool.name}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

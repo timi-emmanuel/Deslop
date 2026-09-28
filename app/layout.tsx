@@ -25,7 +25,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  title: "deslop — Precision Quality Control for AI Frontend Code",
+  title: "deslop",
   description:
     "Extract clean design systems and production-grade design.md files from any live URL. Eliminate AI hallucinations, random gradients, and generic slop.",
 };

@@ -1,26 +1,26 @@
 @import "tailwindcss";
 
 :root {
-  --color-canvas: #FAFAFA;
+  --color-canvas: #F5F2EB;
   --color-surface: #FFFFFF;
-  --color-surface-sunken: #F4F4F6;
-  --color-surface-muted: #ECEEF2;
+  --color-surface-sunken: #ECE7DE;
+  --color-surface-muted: #E3DDD2;
   
-  --color-ink: #0A0D14;
-  --color-ink-body: #343741;
-  --color-ink-muted: #525866;
-  --color-ink-subtle: #868C98;
+  --color-ink: #141413;
+  --color-ink-body: #363430;
+  --color-ink-muted: #5C5952;
+  --color-ink-subtle: #8A867D;
   
-  --color-keyline: #E2E4E9;
-  --color-keyline-subtle: #EDEFF3;
-  --color-keyline-strong: #CDD0D5;
+  --color-keyline: #E2DDD2;
+  --color-keyline-subtle: #ECE7DE;
+  --color-keyline-strong: #C9C2B4;
   
   /* Precision Safety Orange */
-  --color-accent: #FF4800;
-  --color-accent-hover: #E03E00;
-  --color-accent-active: #C43600;
-  --color-accent-wash: #FFF1EB;
-  --color-accent-border: #FFD6C7;
+  --color-accent: #e9551b;
+  --color-accent-hover: #d14b18;
+  --color-accent-active: #b74014;
+  --color-accent-wash: #FDF1EC;
+  --color-accent-border: #FCD8C7;
   
   /* Semantic */
   --color-pass: #059669;
@@ -34,7 +34,39 @@
   --radius-lg: 12px;
 }
 
-@theme inline {
+@theme {
+  --color-canvas: #F5F2EB;
+  --color-surface: #FFFFFF;
+  --color-surface-sunken: #ECE7DE;
+  --color-surface-muted: #E3DDD2;
+  
+  --color-ink: #141413;
+  --color-ink-body: #363430;
+  --color-ink-muted: #5C5952;
+  --color-ink-subtle: #8A867D;
+  
+  --color-keyline: #E2DDD2;
+  --color-keyline-subtle: #ECE7DE;
+  --color-keyline-strong: #C9C2B4;
+  
+  /* Precision Safety Orange */
+  --color-accent: #e9551b;
+  --color-accent-hover: #d14b18;
+  --color-accent-active: #b74014;
+  --color-accent-wash: #FDF1EC;
+  --color-accent-border: #FCD8C7;
+  
+  /* Semantic */
+  --color-pass: #059669;
+  --color-pass-wash: #ECFDF5;
+  --color-fail: #DC2626;
+  --color-fail-wash: #FEF2F2;
+
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
   --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, monospace;
 }
@@ -329,5 +361,26 @@ body {
 
 .animate-dock-bloom {
   animation: dock-bloom 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Infinite Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 26s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 

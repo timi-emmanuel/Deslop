@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
-import { DownloadSimple, ArrowRight, CheckCircle, SquaresFour } from "@phosphor-icons/react";
+import { ArrowRight } from "@phosphor-icons/react";
 
 interface Template {
   id: string;
@@ -65,16 +64,16 @@ const TEMPLATES: Template[] = [
 
 export function TemplateGallery() {
   return (
-    <section id="presets" className="py-24 border-b border-[#E2E4E9] bg-[#FAFAFA]">
+    <section id="presets" className="py-24 border-b border-keyline bg-canvas">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 pb-6 border-b border-[#E2E4E9]">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 pb-6 border-b border-keyline">
           <div>
-            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-[#0A0D14]">
+            <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-ink">
               Pre-calibrated token templates.
             </h2>
           </div>
-          <p className="text-xs text-[#868C98]">
+          <p className="text-xs text-ink-subtle">
             Verified for Cursor, Claude Code, and v0
           </p>
         </div>
@@ -84,17 +83,17 @@ export function TemplateGallery() {
           {TEMPLATES.map((tmpl) => (
             <div
               key={tmpl.id}
-              className="flex flex-col justify-between rounded-[8px] border border-[#E2E4E9] bg-white p-5 shadow-xs hover:border-[#CDD0D5] transition-all"
+              className="flex flex-col justify-between rounded-[8px] border border-keyline bg-white p-5 shadow-xs hover:border-keyline-strong transition-all"
             >
               <div>
                 {/* Category Pill + Token Count */}
-                <div className="flex items-center justify-between text-xs pb-3 mb-3 border-b border-[#E2E4E9]">
-                  <span className="font-semibold text-[#FF4800]">{tmpl.pill}</span>
-                  <span className="text-[#868C98] font-mono text-[11px]">{tmpl.specCount}</span>
+                <div className="flex items-center justify-between text-xs pb-3 mb-3 border-b border-keyline">
+                  <span className="font-semibold text-accent">{tmpl.pill}</span>
+                  <span className="text-ink-subtle font-mono text-[11px]">{tmpl.specCount}</span>
                 </div>
 
-                <h3 className="font-bold text-base text-[#0A0D14] tracking-tight">{tmpl.name}</h3>
-                <p className="mt-1 text-xs text-[#525866] leading-relaxed mb-4">{tmpl.desc}</p>
+                <h3 className="font-bold text-base text-ink tracking-tight">{tmpl.name}</h3>
+                <p className="mt-1 text-xs text-ink-muted leading-relaxed mb-4">{tmpl.desc}</p>
 
                 {/* Color Swatch Strip */}
                 <div className="flex items-center gap-1.5 mb-4">
@@ -109,7 +108,7 @@ export function TemplateGallery() {
                 </div>
 
                 {/* Font Spec */}
-                <div className="rounded-[4px] border border-[#E2E4E9] bg-[#F4F4F6] px-2.5 py-1.5 font-mono text-[11px] text-[#525866] mb-5">
+                <div className="rounded-[4px] border border-keyline bg-surface-sunken px-2.5 py-1.5 font-mono text-[11px] text-ink-muted mb-5">
                   {tmpl.font}
                 </div>
               </div>
