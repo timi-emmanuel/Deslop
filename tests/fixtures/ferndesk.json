@@ -1,0 +1,73 @@
+[
+  {
+    "hex": "#FFFFFF",
+    "occurrences": 20,
+    "elements": [
+      { "selector": "body", "property": "background-color" },
+      { "selector": "main.content-area", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#FAFAFA",
+    "occurrences": 6,
+    "elements": [
+      { "selector": "div.card", "property": "background-color", "hasTextChildren": false },
+      { "selector": "section.hero-banner", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#0F172A",
+    "occurrences": 18,
+    "elements": [
+      { "selector": "h1.page-heading", "property": "color" },
+      { "selector": "h2.section-heading", "property": "color" },
+      { "selector": "p.lead", "property": "color" }
+    ]
+  },
+  {
+    "hex": "#64748B",
+    "occurrences": 9,
+    "elements": [
+      { "selector": "p.caption", "property": "color" },
+      { "selector": "span.timestamp", "property": "color" }
+    ]
+  },
+  {
+    "hex": "#059669",
+    "occurrences": 7,
+    "elements": [
+      { "selector": "button.primary", "property": "background-color" },
+      { "selector": "a.cta-action", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#047857",
+    "occurrences": 5,
+    "elements": [
+      { "selector": "button.primary:hover", "property": "background-color" },
+      { "selector": "a.cta-action:hover", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#10B981",
+    "occurrences": 2,
+    "elements": [
+      { "selector": "button.secondary", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#E2E8F0",
+    "occurrences": 8,
+    "elements": [
+      { "selector": "div.border-wrap", "property": "border-color" },
+      { "selector": "table.data-table", "property": "border-color" }
+    ]
+  },
+  {
+    "hex": "#CBD5E1",
+    "occurrences": 3,
+    "elements": [
+      { "selector": "input.field", "property": "border-color" }
+    ]
+  }
+]

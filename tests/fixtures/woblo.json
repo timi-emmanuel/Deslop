@@ -1,0 +1,82 @@
+[
+  {
+    "hex": "#FFFFFF",
+    "occurrences": 15,
+    "elements": [
+      { "selector": "body", "property": "background-color" },
+      { "selector": "main", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#FFFFFF",
+    "occurrences": 8,
+    "elements": [
+      { "selector": "div.card", "property": "background-color", "hasTextChildren": false },
+      { "selector": "section.features", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#101013",
+    "occurrences": 12,
+    "elements": [
+      { "selector": "h1.hero-title", "property": "color" },
+      { "selector": "p.body-text", "property": "color" }
+    ]
+  },
+  {
+    "hex": "#6B6F76",
+    "occurrences": 6,
+    "elements": [
+      { "selector": "p.subtitle", "property": "color" },
+      { "selector": "span.meta", "property": "color" }
+    ]
+  },
+  {
+    "hex": "#F5A524",
+    "occurrences": 5,
+    "elements": [
+      { "selector": "button.primary", "property": "background-color" },
+      { "selector": "a.cta-btn", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#D98F1A",
+    "occurrences": 4,
+    "elements": [
+      { "selector": "button.primary:hover", "property": "background-color" },
+      { "selector": "a.cta-btn:hover", "property": "background-color" }
+    ]
+  },
+  {
+    "hex": "#2B6CB0",
+    "occurrences": 4,
+    "elements": [
+      { "selector": "button.secondary", "property": "background-color" },
+      { "selector": "a.nav-link", "property": "color" }
+    ]
+  },
+  {
+    "hex": "#1A4971",
+    "occurrences": 3,
+    "elements": [
+      { "selector": "button.secondary:hover", "property": "background-color" },
+      { "selector": "a.nav-link:hover", "property": "color" }
+    ]
+  },
+  {
+    "hex": "#6BA0EF",
+    "occurrences": 2,
+    "elements": [
+      { "selector": "button.secondary:focus", "property": "outline-color" },
+      { "selector": "a.nav-link:focus", "property": "outline-color" }
+    ]
+  },
+  {
+    "hex": "#DBE9FF",
+    "occurrences": 3,
+    "elements": [
+      { "selector": "div.card-border", "property": "border-color" },
+      { "selector": "input.text-input", "property": "border-color" }
+    ]
+  }
+]
