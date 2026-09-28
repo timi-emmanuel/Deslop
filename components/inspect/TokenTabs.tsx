@@ -39,43 +39,83 @@ export function TokenTabs({ system }: TokenTabsProps) {
     handleSynthesizeWithZorveus();
   }, [system.id]);
 
-  // Dynamic Web Font Loader: Injects Google Fonts into document head for extracted typefaces
+  // Dynamic Web Font Loader: Injects Google Fonts into document head ONLY for verified Google Fonts
   useEffect(() => {
-    // Fonts that are commercial/proprietary or system-bundled and definitely not on Google Fonts
-    const NON_GOOGLE_FONTS = new Set([
-      "sohne", "sohne-var", "sohne-mono", "circular", "gt america", "gt walsheim",
-      "sf pro", "sf pro display", "sf pro text", "new york",
-      "helvetica", "helvetica neue", "arial", "segoe ui", "proxima nova",
-      "avenir", "avenir next", "gotham", "gill sans", "optima", "calibri",
-      "cambria", "georgia", "times new roman", "times", "verdana", "tahoma",
-      "trebuchet ms", "impact", "futura", "din", "frutiger", "univers",
-      "cascadia code", "menlo", "consolas", "monaco", "geist", "geist mono",
-      "system-ui", "-apple-system", "sans-serif", "serif", "monospace", "inherit"
+    // Comprehensive allowlist of verified Google Fonts catalog
+    const KNOWN_GOOGLE_FONTS = new Set([
+      // Popular Sans-Serif
+      "inter", "roboto", "open sans", "montserrat", "lato", "poppins", "source sans pro",
+      "source sans 3", "raleway", "oswald", "ubuntu", "nunito", "nunito sans", "rubik",
+      "work sans", "pt sans", "noto sans", "dm sans", "plus jakarta sans", "outfit",
+      "manrope", "sora", "lexend", "archivo", "urbanist", "space grotesk", "syne",
+      "epilogue", "cabin", "karla", "quicksand", "figtree", "bricolage grotesque",
+      "albert sans", "instrument sans", "hanken grotesk", "red hat display", "red hat text",
+      "barlow", "barlow condensed", "barlow semi condensed", "titillium web", "fira sans",
+      "heebo", "asap", "overpass", "assistant", "mukta", "hind", "chivo",
+      "be vietnam pro", "public sans", "sen", "questrial", "mulish", "kanit", "teko",
+      "anton", "bebas neue", "libre franklin", "catamaran", "dosis", "exo 2", "exo",
+      "signika", "maven pro", "rajdhani", "abril fatface", "righteous", "prompt",
+      "arimo", "jost", "fresca", "comfortaa", "varela round", "alegreya sans",
+      "sarabun", "yanone kaffeesatz", "league spartan", "alata", "tenor sans",
+
+      // Popular Serif
+      "playfair display", "merriweather", "lora", "pt serif", "noto serif",
+      "libre baskerville", "source serif 4", "source serif pro", "cormorant garamond",
+      "cormorant", "eb garamond", "cinzel", "bitter", "crimson text", "crimson pro",
+      "arvo", "vollkorn", "domine", "faustina", "marcellus", "alegreya", "prata",
+      "dm serif display", "dm serif text", "baskervville", "bodoni moda", "spectral",
+      "playfair", "cardo", "tinos", "newsreader", "fraunces", "young serif", "castoro",
+      "besley", "gelasio", "rokkitt", "old standard tt",
+
+      // Monospace
+      "roboto mono", "space mono", "source code pro", "fira code", "fira mono",
+      "jetbrains mono", "inconsolata", "pt mono", "ibm plex mono", "cousine",
+      "vt323", "share tech mono", "anonymous pro", "nanum gothic coding", "courier prime",
+      "red hat mono", "syne mono", "chivo mono", "dm mono", "azeret mono",
+
+      // IBM Plex Family
+      "ibm plex sans", "ibm plex serif", "ibm plex sans condensed",
+
+      // Display & Handwriting
+      "syncopate", "audiowide", "orbitron", "press start 2p", "cinzel decorative",
+      "caveat", "pacifico", "shadows into light", "amatic sc", "sacramento",
+      "satisfy", "kalam", "dancing script", "great vibes", "alex brush",
+      "lobster", "lobster two", "permanent marker", "cookie", "yellowtail", "courgette",
+      "bungee", "bungee inline", "monoton", "shrikhand", "fredoka"
     ]);
 
-    const cleanFontName = (family: string) =>
-      family ? family.split(",")[0].replace(/['"]/g, "").trim() : "";
-    const display = cleanFontName(system.typography.displayFamily);
-    const body = cleanFontName(system.typography.bodyFamily);
+    const normalize = (family: string) =>
+      family ? family.split(",")[0].replace(/['"]/g, "").replace(/[-_]/g, " ").trim().toLowerCase() : "";
 
-    const fontsToLoad = Array.from(new Set([display, body])).filter(
-      (f) => f && !NON_GOOGLE_FONTS.has(f.toLowerCase()) && !f.toLowerCase().includes("sohne")
+    const displayNorm = normalize(system.typography.displayFamily);
+    const bodyNorm = normalize(system.typography.bodyFamily);
+
+    // Only load fonts that are actually confirmed to exist on Google Fonts
+    const fontsToLoad = Array.from(new Set([displayNorm, bodyNorm])).filter(
+      (f) => f && KNOWN_GOOGLE_FONTS.has(f)
     );
 
     const linkId = `dynamic-google-font-${system.id}`;
     const existingLink = document.getElementById(linkId) as HTMLLinkElement | null;
 
     if (fontsToLoad.length > 0 && typeof document !== "undefined") {
+      // Capitalize each word for proper Google Fonts URL format (e.g. "plus jakarta sans" -> "Plus+Jakarta+Sans")
       const familyParams = fontsToLoad
-        .map((f) => `family=${encodeURIComponent(f)}:ital,wght@0,400;0,600;0,700;0,800;1,400`)
+        .map((f) => {
+          const capitalized = f
+            .split(" ")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join("+");
+          return `family=${capitalized}:ital,wght@0,400;0,600;0,700;0,800;1,400`;
+        })
         .join("&");
+
       let link = existingLink;
       if (!link) {
         link = document.createElement("link");
         link.id = linkId;
         link.rel = "stylesheet";
         link.onerror = () => {
-          // If Google Fonts doesn't host this font, silently remove the link tag
           link?.remove();
         };
         document.head.appendChild(link);
