@@ -273,15 +273,28 @@ export function TokenTabs({ system }: TokenTabsProps) {
               <span className="font-mono text-[11px]">WCAG 2.1 AAA/AA AUDITED</span>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* Dynamic Grid: If 3 or fewer colors, expand columns to fill the full container width */}
+            <div
+              className={`grid gap-3 ${
+                system.colors.length === 1
+                  ? "grid-cols-1"
+                  : system.colors.length === 2
+                  ? "grid-cols-1 sm:grid-cols-2"
+                  : system.colors.length === 3
+                  ? "grid-cols-1 sm:grid-cols-3"
+                  : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4"
+              }`}
+            >
               {system.colors.map((c) => (
                 <div
                   key={c.id}
-                  className="rounded-[6px] border border-keyline bg-canvas p-3 text-xs flex flex-col justify-between"
+                  className="rounded-[6px] border border-keyline bg-canvas p-3 text-xs flex flex-col justify-between hover:border-accent-border transition-colors"
                 >
                   <div>
                     <div
-                      className="h-12 w-full rounded-[4px] border border-black/10 shadow-inner mb-3 cursor-pointer group relative"
+                      className={`${
+                        system.colors.length <= 3 ? "h-16 sm:h-20" : "h-12"
+                      } w-full rounded-[4px] border border-black/10 shadow-inner mb-3 cursor-pointer group relative transition-transform hover:scale-[1.01]`}
                       style={{ backgroundColor: c.hex }}
                       onClick={() => copyToClipboard(c.hex, c.id)}
                       title="Click to copy hex"
