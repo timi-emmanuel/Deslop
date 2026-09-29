@@ -73,18 +73,13 @@ function RegisterForm() {
         <CrosshairFrame>
           <div className="w-full rounded-[18px] border border-keyline bg-white shadow-keyline overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch relative">
             
-            {/* High-Precision Vertical Dotted Line Divider (Desktop) */}
+            {/* Vertical Dashed Line Divider (Desktop) */}
             <div
-              className="hidden lg:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[2px] pointer-events-none z-10"
-              style={{
-                backgroundImage: "radial-gradient(circle, #8A867D 1.25px, transparent 1.25px)",
-                backgroundSize: "2px 10px",
-                backgroundRepeat: "repeat-y",
-              }}
+              className="hidden lg:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-0 border-r border-dashed border-keyline-strong pointer-events-none z-10"
             />
 
             {/* Left Column: 4-Character Illustration Stage */}
-            <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col items-center justify-center bg-canvas/35 relative border-b lg:border-b-0 border-dotted border-keyline-strong">
+            <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col items-center justify-center bg-canvas/35 relative border-b lg:border-b-0 border-dashed border-keyline-strong">
               <PeekingMascot
                 isEmailFocused={isTextFocused}
                 emailLength={textLength}
