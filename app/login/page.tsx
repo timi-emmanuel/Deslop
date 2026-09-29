@@ -80,29 +80,8 @@ function LoginForm() {
               }}
             />
 
-            {/* Left Column: 4-Guardian Illustration Stage */}
-            <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-canvas/35 relative border-b lg:border-b-0 border-dotted border-keyline-strong">
-              {/* Header */}
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-ink-subtle flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    Anti-Slop Security Crew
-                  </span>
-                  <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface-sunken text-ink-muted border border-keyline">
-                    4 Guardians
-                  </span>
-                </div>
-              <h2 className="text-lg font-bold text-ink mt-2 tracking-tight">
-                Watchful token sentinels
-              </h2>
-              <p className="text-xs text-ink-muted mt-1 leading-relaxed">
-                Four animated guardians who peep when you type, look away to keep passwords private, and sneak a look when revealed.
-              </p>
-            </div>
-
-            {/* Center 4-Mascot Stage */}
-            <div className="my-4 py-2 flex items-center justify-center">
+            {/* Left Column: 4-Character Illustration Stage */}
+            <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col items-center justify-center bg-canvas/35 relative border-b lg:border-b-0 border-dotted border-keyline-strong">
               <PeekingMascot
                 isEmailFocused={isEmailFocused}
                 emailLength={email.length}
@@ -112,31 +91,6 @@ function LoginForm() {
                 isError={!!error}
               />
             </div>
-
-            {/* Bottom Crew Roster */}
-            <div className="pt-4 border-t border-keyline/70 grid grid-cols-4 gap-2 text-center">
-              <div className="flex flex-col items-center">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#f0642f] border border-white shadow-xs" />
-                <span className="text-[10px] font-semibold text-ink mt-1">Lead</span>
-                <span className="text-[9px] text-ink-subtle">Covers eyes</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#2c2925] border border-white shadow-xs" />
-                <span className="text-[10px] font-semibold text-ink mt-1">Shy</span>
-                <span className="text-[9px] text-ink-subtle">Turns around</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#ECE6DC] border border-[#2c2925] shadow-xs" />
-                <span className="text-[10px] font-semibold text-ink mt-1">Whistler</span>
-                <span className="text-[9px] text-ink-subtle">Looks up ♪</span>
-              </div>
-              <div className="flex flex-col items-center">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#f59569] border border-white shadow-xs" />
-                <span className="text-[10px] font-semibold text-ink mt-1">Peeker</span>
-                <span className="text-[9px] text-ink-subtle">Winks & peeks</span>
-              </div>
-            </div>
-          </div>
 
           {/* Right Column: Authentication Form */}
           <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-center bg-white">

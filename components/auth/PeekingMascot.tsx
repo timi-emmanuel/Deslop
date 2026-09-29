@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 
 interface PeekingMascotProps {
   isEmailFocused: boolean;
@@ -57,52 +57,8 @@ export function PeekingMascot({
   const isCovered = isPasswordFocused && !showPassword;
   const isPeeking = isPasswordFocused && showPassword;
 
-  // Status banner information
-  let badgeText = "The 4 Guardians • Standing by";
-  let badgeBg = "bg-canvas border-keyline text-ink-muted";
-  let dotColor = "bg-emerald-500";
-
-  if (isSubmitting) {
-    badgeText = "Verifying credentials...";
-    badgeBg = "bg-amber-50 border-amber-200 text-amber-900";
-    dotColor = "bg-amber-500 animate-ping";
-  } else if (isError) {
-    badgeText = "Credentials didn't match!";
-    badgeBg = "bg-rose-50 border-rose-200 text-rose-900";
-    dotColor = "bg-rose-500";
-  } else if (isCovered) {
-    badgeText = "Password hidden • All 4 looking away!";
-    badgeBg = "bg-slate-100 border-slate-300 text-slate-800";
-    dotColor = "bg-slate-400";
-  } else if (isPeeking) {
-    badgeText = "Password visible • Sneak peek activated!";
-    badgeBg = "bg-accent-wash border-accent-border text-accent-hover";
-    dotColor = "bg-accent animate-pulse";
-  } else if (isEmailFocused) {
-    badgeText = emailLength > 0 ? "Tracking identifier..." : "Focused on identifier";
-    badgeBg = "bg-emerald-50 border-emerald-200 text-emerald-900";
-    dotColor = "bg-emerald-500 animate-pulse";
-  }
-
   return (
     <div className="w-full flex flex-col items-center select-none">
-      {/* Dynamic Status Pill */}
-      <div className="mb-4">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={badgeText}
-            initial={{ opacity: 0, y: -4, scale: 0.96 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 4, scale: 0.96 }}
-            transition={{ duration: 0.18 }}
-            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full border text-[11px] font-mono font-medium shadow-xs transition-colors ${badgeBg}`}
-          >
-            <span className={`w-2 h-2 rounded-full ${dotColor}`} />
-            <span>{badgeText}</span>
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
       {/* SVG Stage with 4 Characters */}
       <div className="relative w-full max-w-[420px] aspect-[16/11] flex items-center justify-center">
         {/* Soft atmospheric backlight */}
