@@ -1,6 +1,7 @@
 "use client";
 
 import { Globe, SlidersHorizontal, FileCode } from "@phosphor-icons/react";
+import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 const STEPS = [
   {
@@ -56,36 +57,35 @@ export function HowItWorks() {
           {STEPS.map((s) => {
             const Icon = s.icon;
             return (
-              <div
-                key={s.step}
-                className="rounded-[12px] border border-keyline bg-white p-6 flex flex-col justify-between shadow-2xs hover:border-keyline-strong hover:shadow-xs transition-all"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-xs font-bold text-accent bg-accent-wash border border-accent-border px-2 py-0.5 rounded">
-                      STEP {s.step}
-                    </span>
-                    <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-white border border-keyline text-ink-muted">
-                      <Icon size={16} weight="bold" className="text-accent" />
+              <CrosshairCard key={s.step} size="sm" className="h-full">
+                <div className="rounded-[12px] border border-keyline bg-white p-6 flex flex-col justify-between shadow-2xs hover:border-keyline-strong hover:shadow-xs transition-all h-full">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-mono text-xs font-bold text-accent bg-accent-wash border border-accent-border px-2 py-0.5 rounded">
+                        STEP {s.step}
+                      </span>
+                      <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-white border border-keyline text-ink-muted">
+                        <Icon size={16} weight="bold" className="text-accent" />
+                      </div>
                     </div>
+
+                    <h3 className="text-lg font-bold text-ink tracking-tight mb-2">
+                      {s.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
+                      {s.description}
+                    </p>
                   </div>
 
-                  <h3 className="text-lg font-bold text-ink tracking-tight mb-2">
-                    {s.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-ink-muted leading-relaxed">
-                    {s.description}
-                  </p>
+                  <div className="mt-6 pt-4 border-t border-keyline flex items-center justify-between font-mono text-[11px]">
+                    <span className="text-ink-subtle truncate max-w-[160px]">
+                      {s.spec}
+                    </span>
+                    <span className="text-ink font-semibold">{s.highlight}</span>
+                  </div>
                 </div>
-
-                <div className="mt-6 pt-4 border-t border-keyline flex items-center justify-between font-mono text-[11px]">
-                  <span className="text-ink-subtle truncate max-w-[160px]">
-                    {s.spec}
-                  </span>
-                  <span className="text-ink font-semibold">{s.highlight}</span>
-                </div>
-              </div>
+              </CrosshairCard>
             );
           })}
         </div>

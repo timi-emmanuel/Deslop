@@ -2,6 +2,7 @@
 
 import { ArrowRight, Crosshair, CheckCircle, GithubLogo } from "@phosphor-icons/react";
 import Link from "next/link";
+import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 export function TestimonialsAndCta() {
   return (
@@ -9,7 +10,8 @@ export function TestimonialsAndCta() {
       {/* High-Impact Light Mode CTA with Multiplayer Cursors */}
       <section className="relative py-24 border-b border-keyline bg-canvas bg-drafting-grid overflow-hidden">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
-          <div className="relative rounded-[16px] border border-keyline bg-white p-8 sm:p-16 shadow-keyline overflow-hidden">
+          <CrosshairCard size="md">
+            <div className="relative rounded-[16px] border border-keyline bg-white p-8 sm:p-16 shadow-keyline overflow-hidden">
             {/* Multiplayer Cursor 1: Frontend Dev */}
             <div
               aria-hidden="true"
@@ -124,8 +126,9 @@ export function TestimonialsAndCta() {
               </span>
             </div>
           </div>
-        </div>
-      </section>
+        </CrosshairCard>
+      </div>
+    </section>
 
       {/* Clean Technical Footer */}
       <footer className="bg-canvas border-t border-keyline py-10">

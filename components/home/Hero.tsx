@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Globe } from "@phosphor-icons/react";
+import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 const TARGET_TOOLS = ["Cursor", "Claude", "Tailwind", "shadcn"];
 
@@ -81,32 +82,34 @@ export function Hero() {
           </p>
 
           {/* Primary URL Input Form */}
-          <form
-            onSubmit={handleExtract}
-            className="mt-8 w-full max-w-xl flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 rounded-[12px] border border-keyline bg-white shadow-keyline"
-          >
-            <div className="relative flex-1 flex items-center">
-              <div className="pl-3.5 text-ink-subtle pointer-events-none">
-                <Globe size={18} />
-              </div>
-              <input
-                type="text"
-                value={urlInput}
-                onChange={(e) => setUrlInput(e.target.value)}
-                placeholder="Enter any live URL (e.g. linear.app)"
-                required
-                className="w-full bg-transparent pl-3 pr-4 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:outline-none font-mono"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="btn-gloss-orange h-11 px-6 text-xs sm:text-sm font-semibold tracking-[-0.01em] shrink-0 gap-2 cursor-pointer"
+          <CrosshairCard size="sm" className="mt-8 w-full max-w-xl">
+            <form
+              onSubmit={handleExtract}
+              className="w-full flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 rounded-[12px] border border-keyline bg-white shadow-keyline"
             >
-              <span>Extract Design</span>
-              <ArrowRight size={15} weight="bold" />
-            </button>
-          </form>
+              <div className="relative flex-1 flex items-center">
+                <div className="pl-3.5 text-ink-subtle pointer-events-none">
+                  <Globe size={18} />
+                </div>
+                <input
+                  type="text"
+                  value={urlInput}
+                  onChange={(e) => setUrlInput(e.target.value)}
+                  placeholder="Enter any live URL (e.g. linear.app)"
+                  required
+                  className="w-full bg-transparent pl-3 pr-4 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:outline-none font-mono"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="btn-gloss-orange h-11 px-6 text-xs sm:text-sm font-semibold tracking-[-0.01em] shrink-0 gap-2 cursor-pointer"
+              >
+                <span>Extract Design</span>
+                <ArrowRight size={15} weight="bold" />
+              </button>
+            </form>
+          </CrosshairCard>
         </div>
       </div>
     </section>

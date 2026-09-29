@@ -7,21 +7,8 @@ interface CrosshairFrameProps {
   className?: string;
 }
 
-export function CrosshairMark({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 20 20"
-      className={`w-5 h-5 text-ink-subtle pointer-events-none select-none ${className}`}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.5"
-    >
-      <line x1="10" y1="2" x2="10" y2="18" strokeLinecap="round" />
-      <line x1="2" y1="10" x2="18" y2="10" strokeLinecap="round" />
-      <circle cx="10" cy="10" r="1.5" fill="currentColor" />
-    </svg>
-  );
-}
+import { CrosshairMark } from "@/components/ui/CrosshairCard";
+export { CrosshairMark };
 
 export function CrosshairFrame({ children, className = "" }: CrosshairFrameProps) {
   return (

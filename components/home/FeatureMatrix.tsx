@@ -8,6 +8,7 @@ import {
   Check,
   X,
 } from "@phosphor-icons/react";
+import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 const FEATURES = [
   {
@@ -153,32 +154,31 @@ export function FeatureMatrix() {
           {FEATURES.map((f) => {
             const Icon = f.icon;
             return (
-              <div
-                key={f.title}
-                className="rounded-[16px] border border-keyline bg-white p-6 sm:p-8 flex flex-col justify-between shadow-2xs hover:border-keyline-strong hover:shadow-xs transition-all"
-              >
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <span className="font-mono text-[10px] font-bold text-accent bg-accent-wash border border-accent-border px-2 py-0.5 rounded">
-                      {f.badge}
-                    </span>
-                    <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-canvas border border-keyline text-accent">
-                      <Icon size={16} weight="bold" />
+              <CrosshairCard key={f.title} size="sm" className="h-full">
+                <div className="rounded-[16px] border border-keyline bg-white p-6 sm:p-8 flex flex-col justify-between shadow-2xs hover:border-keyline-strong hover:shadow-xs transition-all h-full">
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <span className="font-mono text-[10px] font-bold text-accent bg-accent-wash border border-accent-border px-2 py-0.5 rounded">
+                        {f.badge}
+                      </span>
+                      <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-canvas border border-keyline text-accent">
+                        <Icon size={16} weight="bold" />
+                      </div>
                     </div>
+
+                    <h3 className="text-xl font-bold tracking-tight text-ink mb-2">
+                      {f.title}
+                    </h3>
+
+                    <p className="text-xs sm:text-sm text-ink-muted leading-relaxed mb-6">
+                      {f.description}
+                    </p>
                   </div>
 
-                  <h3 className="text-xl font-bold tracking-tight text-ink mb-2">
-                    {f.title}
-                  </h3>
-
-                  <p className="text-xs sm:text-sm text-ink-muted leading-relaxed mb-6">
-                    {f.description}
-                  </p>
+                  {/* Friendly Visual Specimen */}
+                  <div>{f.specimen}</div>
                 </div>
-
-                {/* Friendly Visual Specimen */}
-                <div>{f.specimen}</div>
-              </div>
+              </CrosshairCard>
             );
           })}
         </div>
