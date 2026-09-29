@@ -158,8 +158,8 @@ export function FeatureMatrix() {
                 <div className="border border-keyline bg-white p-6 sm:p-8 flex flex-col justify-between shadow-2xs hover:border-keyline-strong hover:shadow-xs transition-all h-full">
                   <div>
                     <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-[10px] font-bold text-accent bg-accent-wash border border-accent-border px-2 py-0.5 rounded">
-                        {f.badge}
+                      <span className="font-mono text-[11px] font-bold text-accent tracking-wider">
+                        [ {f.badge.toUpperCase()} ]
                       </span>
                       <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-canvas border border-keyline text-accent">
                         <Icon size={16} weight="bold" />
