@@ -68,7 +68,7 @@ function LoginForm() {
       {/* Main Single Unified Card with Crosshair Framing */}
       <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 w-full">
         <CrosshairFrame>
-          <div className="w-full rounded-[18px] border border-keyline bg-white shadow-keyline overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch relative">
+          <div className="w-full border border-keyline bg-white shadow-keyline overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch relative">
             
             {/* Vertical Dashed Line Divider (Desktop) */}
             <div

@@ -11,7 +11,7 @@ export function TestimonialsAndCta() {
       <section className="relative py-24 border-b border-keyline bg-canvas bg-drafting-grid overflow-hidden">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
           <CrosshairCard size="md">
-            <div className="relative rounded-[16px] border border-keyline bg-white p-8 sm:p-16 shadow-keyline overflow-hidden">
+            <div className="relative border border-keyline bg-white p-8 sm:p-16 shadow-keyline overflow-hidden">
             {/* Multiplayer Cursor 1: Frontend Dev */}
             <div
               aria-hidden="true"

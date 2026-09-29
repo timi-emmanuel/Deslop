@@ -21,7 +21,7 @@ export function Pricing() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {/* Free Tier */}
           <CrosshairCard size="sm" className="h-full">
-            <div className="rounded-[8px] border border-keyline bg-white p-6 flex flex-col justify-between shadow-xs h-full">
+            <div className="border border-keyline bg-white p-6 flex flex-col justify-between shadow-xs h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-bold text-base text-ink">Free Guest</span>
@@ -68,7 +68,7 @@ export function Pricing() {
 
           {/* Pro Tier (Featured) */}
           <CrosshairCard size="sm" className="h-full">
-            <div className="rounded-[8px] border-2 border-accent bg-white p-6 flex flex-col justify-between shadow-keyline relative h-full">
+            <div className="border-2 border-accent bg-white p-6 flex flex-col justify-between shadow-keyline relative h-full">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-0.5 font-mono text-[10px] font-bold uppercase text-white shadow-xs">
                 MOST POPULAR
               </div>
@@ -124,7 +124,7 @@ export function Pricing() {
 
           {/* Team Tier */}
           <CrosshairCard size="sm" className="h-full">
-            <div className="rounded-[8px] border border-keyline bg-white p-6 flex flex-col justify-between shadow-xs h-full">
+            <div className="border border-keyline bg-white p-6 flex flex-col justify-between shadow-xs h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-bold text-base text-ink">Team & Agency</span>
