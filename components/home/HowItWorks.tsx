@@ -57,7 +57,7 @@ export function HowItWorks() {
           {STEPS.map((s) => {
             const Icon = s.icon;
             return (
-              <CrosshairCard key={s.step} size="sm" className="h-full">
+              <CrosshairCard key={s.step} size="md" className="h-full">
                 <div className="border border-keyline bg-white p-6 flex flex-col justify-between shadow-2xs hover:border-keyline-strong hover:shadow-xs transition-all h-full">
                   <div>
                     <div className="flex items-center justify-between mb-4">

@@ -20,7 +20,7 @@ export function Pricing() {
         {/* 3 Tier Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
           {/* Free Tier */}
-          <CrosshairCard size="sm" className="h-full">
+          <CrosshairCard size="md" className="h-full">
             <div className="border border-keyline bg-white p-6 flex flex-col justify-between shadow-xs h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">
@@ -67,7 +67,7 @@ export function Pricing() {
           </CrosshairCard>
 
           {/* Pro Tier (Featured) */}
-          <CrosshairCard size="sm" className="h-full">
+          <CrosshairCard size="md" className="h-full">
             <div className="border-2 border-accent bg-white p-6 flex flex-col justify-between shadow-keyline relative h-full">
               <div className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-0.5 font-mono text-[10px] font-bold uppercase text-white shadow-xs">
                 MOST POPULAR
@@ -123,7 +123,7 @@ export function Pricing() {
           </CrosshairCard>
 
           {/* Team Tier */}
-          <CrosshairCard size="sm" className="h-full">
+          <CrosshairCard size="md" className="h-full">
             <div className="border border-keyline bg-white p-6 flex flex-col justify-between shadow-xs h-full">
               <div>
                 <div className="flex items-center justify-between mb-4">

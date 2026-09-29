@@ -82,7 +82,7 @@ export function Hero() {
           </p>
 
           {/* Primary URL Input Form */}
-          <CrosshairCard size="sm" className="mt-8 w-full max-w-xl">
+          <CrosshairCard size="md" className="mt-8 w-full max-w-xl">
             <form
               onSubmit={handleExtract}
               className="w-full flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 border border-keyline bg-white shadow-keyline"

@@ -18,33 +18,33 @@ export function CrosshairFrame({ children, className = "" }: CrosshairFrameProps
       {/* Positioned precisely at the 4 outer vertices of the card     */}
       {/* ============================================================ */}
       {/* Top-Left Vertex */}
-      <div className="absolute -top-2.5 -left-2.5 z-20">
-        <CrosshairMark />
+      <div className="absolute -top-2 -left-2 z-20 pointer-events-none">
+        <CrosshairMark size="md" />
       </div>
 
       {/* Top-Right Vertex */}
-      <div className="absolute -top-2.5 -right-2.5 z-20">
-        <CrosshairMark />
+      <div className="absolute -top-2 -right-2 z-20 pointer-events-none">
+        <CrosshairMark size="md" />
       </div>
 
       {/* Bottom-Left Vertex */}
-      <div className="absolute -bottom-2.5 -left-2.5 z-20">
-        <CrosshairMark />
+      <div className="absolute -bottom-2 -left-2 z-20 pointer-events-none">
+        <CrosshairMark size="md" />
       </div>
 
       {/* Bottom-Right Vertex */}
-      <div className="absolute -bottom-2.5 -right-2.5 z-20">
-        <CrosshairMark />
+      <div className="absolute -bottom-2 -right-2 z-20 pointer-events-none">
+        <CrosshairMark size="md" />
       </div>
 
       {/* Top Divider Junction (Desktop) */}
-      <div className="hidden lg:block absolute -top-2.5 left-1/2 -translate-x-1/2 z-20">
-        <CrosshairMark />
+      <div className="hidden lg:block absolute -top-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <CrosshairMark size="md" />
       </div>
 
       {/* Bottom Divider Junction (Desktop) */}
-      <div className="hidden lg:block absolute -bottom-2.5 left-1/2 -translate-x-1/2 z-20">
-        <CrosshairMark />
+      <div className="hidden lg:block absolute -bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none">
+        <CrosshairMark size="md" />
       </div>
 
       {/* The Unified Card Content */}
