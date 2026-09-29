@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Crosshair, ArrowRight, Warning, Lock, Envelope, Eye, EyeSlash } from "@phosphor-icons/react";
 import { useAuth } from "@/lib/auth/auth-context";
 import { PeekingMascot } from "@/components/auth/PeekingMascot";
+import { CrosshairFrame } from "@/components/auth/CrosshairFrame";
 
 function LoginForm() {
   const router = useRouter();
@@ -64,22 +65,34 @@ function LoginForm() {
         </div>
       </header>
 
-      {/* Main Single Unified Card */}
-      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 max-w-5xl mx-auto w-full">
-        <div className="w-full rounded-[24px] border border-keyline bg-white shadow-keyline overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
-          {/* Left Column: 4-Guardian Illustration Stage */}
-          <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-dotted border-keyline-strong bg-canvas/30">
-            {/* Header */}
-            <div>
-              <div className="flex items-center justify-between">
-                <span className="text-[11px] font-mono uppercase tracking-wider text-ink-subtle flex items-center gap-1.5">
-                  <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                  Anti-Slop Security Crew
-                </span>
-                <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface-sunken text-ink-muted border border-keyline">
-                  4 Guardians
-                </span>
-              </div>
+      {/* Main Single Unified Card with Crosshair Framing */}
+      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 w-full">
+        <CrosshairFrame>
+          <div className="w-full rounded-[18px] border border-keyline bg-white shadow-keyline overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch relative">
+            
+            {/* High-Precision Vertical Dotted Line Divider (Desktop) */}
+            <div
+              className="hidden lg:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-[2px] pointer-events-none z-10"
+              style={{
+                backgroundImage: "radial-gradient(circle, #8A867D 1.25px, transparent 1.25px)",
+                backgroundSize: "2px 10px",
+                backgroundRepeat: "repeat-y",
+              }}
+            />
+
+            {/* Left Column: 4-Guardian Illustration Stage */}
+            <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between bg-canvas/35 relative border-b lg:border-b-0 border-dotted border-keyline-strong">
+              {/* Header */}
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-ink-subtle flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                    Anti-Slop Security Crew
+                  </span>
+                  <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface-sunken text-ink-muted border border-keyline">
+                    4 Guardians
+                  </span>
+                </div>
               <h2 className="text-lg font-bold text-ink mt-2 tracking-tight">
                 Watchful token sentinels
               </h2>
@@ -220,6 +233,7 @@ function LoginForm() {
             </div>
           </div>
         </div>
+        </CrosshairFrame>
       </main>
 
       {/* Footer */}
