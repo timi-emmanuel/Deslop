@@ -67,72 +67,70 @@ function RegisterForm() {
         </div>
       </header>
 
-      {/* Main Register Form Stage */}
+      {/* Main Single Unified Card */}
       <main className="flex-1 flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12 max-w-5xl mx-auto w-full">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-stretch">
-          {/* Mascot 4-Guardian Showcase Card */}
-          <div className="lg:col-span-6 w-full">
-            <div className="w-full h-full rounded-[18px] border border-keyline bg-white/80 backdrop-blur-md p-6 sm:p-8 flex flex-col justify-between shadow-keyline relative overflow-hidden">
-              {/* Header */}
-              <div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-ink-subtle flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
-                    Anti-Slop Security Crew
-                  </span>
-                  <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface-sunken text-ink-muted border border-keyline">
-                    4 Guardians
-                  </span>
-                </div>
-                <h2 className="text-lg font-bold text-ink mt-2 tracking-tight">
-                  Join the Anti-Slop Vanguard
-                </h2>
-                <p className="text-xs text-ink-muted mt-1 leading-relaxed">
-                  Your design system scans and tokens will be safeguarded by our interactive security sentinels.
-                </p>
+        <div className="w-full rounded-[24px] border border-keyline bg-white shadow-keyline overflow-hidden grid grid-cols-1 lg:grid-cols-12 items-stretch">
+          {/* Left Column: 4-Guardian Illustration Stage */}
+          <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-dotted border-keyline-strong bg-canvas/30">
+            {/* Header */}
+            <div>
+              <div className="flex items-center justify-between">
+                <span className="text-[11px] font-mono uppercase tracking-wider text-ink-subtle flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+                  Anti-Slop Security Crew
+                </span>
+                <span className="text-[10px] font-mono font-medium px-2 py-0.5 rounded bg-surface-sunken text-ink-muted border border-keyline">
+                  4 Guardians
+                </span>
               </div>
+              <h2 className="text-lg font-bold text-ink mt-2 tracking-tight">
+                Join the Anti-Slop Vanguard
+              </h2>
+              <p className="text-xs text-ink-muted mt-1 leading-relaxed">
+                Your design system scans and tokens will be safeguarded by our interactive security sentinels.
+              </p>
+            </div>
 
-              {/* Center 4-Mascot Stage */}
-              <div className="my-4 py-2 flex items-center justify-center">
-                <PeekingMascot
-                  isEmailFocused={isTextFocused}
-                  emailLength={textLength}
-                  isPasswordFocused={activeField === "password"}
-                  showPassword={showPassword}
-                  isSubmitting={isSubmitting}
-                  isError={!!error}
-                />
+            {/* Center 4-Mascot Stage */}
+            <div className="my-4 py-2 flex items-center justify-center">
+              <PeekingMascot
+                isEmailFocused={isTextFocused}
+                emailLength={textLength}
+                isPasswordFocused={activeField === "password"}
+                showPassword={showPassword}
+                isSubmitting={isSubmitting}
+                isError={!!error}
+              />
+            </div>
+
+            {/* Bottom Crew Roster */}
+            <div className="pt-4 border-t border-keyline/70 grid grid-cols-4 gap-2 text-center">
+              <div className="flex flex-col items-center">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#f0642f] border border-white shadow-xs" />
+                <span className="text-[10px] font-semibold text-ink mt-1">Lead</span>
+                <span className="text-[9px] text-ink-subtle">Covers eyes</span>
               </div>
-
-              {/* Bottom Crew Roster */}
-              <div className="pt-4 border-t border-keyline grid grid-cols-4 gap-2 text-center">
-                <div className="flex flex-col items-center">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#f0642f] border border-white shadow-xs" />
-                  <span className="text-[10px] font-semibold text-ink mt-1">Lead</span>
-                  <span className="text-[9px] text-ink-subtle">Covers eyes</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#2c2925] border border-white shadow-xs" />
-                  <span className="text-[10px] font-semibold text-ink mt-1">Shy</span>
-                  <span className="text-[9px] text-ink-subtle">Turns around</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#ECE6DC] border border-[#2c2925] shadow-xs" />
-                  <span className="text-[10px] font-semibold text-ink mt-1">Whistler</span>
-                  <span className="text-[9px] text-ink-subtle">Looks up ♪</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <span className="w-3.5 h-3.5 rounded-full bg-[#f59569] border border-white shadow-xs" />
-                  <span className="text-[10px] font-semibold text-ink mt-1">Peeker</span>
-                  <span className="text-[9px] text-ink-subtle">Winks & peeks</span>
-                </div>
+              <div className="flex flex-col items-center">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#2c2925] border border-white shadow-xs" />
+                <span className="text-[10px] font-semibold text-ink mt-1">Shy</span>
+                <span className="text-[9px] text-ink-subtle">Turns around</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#ECE6DC] border border-[#2c2925] shadow-xs" />
+                <span className="text-[10px] font-semibold text-ink mt-1">Whistler</span>
+                <span className="text-[9px] text-ink-subtle">Looks up ♪</span>
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#f59569] border border-white shadow-xs" />
+                <span className="text-[10px] font-semibold text-ink mt-1">Peeker</span>
+                <span className="text-[9px] text-ink-subtle">Winks & peeks</span>
               </div>
             </div>
           </div>
 
-          {/* Form Card Column */}
-          <div className="lg:col-span-6 w-full flex flex-col justify-center">
-            <div className="w-full rounded-[18px] border border-keyline bg-white p-6 sm:p-8 shadow-keyline">
+          {/* Right Column: Registration Form */}
+          <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-center bg-white">
+            <div className="w-full max-w-sm mx-auto">
               <div className="text-center mb-6">
                 <h1 className="text-2xl font-bold tracking-tight text-ink">
                   Create your <span className="font-serif-editorial italic text-accent font-medium">deslop</span> account
