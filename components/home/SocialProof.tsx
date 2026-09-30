@@ -37,12 +37,12 @@ export function SocialProof() {
               {TOOLS.map((tool) => (
                 <div
                   key={`t1-${tool.name}`}
-                  className="group flex items-center gap-2 px-3 py-1.5 rounded-[8px] border border-keyline bg-white hover:border-accent transition-all duration-200 shadow-2xs hover:shadow-xs cursor-default select-none shrink-0"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-[8px] border border-keyline bg-white shadow-2xs cursor-default select-none shrink-0"
                 >
-                  <span className="font-mono text-[10px] bg-surface-sunken border border-keyline group-hover:border-accent-border group-hover:bg-accent-wash group-hover:text-accent px-1.5 py-0.5 rounded text-ink-muted transition-colors font-semibold">
+                  <span className="font-mono text-[10px] bg-surface-sunken border border-keyline px-1.5 py-0.5 rounded text-ink-muted font-semibold">
                     {tool.file}
                   </span>
-                  <span className="text-xs font-semibold text-ink group-hover:text-accent transition-colors">
+                  <span className="text-xs font-semibold text-ink">
                     {tool.name}
                   </span>
                 </div>
@@ -52,12 +52,12 @@ export function SocialProof() {
               {TOOLS.map((tool) => (
                 <div
                   key={`t2-${tool.name}`}
-                  className="group flex items-center gap-2 px-3 py-1.5 rounded-[8px] border border-keyline bg-white hover:border-accent transition-all duration-200 shadow-2xs hover:shadow-xs cursor-default select-none shrink-0"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-[8px] border border-keyline bg-white shadow-2xs cursor-default select-none shrink-0"
                 >
-                  <span className="font-mono text-[10px] bg-surface-sunken border border-keyline group-hover:border-accent-border group-hover:bg-accent-wash group-hover:text-accent px-1.5 py-0.5 rounded text-ink-muted transition-colors font-semibold">
+                  <span className="font-mono text-[10px] bg-surface-sunken border border-keyline px-1.5 py-0.5 rounded text-ink-muted font-semibold">
                     {tool.file}
                   </span>
-                  <span className="text-xs font-semibold text-ink group-hover:text-accent transition-colors">
+                  <span className="text-xs font-semibold text-ink">
                     {tool.name}
                   </span>
                 </div>

@@ -229,7 +229,7 @@ export default function HistoryPage() {
               return (
                 <div
                   key={scan.id}
-                  className="rounded-[12px] border border-keyline bg-white p-5 shadow-keyline flex flex-col justify-between hover:border-accent/40 transition-all hover:shadow-md group"
+                  className="rounded-[12px] border border-keyline bg-white p-5 shadow-keyline flex flex-col justify-between"
                 >
                   <div>
                     {/* Top Row: Domain & Date */}
@@ -237,7 +237,7 @@ export default function HistoryPage() {
                       <div>
                         <div className="flex items-center gap-1.5">
                           <Globe size={14} className="text-ink-subtle shrink-0" />
-                          <h3 className="font-bold text-sm text-ink group-hover:text-accent transition-colors font-mono">
+                          <h3 className="font-bold text-sm text-ink font-mono">
                             {scan.domain}
                           </h3>
                         </div>

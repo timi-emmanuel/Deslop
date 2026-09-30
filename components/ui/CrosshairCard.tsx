@@ -94,7 +94,7 @@ export function CrosshairCard({
   className = "",
   size = "md",
   crosshairClassName = "",
-  highlightOnHover = true,
+  highlightOnHover = false,
 }: CrosshairCardProps) {
   const hoverColor = highlightOnHover
     ? "transition-colors duration-200 group-hover:text-accent"

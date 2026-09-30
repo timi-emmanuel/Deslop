@@ -83,7 +83,7 @@ export function TemplateGallery() {
           {TEMPLATES.map((tmpl) => (
             <div
               key={tmpl.id}
-              className="flex flex-col justify-between rounded-[8px] border border-keyline bg-white p-5 shadow-xs hover:border-keyline-strong transition-all"
+              className="flex flex-col justify-between rounded-[8px] border border-keyline bg-white p-5 shadow-xs"
             >
               <div>
                 {/* Category Pill + Token Count */}

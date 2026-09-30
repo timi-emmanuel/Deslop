@@ -290,7 +290,7 @@ export function TokenTabs({ system }: TokenTabsProps) {
               {system.colors.map((c) => (
                 <div
                   key={c.id}
-                  className="rounded-[6px] border border-keyline bg-canvas p-3 text-xs flex flex-col justify-between hover:border-accent-border transition-colors"
+                  className="rounded-[6px] border border-keyline bg-canvas p-3 text-xs flex flex-col justify-between"
                 >
                   <div>
                     <div
