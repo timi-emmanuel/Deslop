@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Crosshair, GithubLogo, User, Clock, SignOut } from "@phosphor-icons/react";
+import { ArrowRight, Crosshair, GithubLogo, User, SignOut } from "@phosphor-icons/react";
 import { useAuth } from "@/lib/auth/auth-context";
 
 export function Navbar() {
@@ -32,10 +32,6 @@ export function Navbar() {
           <a href="#pricing" className="hover:text-ink transition-colors">
             Pricing
           </a>
-          <Link href="/history" className="hover:text-ink transition-colors flex items-center gap-1">
-            <Clock size={13} />
-            <span>History</span>
-          </Link>
         </nav>
 
         {/* Actions */}
