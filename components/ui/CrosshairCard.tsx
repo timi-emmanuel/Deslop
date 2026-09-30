@@ -25,12 +25,12 @@ export function HalfSquare({
   className = "",
   size = "md",
 }: HalfSquareProps) {
-  const dim = size === "sm" ? "w-4 h-4" : size === "lg" ? "w-6 h-6" : "w-5 h-5";
+  const dim = size === "sm" ? "w-2 h-2" : size === "lg" ? "w-3.5 h-3.5" : "w-2.5 h-2.5";
 
   if (corner === "tl") {
     return (
       <svg viewBox="0 0 20 20" className={`${dim} pointer-events-none select-none ${className}`} fill="none">
-        <path d="M 20 1 L 1 1 L 1 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        <path d="M 20 1 L 1 1 L 1 20" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       </svg>
     );
   }
@@ -38,7 +38,7 @@ export function HalfSquare({
   if (corner === "tr") {
     return (
       <svg viewBox="0 0 20 20" className={`${dim} pointer-events-none select-none ${className}`} fill="none">
-        <path d="M 0 1 L 19 1 L 19 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        <path d="M 0 1 L 19 1 L 19 20" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       </svg>
     );
   }
@@ -46,7 +46,7 @@ export function HalfSquare({
   if (corner === "bl") {
     return (
       <svg viewBox="0 0 20 20" className={`${dim} pointer-events-none select-none ${className}`} fill="none">
-        <path d="M 1 0 L 1 19 L 20 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        <path d="M 1 0 L 1 19 L 20 19" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       </svg>
     );
   }
@@ -54,7 +54,7 @@ export function HalfSquare({
   if (corner === "br") {
     return (
       <svg viewBox="0 0 20 20" className={`${dim} pointer-events-none select-none ${className}`} fill="none">
-        <path d="M 19 0 L 19 19 L 0 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        <path d="M 19 0 L 19 19 L 0 19" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       </svg>
     );
   }
@@ -62,7 +62,7 @@ export function HalfSquare({
   if (corner === "top-divider") {
     return (
       <svg viewBox="0 0 20 20" className={`${dim} pointer-events-none select-none ${className}`} fill="none">
-        <path d="M 0 1 L 20 1 M 10 1 L 10 20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        <path d="M 0 1 L 20 1 M 10 1 L 10 20" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       </svg>
     );
   }
@@ -70,7 +70,7 @@ export function HalfSquare({
   if (corner === "bottom-divider") {
     return (
       <svg viewBox="0 0 20 20" className={`${dim} pointer-events-none select-none ${className}`} fill="none">
-        <path d="M 0 19 L 20 19 M 10 19 L 10 0" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" />
+        <path d="M 0 19 L 20 19 M 10 19 L 10 0" stroke="currentColor" strokeWidth="2" strokeLinecap="square" />
       </svg>
     );
   }
