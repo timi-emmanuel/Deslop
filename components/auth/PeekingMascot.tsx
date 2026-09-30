@@ -428,7 +428,7 @@ export function PeekingMascot({
           <motion.g
             animate={{
               rotate: isEmailFocused ? 6 : isPeeking ? -6 : 0,
-              y: isEmailFocused ? [0, -3, 0] : 0,
+              y: isEmailFocused ? -3 : 0,
             }}
             transition={{
               type: "spring",
