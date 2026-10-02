@@ -50,12 +50,12 @@ Deslop operates as a four-stage pipeline:
 - **URL Crawler**: Accepts any publicly accessible URL (supporting SPAs, server-rendered sites, and static pages).
 - **Template Presets**: Built-in baseline systems (Minimal Obsidian, Hyper-Bold Crimson, Enterprise Cobalt, Expressive Iris).
 
-### Stage 2: Headless DOM & Computed Style Extraction
-Instead of merely parsing raw minified CSS files (which contain dead code and utility bloat), Deslop runs a headless browser instance (Playwright / Puppeteer) to measure **live computed properties**:
-- **Palette Harvesting**: Inspects computed `backgroundColor`, `color`, `borderColor`, and CSS variables across all rendered nodes.
+### Stage 2: DOM & Computed Style Extraction
+Instead of merely parsing raw minified CSS files (which contain dead code and utility bloat), Deslop inspects **live computed styling properties**:
+- **Palette Harvesting**: Inspects `backgroundColor`, `color`, `borderColor`, and CSS variables across all rendered nodes, paired with server-side Cheerio parsing and security-guarded fetching (`lib/extractor/security.ts`).
 - **Typography Inspection**: Resolves actual rendered font families (including fallbacks), letter-spacing (`tracking`), line-heights, and responsive scale ratios.
 - **Spatial Geometry**: Measures real margins, paddings, gap dimensions, and `border-radius` values across interactive components (buttons, cards, inputs).
-- **Elevation & Shadows**: Extracts box-shadow layers and backdrop filters.
+- **Elevation & Shadows**: Extracts box-shadow layers, border outlines, and backdrop filters.
 
 ### Stage 3: AI Token Synthesis & Noise Pruning
 Raw extraction produces hundreds of accidental micro-variations. Deslop applies semantic clustering and design taste heuristics:
@@ -140,37 +140,37 @@ npx deslop --template minimal --out .cursorrules
 ---
 
 ## 6. Technical Roadmap & Milestones
-
+ 
 ### Phase 1: Brand, Positioning & Landing Page *(Completed)*
 - [x] Repository initialization & Next.js App Router setup.
-- [x] Brand identity & value proposition definition.
-- [x] High-craft dark design system in `globals.css` with DM Sans typography.
+- [x] Brand identity & value proposition definition ("deslop" editorial serif wordmark & `#f0642f` accent).
+- [x] High-craft drafting-grid design system in `globals.css` with DM Sans & Geist typography.
 - [x] Taste Skill audit and anti-slop rules integration.
-- [x] Interactive hero URL extractor component with live token previews.
+- [x] Interactive hero URL extractor component with live popLayout motion blur tool cycler.
 - [x] Asymmetric workflow showcase & template gallery.
+- [x] Fluid spring-animated FAQ accordion and tactile button interactions.
 
-### Phase 2: Live Extraction Engine *(Next Up)*
-- [ ] Implement headless crawler service (Playwright / Chromium).
-- [ ] Build computed style extractor script to harvest:
-  - Computed color matrices and CSS variables.
-  - Font families and @font-face declarations.
-  - Spacing scales (paddings, margins, grid gaps).
-  - Border radii and elevation profiles.
-- [ ] Build API route: `POST /api/extract { url: string }`.
+### Phase 2: Live Extraction Engine *(Completed)*
+- [x] High-speed server-side crawler service (`lib/extractor/crawler.ts`) with SSRF security guardrails (`lib/extractor/security.ts`).
+- [x] Computed style extractor harvesting:
+  - [x] Computed color matrices, transparency alpha channels, and CSS variables.
+  - [x] Font families and @font-face declarations.
+  - [x] Spacing scales (paddings, margins, grid gaps).
+  - [x] Border radii and elevation profiles.
+- [x] Built API route: `POST /api/extract { url: string }`.
 
-### Phase 3: Token Synthesis & AI Reduction Engine
-- [ ] Integrate clustering algorithm for color deduplication (grouping within Delta-E threshold).
-- [ ] Integrate LLM prompt pipeline to format extracted styles into clean `design.md` markdown.
-- [ ] Implement Taste Skill automated validator (contrast checking, font pairing safety, negative constraint injection).
+### Phase 3: Token Synthesis & AI Reduction Engine *(Completed)*
+- [x] CIELAB / Delta-E clustering algorithm for color deduplication (`lib/synthesizer/color-clustering.ts`).
+- [x] 8pt modular grid quantizer snapping arbitrary paddings (`lib/synthesizer/grid-quantizer.ts`).
+- [x] Markdown synthesis pipeline formatting extracted tokens into clean, AI-optimized `design.md` (`lib/exporters/design-md.ts`).
+- [x] Multi-format export engine supporting Tailwind v4 `@theme`, CSS Custom Properties, and JSON tokens (`POST /api/export`).
+- [x] Full interactive Token Studio workbench with live contrast checker (`app/inspect/page.tsx`).
+- [x] User authentication and saved scan history (`app/login`, `app/register`, `app/history`, `components/auth/PeekingMascot.tsx`).
 
-### Phase 4: CLI & Ecosystem Integrations
-- [ ] Publish `deslop` CLI package to npm (`npx deslop <url>`).
-- [ ] Add one-click export formats:
-  - `design.md` (universal markdown)
-  - `.cursorrules` (Cursor IDE)
-  - `tailwind.config.ts` / `@theme` (Tailwind v4)
-  - Claude Code skill package (`.agents/skills/deslop/SKILL.md`)
-- [ ] GitHub Action for design token change detection on deployment.
+### Phase 4: CLI & Ecosystem Integrations *(Roadmap)*
+- [ ] Publish standalone `deslop` CLI package to npm (`npx deslop <url>`).
+- [ ] Cursor IDE and Claude Code skill packages (`.agents/skills/deslop/SKILL.md`).
+- [ ] GitHub Action for design token drift detection on deployment.
 
 ---
 

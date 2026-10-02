@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# 🎨 Deslop — The Vibe Coder's Guide & Project Handbook
+# 🎨 Deslop — Developer & AI Agent Project Handbook
 
 > **"Stop letting AI generate ugly websites. Turn any site you love into clean design rules your AI can follow."**
 
@@ -8,98 +8,95 @@
 
 ## ⚡ What is Deslop in Plain English?
 
-When you ask AI tools (like **Cursor, Claude, Lovable, v0, or Bolt**) to build a website, they often make it look cheap:
-- Ugly random purple/pink gradients
-- Buttons with weird corner roundness
-- 13px or 17px random margins that look misaligned
-- Inconsistent colors everywhere
+When developers ask AI tools (like **Cursor, Claude, Lovable, v0, Bolt, or Windsurf**) to build a website, they often make it look cheap and generic ("AI slop"):
+- Inconsistent color scales with dozens of near-duplicate hex codes
+- Buttons with arbitrary corner roundness and mismatched heights
+- 13px or 17px random margins that break spatial rhythm
+- Repetitive purple-to-pink gradient halos and unstyled cards
 
 **Deslop fixes this in 3 simple steps:**
-1. **You give it a website URL** (like `linear.app`, `stripe.com`, or `raycast.com`).
-2. **Deslop inspects the live site** and pulls out the exact colors, fonts, and clean 8px spacing.
-3. **It gives you a single `design.md` file**. You copy and paste this into Cursor (`.cursorrules`), Claude Project Knowledge, or your Lovable/v0 prompt. Now your AI builds beautiful, on-brand interfaces every time!
+1. **You give it a website URL** (e.g. `linear.app`, `stripe.com`, `raycast.com`) or pick a curated template preset.
+2. **Deslop inspects the live site** using server-side DOM analysis, extracts real computed colors, rendered typography, and clean 8px spatial intervals, and filters out noise via Delta-E color clustering.
+3. **It gives you a single, battle-tested `design.md` file**. You drop this into Cursor (`.cursorrules`), Claude Project Knowledge, or your v0/Lovable system prompt. Now your AI builds beautiful, on-brand interfaces every time!
 
 ---
 
-## 🗺️ Where Everything Is (The Plain English Project Map)
+## 🗺️ Where Everything Is (Authoritative Project Map)
 
-If you want to change or tweak something in this repo, here is where to look:
+### 🌟 1. The Landing Page (`components/home/`)
+- **[`components/home/Hero.tsx`](components/home/Hero.tsx)**  
+  The top of the landing page. Features the organic hand-drawn scribble underline, tool cycler with motion blur (`Cursor`, `Claude`, `Tailwind`, `shadcn`), and the interactive live URL input bar.
+- **[`components/home/HowItWorks.tsx`](components/home/HowItWorks.tsx)**  
+  The 3-stage walkthrough explaining the pipeline (Scan ➔ Clean ➔ Drop into AI).
+- **[`components/home/FeatureMatrix.tsx`](components/home/FeatureMatrix.tsx)**  
+  Interactive feature bento showcasing color swatches, font scales, and button inspectors.
+- **[`components/home/TemplateGallery.tsx`](components/home/TemplateGallery.tsx)**  
+  Curated production design presets (Linear, Stripe, Raycast, Supabase).
+- **[`components/home/SocialProof.tsx`](components/home/SocialProof.tsx)**  
+  Clean monochrome brand marks for design-forward engineering companies.
+- **[`components/home/Pricing.tsx`](components/home/Pricing.tsx)**  
+  Pricing tiers with feature breakdowns.
+- **[`components/home/Faq.tsx`](components/home/Faq.tsx)**  
+  Fluid accordion powered by Motion spring physics and rotating chevrons.
+- **[`components/home/Navbar.tsx`](components/home/Navbar.tsx)**  
+  Sticky navigation bar with the editorial italic wordmark (`deslop`), navigation links, and auth state triggers.
 
-### 🌟 1. The Landing Page (`components/`)
-- **`components/Hero.tsx`**  
-  The top of the landing page. Has the website URL input, the live preview card, the scissors extractor bridge, and the **⚡ Deslopped Craft vs ⚠️ AI Slop** toggle.
-- **`components/HowItWorks.tsx`**  
-  The 3-step walkthrough explaining how Deslop works (Scan ➔ Clean ➔ Drop into AI).
-- **`components/FeatureMatrix.tsx`**  
-  Interactive mini-cards showing off color swatches, font scales, and button inspectors.
-- **`components/TemplateGallery.tsx`**  
-  Pre-built design presets (Linear, Stripe, Raycast, Supabase).
-- **`components/Faq.tsx`**  
-  Common questions and plain-English answers for users.
-- **`components/Navbar.tsx`**  
-  The top navigation bar with the logo and quick links.
+### 🔐 2. Authentication & Interactive Mascots (`app/` & `components/auth/`)
+- **[`app/login/page.tsx`](app/login/page.tsx)**  
+  Sign-in page with physics-based decaying error shake (`[0, -10, 10, -8, 8, -4, 4, -2, 2, 0]`), animated password reveal toggle, and smooth spinner crossfade.
+- **[`app/register/page.tsx`](app/register/page.tsx)**  
+  Registration page with synchronized field focus tracking and tactile buttons.
+- **[`components/auth/PeekingMascot.tsx`](components/auth/PeekingMascot.tsx)**  
+  Reactive 4-character SVG stage with natural blinking, caret pupil tracking (`stiffness: 350, damping: 25`), password covering, peeking paw drops, and startled error jolt reactions.
+- **[`components/auth/CrosshairFrame.tsx`](components/auth/CrosshairFrame.tsx)**  
+  Architectural drafting frame with 10px (`w-2.5 h-2.5`) corner brackets and 1px hairline keylines.
 
-### 🔍 2. The Live Token Studio (`app/inspect/` & `components/inspect/`)
-- **`app/inspect/page.tsx`**  
-  The interactive page where users inspect a scanned site.
-- **`components/inspect/TokenTabs.tsx`**  
-  The tab switcher to view colors, typography, spacing, and the copyable `design.md` output.
+### 🔍 3. The Live Token Studio (`app/inspect/` & `components/inspect/`)
+- **[`app/inspect/page.tsx`](app/inspect/page.tsx)**  
+  The interactive workbench where users inspect a scanned site.
+- **[`components/inspect/TokenTabs.tsx`](components/inspect/TokenTabs.tsx)**  
+  Tab switcher to review colors, typography, spacing, contrast audits, and the copyable `design.md` output.
 
-### ⚙️ 3. The Extraction Engine (`lib/`)
-- **`lib/extractor/crawler.ts`**  
-  The engine that visits a website and reads its real computed CSS colors and fonts.
-- **`lib/synthesizer/color-clustering.ts`**  
-  The cleanup tool that takes 50 messy near-duplicate colors and cleans them down to 5 neat brand tokens.
-- **`lib/synthesizer/grid-quantizer.ts`**  
-  Snaps random spacing (like 13px) to clean 8px multiples (8, 16, 24px).
-- **`lib/exporters/design-md.ts`**  
-  Assembles the final `design.md` markdown file for the user to copy.
+### 📂 4. User Workspace & History (`app/history/`)
+- **[`app/history/page.tsx`](app/history/page.tsx)**  
+  Saved scan history, token re-exports, and saved design system libraries.
 
-### 📖 4. The Sacred Design Bible
-- **`deslop-design-tips.md.md`**  
-  The master rules for Deslop's own visual identity (Section 22: Cute Technical Editorial, Woblo-inspired, hand-drawn stickers & scribbles, strict single-accent `#FF4800`).
+### ⚙️ 5. The Extraction & Synthesis Engine (`lib/`)
+- **[`lib/extractor/crawler.ts`](lib/extractor/crawler.ts)**  
+  Fetches live HTML, inspects rendered styles, and extracts real computed CSS colors, fonts, and box geometry.
+- **[`lib/extractor/security.ts`](lib/extractor/security.ts)**  
+  SSRF protection, private IP blocking (RFC 1918), and DNS verification.
+- **[`lib/synthesizer/color-clustering.ts`](lib/synthesizer/color-clustering.ts)**  
+  Delta-E / CIELAB clustering algorithm that consolidates 50+ messy raw hex colors into 5 core semantic roles.
+- **[`lib/synthesizer/grid-quantizer.ts`](lib/synthesizer/grid-quantizer.ts)**  
+  Quantizes irregular spatial measurements (e.g. 13px) to an authentic 8pt modular baseline.
+- **[`lib/exporters/design-md.ts`](lib/exporters/design-md.ts)**  
+  Assembles the final AI-optimized `design.md` markdown document.
+
+### 📖 6. Design System Guide
+- **[`deslop-design-tips.md`](deslop-design-tips.md)**  
+  Master design guidelines: Warm Editorial Technical identity, drafting-grid canvas, strict single-accent `#f0642f`, and anti-slop rules.
 
 ---
 
 ## 🛡️ Golden Rules for Building in this Repo
 
-1. **NEVER run `npm run dev` in the background**: The user explicitly controls running the dev server.
-2. **Keep the Design Warm, Cute & Technical**:
+1. **Brand Identity & Typography**:
+   - The brand logo text is strictly: `<span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">deslop</span>`.
+   - Primary brand accent token is `#f0642f` (`--color-accent: #f0642f`).
+   - Canvas background is `#FAF7F2` with drafting grid styling (`bg-canvas bg-drafting-grid`).
    - Use our glossy buttons (`btn-gloss-orange`, `btn-gloss-neutral`).
-   - Use brand orange `#FF4800` as the primary accent.
-   - Dark high-contrast text is `#0A0D14`. Background is `#FAFAFA` or `#FFFFFF`.
-   - Never use generic AI purple glows or sterile dark cyberpunk themes.
-3. **Chrome vs. Data Philosophy**:
-   - **Chrome** (modals, nav, cards, hero, stickers): Glassmorphism, tactile borders, subtle hover animations, and playful accents are encouraged.
-   - **Data** (token tables, code editors, contrast ratios, hex values): Strict legibility. Solid high-contrast backgrounds with zero blur or opacity behind numbers and text.
-4. **Tailwind v4 & Class Composition (`cn`)**:
-   - Always use `cn(...)` from `lib/utils.ts` for dynamic conditional classes.
-   - Do NOT extract utility classes into `@layer components` with `@apply` directives, as Tailwind v4 compilation strips them.
-5. **Standardized 3-Part Modal Architecture**:
-   - All modals must follow the 3-part layout (`components/ui/Modal.tsx`):
-     - **Fixed Header**: Duotone icon container (`p-2 rounded-lg bg-[#FFF1EB] border border-[#FFD6C7] text-[#FF4800]`), title, subtitle, and close button.
-     - **Scrollable Body**: `overflow-y-auto max-h-[85vh] space-y-4`.
-     - **Fixed Footer**: Secondary Cancel + Primary CTA.
-     - **Post-Action Hero State**: Success checkmark hero with an instant 1-click copyable card (`<ModalSuccessHero>`).
-6. **Centralized API & SWR Caching Policy (`lib/api/`)**:
-   - All external/backend calls route through `lib/api/client.ts`.
-   - Domain hooks (e.g. `useExtraction`) implement SWR caching with a 2-second deduping interval (`dedupingInterval: 2000`) and zero background polling loops.
-7. **No Heavy Computer Science Jargon in the UI**:
-   - Don't say *"AST Bounding Box Extraction"* ➔ Say *"Inspect Real Screen Styles"*.
-   - Don't say *"Semantic Token Cluster Quantizer"* ➔ Say *"Clean Up Messy Duplicate Colors"*.
-   - Speak directly to vibe coders who want gorgeous UI fast.
-8. **Always Test with TypeScript**:
-   - Run `npx tsc --noEmit` before finishing any change to make sure there are 0 errors.
-
----
-
-## 💡 Quick Vibe Coder Glossary
-
-| Jargon Term | What It Actually Means for You |
-| :--- | :--- |
-| **Tokens** | The basic design ingredients: your primary color, font name, button roundness, and spacing numbers. |
-| **design.md** | A single Markdown cheat sheet that you paste into Cursor or Claude so it stops making ugly designs. |
-| **AI Slop** | The generic purple gradients, weird 13px margins, and mismatched buttons that AI makes when it has no rules. |
-| **8pt Grid** | Spacing in multiples of 8 (8px, 16px, 24px, 32px) so buttons and cards align neatly on the screen. |
-| **WCAG AAA** | A guarantee that text is high contrast and super easy to read on top of background colors. |
-
+   - Corner brackets are small 10px half-squares (`w-2.5 h-2.5`) with 1px hairline borders.
+2. **Animations & Physics (animations.dev standards)**:
+   - Always use `motion/react` (`import { motion, AnimatePresence } from "motion/react"`).
+   - Use springs for fluid interaction: `transition={{ type: "spring", stiffness: 350, damping: 25 }}`.
+   - For form errors, use decaying physics shakes with cubic bezier easing: `transition={{ duration: 0.45, ease: [0.36, 0.07, 0.19, 0.97] }}`.
+   - For accordions, use `AnimatePresence initial={false}` with `height: "auto"` and `ease: [0.16, 1, 0.3, 1]`.
+   - Buttons must have micro-press feedback: `whileTap={{ scale: 0.98 }}` and `whileHover={{ scale: 1.01 }}`.
+3. **Tailwind v4 Guidelines**:
+   - Always use `cn(...)` from `lib/utils.ts` for dynamic class merging.
+   - Do NOT use `@apply` in `@layer components`, as Tailwind v4 compilation strips them.
+4. **Never Open Localhost in Browser**:
+   - The user rule strictly forbids launching or opening localhost in the browser. Test via automated commands or CLI tools only.
+5. **Always Verify with TypeScript**:
+   - Validate clean compilation with zero type errors before concluding tasks.
