@@ -2,6 +2,7 @@
 
 import { ArrowRight, Crosshair, CheckCircle, GithubLogo } from "@phosphor-icons/react";
 import Link from "next/link";
+import { motion } from "motion/react";
 import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 export function TestimonialsAndCta() {
@@ -9,7 +10,13 @@ export function TestimonialsAndCta() {
     <>
       {/* High-Impact Light Mode CTA with Multiplayer Cursors */}
       <section className="relative py-24 border-b border-keyline bg-canvas bg-drafting-grid overflow-hidden">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mx-auto max-w-4xl px-4 sm:px-6 text-center"
+        >
           <CrosshairCard size="md">
             <div className="relative border border-keyline bg-white p-8 sm:p-16 shadow-keyline overflow-hidden">
             {/* Multiplayer Cursor 1: Frontend Dev */}
@@ -96,23 +103,27 @@ export function TestimonialsAndCta() {
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-              <Link
-                href="/inspect"
-                className="btn-gloss-orange w-full sm:w-auto h-12 px-7 text-sm font-bold gap-2 cursor-pointer"
-              >
-                <span>Launch Extractor Now</span>
-                <ArrowRight size={15} weight="bold" />
-              </Link>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+                <Link
+                  href="/inspect"
+                  className="btn-gloss-orange w-full sm:w-auto h-12 px-7 text-sm font-bold gap-2 cursor-pointer flex items-center justify-center"
+                >
+                  <span>Launch Extractor Now</span>
+                  <ArrowRight size={15} weight="bold" />
+                </Link>
+              </motion.div>
 
-              <a
-                href="https://github.com/timi-emmanuel/deslop"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-gloss-neutral w-full sm:w-auto h-12 px-6 text-sm font-semibold gap-2 cursor-pointer"
-              >
-                <GithubLogo size={16} weight="bold" />
-                <span>View on GitHub</span>
-              </a>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="w-full sm:w-auto">
+                <a
+                  href="https://github.com/timi-emmanuel/deslop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-gloss-neutral w-full sm:w-auto h-12 px-6 text-sm font-semibold gap-2 cursor-pointer flex items-center justify-center"
+                >
+                  <GithubLogo size={16} weight="bold" />
+                  <span>View on GitHub</span>
+                </a>
+              </motion.div>
             </div>
 
             <div className="mt-7 flex items-center justify-center gap-6 font-mono text-[11px] text-ink-subtle">
@@ -127,7 +138,7 @@ export function TestimonialsAndCta() {
             </div>
           </div>
         </CrosshairCard>
-      </div>
+      </motion.div>
     </section>
 
       {/* Clean Technical Footer */}

@@ -8,6 +8,7 @@ import {
   Check,
   X,
 } from "@phosphor-icons/react";
+import { motion } from "motion/react";
 import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 const FEATURES = [
@@ -128,10 +129,16 @@ const FEATURES = [
 
 export function FeatureMatrix() {
   return (
-    <section id="features" className="py-24 border-b border-keyline bg-canvas">
+    <section id="features" className="py-24 border-b border-keyline bg-canvas overflow-hidden">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section Header */}
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 pb-6 border-b border-keyline">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 pb-6 border-b border-keyline"
+        >
           <div>
             <div className="flex items-center gap-2 mb-2">
               <span className="h-2 w-2 rounded-full bg-accent" />
@@ -147,38 +154,51 @@ export function FeatureMatrix() {
             AI coding tools are fast, but they struggle with design consistency.
             Deslop gives them clear rules so your pages look polished on the first try.
           </p>
-        </div>
+        </motion.div>
 
         {/* 2x2 Calm, Human-Friendly Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {FEATURES.map((f) => {
+          {FEATURES.map((f, idx) => {
             const Icon = f.icon;
             return (
-              <CrosshairCard key={f.title} size="md" className="h-full">
-                <div className="border border-keyline bg-white p-6 sm:p-8 flex flex-col justify-between shadow-2xs h-full">
-                  <div>
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="font-mono text-[11px] font-bold text-accent tracking-wider">
-                        [ {f.badge.toUpperCase()} ]
-                      </span>
-                      <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-canvas border border-keyline text-accent">
-                        <Icon size={16} weight="bold" />
+              <motion.div
+                key={f.title}
+                initial={{ opacity: 0, y: 22 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{
+                  duration: 0.5,
+                  delay: idx * 0.08,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+                className="h-full"
+              >
+                <CrosshairCard size="md" className="h-full">
+                  <div className="border border-keyline bg-white p-6 sm:p-8 flex flex-col justify-between shadow-2xs h-full">
+                    <div>
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="font-mono text-[11px] font-bold text-accent tracking-wider">
+                          [ {f.badge.toUpperCase()} ]
+                        </span>
+                        <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-canvas border border-keyline text-accent">
+                          <Icon size={16} weight="bold" />
+                        </div>
                       </div>
+
+                      <h3 className="text-xl font-bold tracking-tight text-ink mb-2">
+                        {f.title}
+                      </h3>
+
+                      <p className="text-xs sm:text-sm text-ink-muted leading-relaxed mb-6">
+                        {f.description}
+                      </p>
                     </div>
 
-                    <h3 className="text-xl font-bold tracking-tight text-ink mb-2">
-                      {f.title}
-                    </h3>
-
-                    <p className="text-xs sm:text-sm text-ink-muted leading-relaxed mb-6">
-                      {f.description}
-                    </p>
+                    {/* Friendly Visual Specimen */}
+                    <div>{f.specimen}</div>
                   </div>
-
-                  {/* Friendly Visual Specimen */}
-                  <div>{f.specimen}</div>
-                </div>
-              </CrosshairCard>
+                </CrosshairCard>
+              </motion.div>
             );
           })}
         </div>

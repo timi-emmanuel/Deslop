@@ -39,24 +39,38 @@ export function Faq() {
   };
 
   return (
-    <section id="faq" className="py-24 border-b border-keyline bg-canvas">
+    <section id="faq" className="py-24 border-b border-keyline bg-canvas overflow-hidden">
       <div className="mx-auto max-w-4xl px-4 sm:px-6">
-        <div className="text-center mb-14">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          className="text-center mb-14"
+        >
           <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-ink">
             Questions? Answers.
           </h2>
           <p className="mt-3 text-sm text-ink-muted">
             Everything you need to know about Deslop and AI design system constraints.
           </p>
-        </div>
+        </motion.div>
 
         {/* Accordion List */}
         <div className="space-y-3">
           {FAQ_ITEMS.map((item, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div
+              <motion.div
                 key={idx}
+                initial={{ opacity: 0, y: 14 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-30px" }}
+                transition={{
+                  duration: 0.4,
+                  delay: idx * 0.05,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
                 className="rounded-[6px] border border-keyline bg-white shadow-xs overflow-hidden transition-colors"
               >
                 <motion.button
@@ -94,7 +108,7 @@ export function Faq() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </div>
+              </motion.div>
             );
           })}
         </div>

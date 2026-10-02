@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Globe } from "@phosphor-icons/react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useMotionValue, useSpring } from "motion/react";
 import { CrosshairCard } from "@/components/ui/CrosshairCard";
 
 const TARGET_TOOLS = ["Cursor", "Claude", "Tailwind", "shadcn"];
@@ -17,6 +17,25 @@ export function Hero() {
 
   // Tool cycler
   const [toolIndex, setToolIndex] = useState<number>(0);
+
+  // Interactive Flowing Blob Mouse Tracking
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const springX = useSpring(mouseX, { damping: 30, stiffness: 120 });
+  const springY = useSpring(mouseY, { damping: 30, stiffness: 120 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    mouseX.set(x * 0.25);
+    mouseY.set(y * 0.25);
+  };
+
+  const handleMouseLeave = () => {
+    mouseX.set(0);
+    mouseY.set(0);
+  };
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -34,12 +53,79 @@ export function Hero() {
   };
 
   return (
-    <section className="relative overflow-hidden pt-16 sm:pt-24 pb-20 sm:pb-28 border-b border-keyline bg-canvas bg-drafting-grid">
+    <section
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="relative overflow-hidden pt-16 sm:pt-24 pb-20 sm:pb-28 border-b border-keyline bg-canvas bg-drafting-grid"
+    >
+      {/* ============================================================
+          INTERACTIVE AMBIENT FLOWING CHROMATIC BLOB
+          ============================================================ */}
+      <motion.div
+        aria-hidden="true"
+        style={{ x: springX, y: springY }}
+        className="pointer-events-none absolute inset-0 flex items-center justify-center -z-0 overflow-hidden"
+      >
+        <div className="relative w-[500px] sm:w-[680px] h-[320px] sm:h-[440px] filter blur-[95px] opacity-40 sm:opacity-50">
+          {/* Primary Warm Accent Node */}
+          <motion.div
+            animate={{
+              scale: [1, 1.15, 0.92, 1],
+              rotate: [0, 90, 180, 360],
+              x: [0, 40, -30, 0],
+              y: [0, -30, 25, 0],
+            }}
+            transition={{
+              duration: 16,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute top-1/4 left-1/4 w-72 h-72 rounded-full bg-gradient-to-tr from-[#f0642f] via-[#ff7849] to-[#fb923c] mix-blend-multiply"
+          />
+
+          {/* Secondary Amber Sunburst Node */}
+          <motion.div
+            animate={{
+              scale: [1.1, 0.9, 1.18, 1.1],
+              rotate: [360, 240, 120, 0],
+              x: [0, -45, 35, 0],
+              y: [0, 35, -35, 0],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-gradient-to-bl from-[#f59e0b] via-[#fbbf24] to-[#fde68a] mix-blend-multiply"
+          />
+
+          {/* Soft Peach Center Bridge Node */}
+          <motion.div
+            animate={{
+              scale: [0.95, 1.12, 0.92, 0.95],
+              x: [0, 25, -20, 0],
+              y: [0, -18, 18, 0],
+            }}
+            transition={{
+              duration: 14,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+            className="absolute inset-x-12 inset-y-12 rounded-full bg-[#fbd5c6] opacity-60"
+          />
+        </div>
+      </motion.div>
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 relative z-10">
         {/* ============================================================
             HERO HEADER WITH HANDCRAFTED SCRIBBLE & CYCLER
             ============================================================ */}
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="flex flex-col items-center text-center max-w-3xl mx-auto"
+        >
           {/* Main Headline with Hand-Drawn Scribble Underline */}
           <h1 className="text-4xl sm:text-6xl font-bold tracking-tight text-ink leading-[1.14]">
             Steal any website&apos;s{" "}
@@ -138,7 +224,7 @@ export function Hero() {
               </motion.button>
             </motion.form>
           </CrosshairCard>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
