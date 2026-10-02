@@ -105,7 +105,7 @@ export function TestimonialsAndCta() {
               </Link>
 
               <a
-                href="https://github.com/AJonastech/deslop"
+                href="https://github.com/timi-emmanuel/deslop"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-gloss-neutral w-full sm:w-auto h-12 px-6 text-sm font-semibold gap-2 cursor-pointer"
@@ -158,7 +158,7 @@ export function TestimonialsAndCta() {
               FAQ
             </a>
             <a
-              href="https://github.com/AJonastech/deslop"
+              href="https://github.com/timi-emmanuel/deslop"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-ink transition-colors"

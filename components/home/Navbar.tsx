@@ -37,7 +37,7 @@ export function Navbar() {
         {/* Actions */}
         <div className="flex items-center gap-3">
           <a
-            href="https://github.com/AJonastech/deslop"
+            href="https://github.com/timi-emmanuel/deslop"
             target="_blank"
             rel="noopener noreferrer"
             className="hidden sm:inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-3 text-xs font-medium cursor-pointer"
