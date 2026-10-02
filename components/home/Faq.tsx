@@ -11,23 +11,27 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does Deslop extract design tokens from live websites?",
-    a: "Unlike traditional scrapers that guess from raw HTML or minified stylesheets, Deslop evaluates live computed styles in a real headless browser runtime. It captures true computed colors, rendered font stacks, layout bounding boxes, and spacing intervals directly from the DOM.",
+    a: "Deslop loads the URL in a headless browser and evaluates real computed styles after JavaScript runs. It measures the rendered colors, font stacks, line-heights, letter-spacing, and spacing intervals directly from the DOM—not by guessing from minified CSS stylesheets.",
   },
   {
-    q: "How do I use the generated design.md in Cursor, Claude Code, or v0?",
-    a: "Simply download or copy the design.md file and place it in the root of your project. In Cursor, reference it in your .cursorrules file. In Claude Code or v0, provide it as context in your initial prompt. The strict token constraints will prevent the AI from hallucinating arbitrary colors, paddings, or font sizes.",
+    q: "How do I use design.md in Cursor, Claude Code, or v0?",
+    a: "Drop design.md into your project root. In Cursor, reference it in your .cursorrules file. In Claude Code, v0, or Lovable, attach it to your initial prompt. Giving your AI explicit tokens and do-not rules drastically reduces hallucinated colors, weird margins, and off-brand layouts.",
+  },
+  {
+    q: "What makes design.md better than copy-pasting raw CSS?",
+    a: "Raw CSS from production sites is full of 50+ near-duplicate hex codes, inline overrides, and one-off padding values (like 13px). If you feed that to an AI, it gets confused. Deslop clusters those colors into 6 semantic roles, snaps spacing to an 8pt grid, and adds explicit negative constraints (like banning generic purple glows).",
   },
   {
     q: "Can I extract from dynamic Single Page Applications (SPAs)?",
-    a: "Yes. Because Deslop mounts a headless Chromium instance and waits for network idle, client-rendered React, Next.js, Vue, and Svelte applications render completely before style harvesting begins.",
+    a: "Yes. Deslop waits for network idle and client hydration, so React, Next.js, Vue, and Svelte applications render completely before style measurement begins.",
   },
   {
     q: "What export formats are supported?",
-    a: "Deslop currently exports to four standard formats: 1) AI-optimized design.md, 2) Tailwind CSS v4 @theme configurations, 3) Standard CSS custom properties (:root), and 4) JSON design tokens compatible with the W3C DTCG specification.",
+    a: "Deslop currently exports to four standard formats: 1) AI-optimized design.md with guardrails, 2) Tailwind CSS v4 @theme configurations, 3) Standard CSS custom properties (:root), and 4) JSON design tokens compatible with the W3C DTCG specification.",
   },
   {
-    q: "How does Deslop prevent 'AI slop'?",
-    a: "Modern AI code generators invent unmapped hex codes, arbitrary paddings (like 13px), and repetitive purple gradient wrappers when left unconstrained. Deslop groups noisy colors into 6 clear semantic roles, snaps spacing to an 8pt grid, and injects clear negative rules into design.md to keep your AI on-brand.",
+    q: "Can I extract from password-protected or local sites?",
+    a: "Currently, Deslop extracts from any publicly accessible URL. Support for authenticated dashboards and local dev servers (via CLI integration) is planned on the roadmap.",
   },
 ];
 
@@ -52,7 +56,7 @@ export function Faq() {
             Questions? Answers.
           </h2>
           <p className="mt-3 text-sm text-ink-muted">
-            Everything you need to know about Deslop and AI design system constraints.
+            Everything you need to know about extracting tokens, using design.md, and guiding AI coding tools.
           </p>
         </motion.div>
 
