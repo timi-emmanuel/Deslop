@@ -133,11 +133,11 @@ export function PeekingMascot({
           {/* ============================================================ */}
           <motion.g
             animate={{
-              rotate: isCovered ? -40 : isPeeking ? 16 : isEmailFocused ? 6 : 0,
+              rotate: isCovered ? -40 : isPeeking ? 16 : isEmailFocused ? 6 : isError ? -5 : 0,
               x: isCovered ? -10 : isPeeking ? 6 : 0,
-              y: isEmailFocused ? 2 : 0,
+              y: isEmailFocused ? 2 : isError ? 2 : 0,
             }}
-            transition={{ type: "spring", stiffness: 220, damping: 18 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
             style={{ transformOrigin: "76px 190px" }}
           >
             {/* Cute Cat/Bear Ears */}
@@ -172,8 +172,9 @@ export function PeekingMascot({
                       x: isPeeking ? 4 : eyeX * 0.7,
                       y: isPeeking ? 1 : eyeY * 0.7,
                       scaleY: isBlinking && !isPeeking ? 0.1 : 1,
+                      scale: isError ? 1.1 : 1,
                     }}
-                    transition={{ type: "spring", stiffness: 280, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     style={{ transformOrigin: "64px 138px" }}
                   >
                     <circle cx="64" cy="138" r="4.5" fill="#141413" />
@@ -189,8 +190,9 @@ export function PeekingMascot({
                       x: isPeeking ? 4 : eyeX * 0.7,
                       y: isPeeking ? 1 : eyeY * 0.7,
                       scaleY: isBlinking && !isPeeking ? 0.1 : 1,
+                      scale: isError ? 1.1 : 1,
                     }}
-                    transition={{ type: "spring", stiffness: 280, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     style={{ transformOrigin: "88px 138px" }}
                   >
                     <circle cx="88" cy="138" r="4.5" fill="#141413" />
@@ -212,10 +214,10 @@ export function PeekingMascot({
           {/* ============================================================ */}
           <motion.g
             animate={{
-              rotate: isEmailFocused ? -2 + normalizedLen * 5 : isPeeking ? 3 : 0,
-              y: isEmailFocused ? 2 : 0,
+              rotate: isEmailFocused ? -2 + normalizedLen * 5 : isPeeking ? 3 : isError ? -3 : 0,
+              y: isEmailFocused ? 2 : isError ? -3 : 0,
             }}
-            transition={{ type: "spring", stiffness: 220, damping: 18 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
             style={{ transformOrigin: "157px 190px" }}
           >
             {/* Rounded Ears with Antenna */}
@@ -223,10 +225,18 @@ export function PeekingMascot({
             <circle cx="132" cy="74" r="7" fill="#FFFFFF" opacity="0.6" />
             <circle cx="182" cy="74" r="13" fill="url(#char1Grad)" />
             <circle cx="182" cy="74" r="7" fill="#FFFFFF" opacity="0.6" />
-            {/* Little Tech Antenna */}
-            <line x1="157" y1="70" x2="157" y2="52" stroke="#d14b18" strokeWidth="2.5" strokeLinecap="round" />
-            <circle cx="157" cy="50" r="4.5" fill="#171614" />
-            <circle cx="157" cy="50" r="2" fill="#f0642f" />
+            {/* Little Tech Antenna with Startled Twitch */}
+            <motion.g
+              animate={{
+                rotate: isError ? [0, -10, 8, -5, 3, 0] : 0,
+              }}
+              transition={{ duration: 0.45, ease: [0.36, 0.07, 0.19, 0.97] }}
+              style={{ transformOrigin: "157px 70px" }}
+            >
+              <line x1="157" y1="70" x2="157" y2="52" stroke="#d14b18" strokeWidth="2.5" strokeLinecap="round" />
+              <circle cx="157" cy="50" r="4.5" fill="#171614" />
+              <circle cx="157" cy="50" r="2" fill={isError ? "#ef4444" : "#f0642f"} />
+            </motion.g>
 
             {/* Tall Pill-shaped Body */}
             <rect x="117" y="68" width="80" height="145" rx="40" fill="url(#char1Grad)" />
@@ -242,8 +252,9 @@ export function PeekingMascot({
                   x: eyeX,
                   y: eyeY,
                   scaleY: isBlinking && !isPeeking ? 0.08 : 1,
+                  scale: isError ? 1.08 : 1,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 style={{ transformOrigin: "140px 118px" }}
               >
                 <circle cx="140" cy="118" r="6" fill="#141413" />
@@ -259,15 +270,15 @@ export function PeekingMascot({
                   x: eyeX,
                   y: eyeY,
                   scaleY: isBlinking && !isPeeking ? 0.08 : 1,
+                  scale: isError ? 1.08 : 1,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 style={{ transformOrigin: "174px 118px" }}
               >
                 <circle cx="174" cy="118" r="6" fill="#141413" />
                 <circle cx="172" cy="115" r="2.2" fill="#FFFFFF" />
               </motion.g>
             </g>
-
             {/* Cheerful Mouth / Expression */}
             <ellipse cx="157" cy="132" rx="4" ry="2.5" fill="#d14b18" />
             <path
@@ -321,10 +332,10 @@ export function PeekingMascot({
           {/* ============================================================ */}
           <motion.g
             animate={{
-              rotate: isCovered ? -16 : isPeeking ? 8 : isEmailFocused ? 4 : 0,
-              y: isCovered ? -6 : 0,
+              rotate: isCovered ? -16 : isPeeking ? 8 : isEmailFocused ? 4 : isError ? 4 : 0,
+              y: isCovered ? -6 : isError ? -2 : 0,
             }}
-            transition={{ type: "spring", stiffness: 220, damping: 18 }}
+            transition={{ type: "spring", stiffness: 260, damping: 20 }}
             style={{ transformOrigin: "246px 190px" }}
           >
             {/* Antenna with bouncy ball */}
@@ -385,11 +396,12 @@ export function PeekingMascot({
                     animate={{
                       x: isPeeking ? 5 : eyeX * 0.8,
                       y: isPeeking ? 1 : eyeY * 0.8,
+                      scale: isError ? 1.1 : 1,
                     }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     style={{ transformOrigin: "234px 132px" }}
                   >
-                    <circle cx="234" cy="132" r="4.5" fill="#4ade80" />
+                    <circle cx="234" cy="132" r="4.5" fill={isError ? "#fb923c" : "#4ade80"} />
                     <circle cx="233" cy="130" r="1.5" fill="#FFFFFF" />
                   </motion.g>
                 </g>
@@ -401,17 +413,18 @@ export function PeekingMascot({
                     animate={{
                       x: isPeeking ? 5 : eyeX * 0.8,
                       y: isPeeking ? 1 : eyeY * 0.8,
+                      scale: isError ? 1.1 : 1,
                     }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                    transition={{ type: "spring", stiffness: 350, damping: 25 }}
                     style={{ transformOrigin: "258px 132px" }}
                   >
-                    <circle cx="258" cy="132" r="4.5" fill="#4ade80" />
+                    <circle cx="258" cy="132" r="4.5" fill={isError ? "#fb923c" : "#4ade80"} />
                     <circle cx="257" cy="130" r="1.5" fill="#FFFFFF" />
                   </motion.g>
                 </g>
 
                 {/* Cute Digital Smirk */}
-                <line x1="240" y1="146" x2="252" y2="146" stroke="#4ade80" strokeWidth="2" strokeLinecap="round" />
+                <line x1="240" y1="146" x2="252" y2="146" stroke={isError ? "#fb923c" : "#4ade80"} strokeWidth="2" strokeLinecap="round" />
               </g>
             )}
 
@@ -427,13 +440,13 @@ export function PeekingMascot({
           {/* ============================================================ */}
           <motion.g
             animate={{
-              rotate: isEmailFocused ? 6 : isPeeking ? -6 : 0,
-              y: isEmailFocused ? -3 : 0,
+              rotate: isEmailFocused ? 6 : isPeeking ? -6 : isError ? -4 : 0,
+              y: isEmailFocused ? -3 : isError ? -2 : 0,
             }}
             transition={{
               type: "spring",
-              stiffness: 220,
-              damping: 18,
+              stiffness: 260,
+              damping: 20,
             }}
             style={{ transformOrigin: "328px 210px" }}
           >
@@ -455,8 +468,9 @@ export function PeekingMascot({
                   x: eyeX * 0.9,
                   y: eyeY * 0.9,
                   scaleY: isBlinking && !isPeeking ? 0.1 : 1,
+                  scale: isError ? 1.08 : 1,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 style={{ transformOrigin: "316px 162px" }}
               >
                 <circle cx="316" cy="162" r="5" fill="#141413" />
@@ -472,8 +486,9 @@ export function PeekingMascot({
                   x: isPeeking ? 4 : eyeX * 0.9,
                   y: isPeeking ? 1 : eyeY * 0.9,
                   scaleY: isBlinking && !isPeeking ? 0.1 : 1,
+                  scale: isError ? 1.08 : 1,
                 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 style={{ transformOrigin: "340px 162px" }}
               >
                 <circle cx="340" cy="162" r="5" fill="#141413" />
@@ -510,7 +525,7 @@ export function PeekingMascot({
                 x: isPeeking ? 6 : 0,
                 rotate: isCovered ? 16 : isPeeking ? 30 : 0,
               }}
-              transition={{ type: "spring", stiffness: isPeeking ? 300 : 260, damping: 18 }}
+              transition={{ type: "spring", stiffness: isPeeking ? 320 : 260, damping: 20 }}
               style={{ transformOrigin: "342px 198px" }}
             >
               <circle cx="342" cy="198" r="6" fill="#e37b4b" stroke="#b74014" strokeWidth="1" />

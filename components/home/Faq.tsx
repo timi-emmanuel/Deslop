@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
+import { motion, AnimatePresence } from "motion/react";
 
 const FAQ_ITEMS = [
   {
@@ -56,27 +57,43 @@ export function Faq() {
             return (
               <div
                 key={idx}
-                className="rounded-[6px] border border-keyline bg-white shadow-xs overflow-hidden transition-all"
+                className="rounded-[6px] border border-keyline bg-white shadow-xs overflow-hidden transition-colors"
               >
-                <button
+                <motion.button
                   type="button"
                   onClick={() => toggle(idx)}
-                  className="w-full flex items-center justify-between p-5 text-left font-bold text-sm sm:text-base text-ink hover:text-accent transition-colors"
+                  whileTap={{ scale: 0.995 }}
+                  className="w-full flex items-center justify-between p-5 text-left font-bold text-sm sm:text-base text-ink hover:text-accent transition-colors cursor-pointer select-none"
                 >
                   <span>{item.q}</span>
-                  <CaretDown
-                    size={16}
-                    className={`shrink-0 text-ink-subtle transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-accent" : ""
-                    }`}
-                  />
-                </button>
+                  <motion.div
+                    animate={{ rotate: isOpen ? 180 : 0 }}
+                    transition={{ type: "spring", stiffness: 320, damping: 22 }}
+                    className="shrink-0 flex items-center justify-center text-ink-subtle"
+                  >
+                    <CaretDown
+                      size={16}
+                      className={isOpen ? "text-accent" : ""}
+                    />
+                  </motion.div>
+                </motion.button>
 
-                {isOpen && (
-                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-ink-muted leading-relaxed border-t border-surface-sunken">
-                    {item.a}
-                  </div>
-                )}
+                <AnimatePresence initial={false}>
+                  {isOpen && (
+                    <motion.div
+                      key="content"
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-ink-muted leading-relaxed border-t border-surface-sunken">
+                        {item.a}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             );
           })}

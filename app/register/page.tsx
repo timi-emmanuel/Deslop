@@ -4,6 +4,7 @@ import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Crosshair, ArrowRight, Warning, Lock, Envelope, User, Eye, EyeSlash } from "@phosphor-icons/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "@/lib/auth/auth-context";
 import { PeekingMascot } from "@/components/auth/PeekingMascot";
 import { CrosshairFrame } from "@/components/auth/CrosshairFrame";
@@ -18,6 +19,7 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [errorShakeKey, setErrorShakeKey] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Interactive Mascot tracking states
@@ -42,6 +44,7 @@ function RegisterForm() {
       router.push(redirectUrl);
     } else {
       setError(result.error || "Failed to create account");
+      setErrorShakeKey((prev) => prev + 1);
     }
   };
 
@@ -94,7 +97,16 @@ function RegisterForm() {
 
           {/* Right Column: Registration Form */}
           <div className="lg:col-span-6 p-6 sm:p-8 lg:p-10 flex flex-col justify-center bg-white">
-            <div className="w-full max-w-sm mx-auto">
+            <motion.div
+              key={errorShakeKey}
+              animate={
+                errorShakeKey > 0
+                  ? { x: [0, -10, 10, -8, 8, -4, 4, -2, 2, 0] }
+                  : { x: 0 }
+              }
+              transition={{ duration: 0.45, ease: [0.36, 0.07, 0.19, 0.97] }}
+              className="w-full max-w-sm mx-auto"
+            >
               <div className="text-center mb-6">
                 <h1 className="text-2xl font-bold tracking-tight text-ink">
                   Create your <span className="font-serif-editorial italic text-accent font-medium">deslop</span> account
@@ -104,12 +116,22 @@ function RegisterForm() {
                 </p>
               </div>
 
-              {error && (
-                <div className="mb-6 flex items-start gap-2.5 rounded-[8px] border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">
-                  <Warning size={16} weight="fill" className="shrink-0 mt-0.5 text-rose-600" />
-                  <span>{error}</span>
-                </div>
-              )}
+              <AnimatePresence>
+                {error && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -8, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: "auto" }}
+                    exit={{ opacity: 0, y: -8, height: 0 }}
+                    transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+                    className="overflow-hidden"
+                  >
+                    <div className="mb-6 flex items-start gap-2.5 rounded-[8px] border border-rose-200 bg-rose-50 p-3 text-xs text-rose-800">
+                      <Warning size={16} weight="fill" className="shrink-0 mt-0.5 text-rose-600" />
+                      <span>{error}</span>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
@@ -175,26 +197,67 @@ function RegisterForm() {
                       style={{ paddingLeft: "42px", paddingRight: "42px" }}
                       className="input-with-icon w-full rounded-[8px] border border-keyline bg-canvas pr-11 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                     />
-                    <button
+                    <motion.button
                       type="button"
+                      whileTap={{ scale: 0.85 }}
+                      transition={{ type: "spring", stiffness: 400, damping: 25 }}
                       onClick={() => setShowPassword((prev) => !prev)}
                       tabIndex={-1}
                       className="absolute right-3.5 top-1/2 -translate-y-1/2 text-ink-subtle hover:text-ink transition-colors p-1 flex items-center justify-center cursor-pointer"
                       title={showPassword ? "Hide password" : "Show password"}
                     >
-                      {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
-                    </button>
+                      <AnimatePresence mode="wait" initial={false}>
+                        <motion.span
+                          key={showPassword ? "hide" : "show"}
+                          initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+                          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                          exit={{ opacity: 0, scale: 0.6, rotate: 20 }}
+                          transition={{ duration: 0.15 }}
+                          className="flex items-center justify-center"
+                        >
+                          {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
+                        </motion.span>
+                      </AnimatePresence>
+                    </motion.button>
                   </div>
                 </div>
 
-                <button
+                <motion.button
                   type="submit"
                   disabled={isSubmitting}
+                  whileHover={{ scale: 1.01 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 25 }}
                   className="w-full btn-gloss-orange h-10 text-xs font-semibold tracking-[-0.01em] gap-2 cursor-pointer mt-2 justify-center"
                 >
-                  <span>{isSubmitting ? "Creating account..." : "Create Free Account"}</span>
-                  <ArrowRight size={14} weight="bold" />
-                </button>
+                  <AnimatePresence mode="wait" initial={false}>
+                    {isSubmitting ? (
+                      <motion.span
+                        key="submitting"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.14 }}
+                        className="flex items-center gap-2"
+                      >
+                        <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        <span>Creating account...</span>
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="idle"
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.14 }}
+                        className="flex items-center gap-1.5"
+                      >
+                        <span>Create Free Account</span>
+                        <ArrowRight size={14} weight="bold" />
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
+                </motion.button>
               </form>
 
               <div className="mt-6 pt-6 border-t border-keyline text-center text-xs text-ink-muted">
@@ -206,7 +269,7 @@ function RegisterForm() {
                   Sign in
                 </Link>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
         </CrosshairFrame>
