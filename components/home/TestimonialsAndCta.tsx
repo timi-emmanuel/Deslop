@@ -11,10 +11,10 @@ export function TestimonialsAndCta() {
       {/* High-Impact Light Mode CTA with Multiplayer Cursors */}
       <section className="relative py-24 border-b border-keyline bg-canvas bg-drafting-grid overflow-hidden">
         <motion.div
-          initial={{ opacity: 0, y: 24, scale: 0.98 }}
+          initial={{ opacity: 0, y: 32, scale: 0.98 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
           className="mx-auto max-w-4xl px-4 sm:px-6 text-center"
         >
           <CrosshairCard size="md">

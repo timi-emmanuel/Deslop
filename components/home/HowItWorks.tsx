@@ -43,10 +43,10 @@ export function HowItWorks() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          viewport={{ once: true, margin: "-60px" }}
+          transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-14 pb-6 border-b border-keyline"
         >
           <div>
@@ -66,13 +66,13 @@ export function HowItWorks() {
             return (
               <motion.div
                 key={s.step}
-                initial={{ opacity: 0, y: 22 }}
+                initial={{ opacity: 0, y: 32 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-40px" }}
+                viewport={{ once: true, margin: "-60px" }}
                 transition={{
-                  duration: 0.5,
-                  delay: idx * 0.1,
-                  ease: [0.16, 1, 0.3, 1],
+                  duration: 0.85,
+                  delay: 0.1 + idx * 0.14,
+                  ease: [0.22, 1, 0.36, 1],
                 }}
                 className="h-full"
               >

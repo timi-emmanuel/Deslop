@@ -19,10 +19,10 @@ const TOOLS: SupportedTool[] = [
 export function SocialProof() {
   return (
     <motion.section
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 28 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-40px" }}
-      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
       className="border-b border-keyline bg-canvas py-6 sm:py-8 overflow-hidden"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
