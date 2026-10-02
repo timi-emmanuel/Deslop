@@ -97,11 +97,10 @@ export function HowItWorks() {
                       </p>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t border-keyline flex items-center justify-between font-mono text-[11px]">
-                      <span className="text-ink-subtle truncate max-w-[160px]">
-                        {s.spec}
-                      </span>
-                      <span className="text-ink font-semibold">{s.highlight}</span>
+                    <div className="mt-6 pt-4 border-t border-keyline font-mono text-[11px] leading-relaxed text-ink-subtle">
+                      <span>{s.spec}</span>
+                      <span className="mx-2 text-ink-subtle/50 select-none">·</span>
+                      <span className="text-ink font-semibold inline-block">{s.highlight}</span>
                     </div>
                   </div>
                 </CrosshairCard>
