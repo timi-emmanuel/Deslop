@@ -30,6 +30,11 @@ export const metadata: Metadata = {
   title: "deslop",
   description:
     "Extract clean design systems and production-grade design.md files from any live URL. Eliminate AI hallucinations, random gradients, and generic slop.",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({
