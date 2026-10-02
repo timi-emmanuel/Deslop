@@ -99,7 +99,11 @@ export function TestimonialsAndCta() {
             </h2>
 
             <p className="mt-4 text-sm sm:text-base text-ink-muted max-w-xl mx-auto leading-relaxed">
-              Extract colors, typography scales, and spatial rules into an immutable <code className="font-mono text-xs bg-white border border-keyline px-1.5 py-0.5 rounded text-ink">design.md</code> file in one click.
+              Turn a site&apos;s colors, type scale, and spacing into a version-controlled{" "}
+              <code className="font-mono text-xs bg-white border border-keyline px-1.5 py-0.5 rounded text-ink">
+                design.md
+              </code>{" "}
+              in one step.
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -108,7 +112,7 @@ export function TestimonialsAndCta() {
                   href="/inspect"
                   className="btn-gloss-orange w-full sm:w-auto h-12 px-7 text-sm font-bold gap-2 cursor-pointer flex items-center justify-center"
                 >
-                  <span>Launch Extractor Now</span>
+                  <span>Extract a design</span>
                   <ArrowRight size={15} weight="bold" />
                 </Link>
               </motion.div>
@@ -129,11 +133,11 @@ export function TestimonialsAndCta() {
             <div className="mt-7 flex items-center justify-center gap-6 font-mono text-[11px] text-ink-subtle">
               <span className="flex items-center gap-1.5 font-medium">
                 <CheckCircle size={14} weight="fill" className="text-pass" />
-                100% Free & Open Source
+                Free & open source
               </span>
               <span className="flex items-center gap-1.5 font-medium">
                 <CheckCircle size={14} weight="fill" className="text-pass" />
-                Zero Hallucinations
+                Fewer hallucinated styles
               </span>
             </div>
           </div>

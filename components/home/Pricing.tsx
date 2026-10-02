@@ -34,7 +34,7 @@ export function Pricing() {
                   <span className="text-xs text-ink-subtle">/ forever</span>
                 </div>
                 <p className="text-xs text-ink-muted leading-relaxed mb-6">
-                  Perfect for solo developers and quick design audits on live websites.
+                  Ideal for solo developers and quick design audits on live websites.
                 </p>
 
                 <div className="space-y-2.5 text-xs text-ink-body pt-6 border-t border-keyline">

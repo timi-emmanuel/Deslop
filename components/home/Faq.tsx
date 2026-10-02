@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "motion/react";
 const FAQ_ITEMS = [
   {
     q: "Do I need to create an account or log in to use Deslop?",
-    a: "No. You can extract tokens from any public website and copy the generated design.md completely free without logging in. We believe in zero-friction tools. You only need an account if you want to sync design tokens directly to your GitHub repositories or unlock unlimited daily extractions.",
+    a: "No. You can extract from any public website and copy the design.md without an account. An account is only needed to sync tokens to your GitHub repositories or unlock higher daily limits.",
   },
   {
     q: "How does Deslop extract design tokens from live websites?",
@@ -27,7 +27,7 @@ const FAQ_ITEMS = [
   },
   {
     q: "How does Deslop prevent 'AI slop'?",
-    a: "Modern AI code generators invent unmapped hex codes, arbitrary paddings (like 13px), and repetitive purple gradient wrappers when left unconstrained. Deslop's synthesizer enforces an 8pt modular baseline, clusters noisy colors into single locked semantic roles, and injects strict negative rules into design.md to ban hallucinated styles.",
+    a: "Modern AI code generators invent unmapped hex codes, arbitrary paddings (like 13px), and repetitive purple gradient wrappers when left unconstrained. Deslop groups noisy colors into 6 clear semantic roles, snaps spacing to an 8pt grid, and injects clear negative rules into design.md to keep your AI on-brand.",
   },
 ];
 

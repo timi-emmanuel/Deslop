@@ -17,22 +17,23 @@ const FEATURES = [
     title: "Harmonious Colors",
     badge: "No clashing tints",
     description:
-      "AI tools often pick random shades that clash. Deslop creates a balanced 5-color palette where every shade looks intentional and easy on the eyes.",
+      "AI tools often invent shades that clash. Deslop distills a site's palette into 6 clear roles so every color has a job.",
     specimen: (
       <div className="rounded-[10px] bg-canvas border border-keyline p-3.5 space-y-2.5">
         <div className="flex items-center justify-between text-xs text-ink-muted">
-          <span>5 Balanced Roles</span>
+          <span>6 Semantic Roles</span>
           <span className="text-pass font-semibold flex items-center gap-1 text-[11px]">
             <Check size={12} weight="bold" /> Easy to read
           </span>
         </div>
-        <div className="grid grid-cols-5 gap-1.5 text-center">
+        <div className="grid grid-cols-6 gap-1 text-center">
           {[
             { name: "Canvas", color: "#F5F2EB", text: "#141413" },
-            { name: "Card", color: "#FFFFFF", text: "#141413" },
+            { name: "Surface", color: "#FFFFFF", text: "#141413" },
+            { name: "Keyline", color: "#E2DDD2", text: "#141413" },
             { name: "Text", color: "#141413", text: "#FFFFFF" },
+            { name: "Muted", color: "#73726C", text: "#FFFFFF" },
             { name: "Accent", color: "#E9551B", text: "#FFFFFF" },
-            { name: "Border", color: "#E2DDD2", text: "#141413" },
           ].map((item) => (
             <div key={item.name} className="space-y-1">
               <div
@@ -41,7 +42,7 @@ const FEATURES = [
               >
                 Aa
               </div>
-              <span className="text-[10px] text-ink-muted block font-medium">
+              <span className="text-[9px] sm:text-[10px] text-ink-muted block font-medium truncate">
                 {item.name}
               </span>
             </div>
@@ -80,10 +81,10 @@ const FEATURES = [
   },
   {
     icon: TextAa,
-    title: "Readable Typography",
-    badge: "Crisp font pairing",
+    title: "Crisp Font Pairing",
+    badge: "Display + Body",
     description:
-      "Generous line spacing and sharp font weights. Your headlines pop and your body text is effortless to read on both desktop and mobile.",
+      "Deslop captures the site's actual font stack, tracking, and line-heights, so headlines and body text match the original.",
     specimen: (
       <div className="rounded-[10px] bg-canvas border border-keyline p-3.5 space-y-2">
         <div className="flex items-center justify-between text-xs text-ink-muted">
@@ -105,14 +106,14 @@ const FEATURES = [
   {
     icon: ShieldCheck,
     title: "Smart AI Guardrails",
-    badge: "Blocks bad habits",
+    badge: "In your prompt",
     description:
-      "Explicit instructions that tell Cursor, Claude, and v0 what NOT to build—blocking generic purple glows and messy layouts before code is written.",
+      "Explicit instructions tell Cursor, Claude, and v0 what NOT to build, like generic purple glows and messy layouts.",
     specimen: (
       <div className="rounded-[10px] bg-canvas border border-keyline p-3.5 space-y-2 text-xs">
         <div className="flex items-center justify-between text-xs text-ink-muted">
           <span>Rules for your AI</span>
-          <span className="text-pass font-semibold text-[11px]">Enforced</span>
+          <span className="text-accent font-semibold text-[11px]">In your prompt</span>
         </div>
         <div className="rounded-[6px] bg-white border border-keyline p-2.5 flex items-center gap-2 text-fail shadow-2xs">
           <X size={14} weight="bold" className="shrink-0" />
@@ -120,7 +121,7 @@ const FEATURES = [
         </div>
         <div className="rounded-[6px] bg-white border border-keyline p-2.5 flex items-center gap-2 text-pass shadow-2xs">
           <Check size={14} weight="bold" className="shrink-0" />
-          <span className="text-[11px]">Enforce clean, intentional colors & layout</span>
+          <span className="text-[11px]">Guide clean, intentional colors & layout</span>
         </div>
       </div>
     ),

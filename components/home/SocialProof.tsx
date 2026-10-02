@@ -34,7 +34,7 @@ export function SocialProof() {
               <span className="relative inline-flex rounded-full h-2 w-2 bg-pass" />
             </span>
             <span className="font-mono text-[11px] uppercase tracking-wider text-ink-subtle font-semibold">
-              TRUSTED FOR ZERO-SLOP PROMPT CONTEXT IN:
+              WORKS WITH:
             </span>
           </div>
 
