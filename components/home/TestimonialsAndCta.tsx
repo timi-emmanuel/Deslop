@@ -137,7 +137,9 @@ export function TestimonialsAndCta() {
             <div className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-accent text-white">
               <Crosshair size={13} weight="bold" />
             </div>
-            <span className="font-bold tracking-tight text-sm">deslop</span>
+            <span className="font-serif-editorial font-medium italic text-accent text-lg tracking-tight leading-none">
+              deslop
+            </span>
             <span className="text-ink-subtle">— Quality control for AI frontend code</span>
           </div>
 

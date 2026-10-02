@@ -11,11 +11,13 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-keyline bg-canvas/90 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6">
         {/* Brand */}
-        <Link href="/" className="flex items-center gap-2.5 group">
+        <Link href="/" className="flex items-center gap-2 group">
           <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
             <Crosshair size={16} weight="bold" />
           </div>
-          <span className="font-bold text-base tracking-tight text-ink">deslop</span>
+          <span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">
+            deslop
+          </span>
         </Link>
 
         {/* Links */}

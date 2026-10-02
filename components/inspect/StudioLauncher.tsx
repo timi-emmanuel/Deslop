@@ -57,9 +57,14 @@ export function StudioLauncher() {
             <div className="flex h-6 w-6 items-center justify-center rounded-[5px] bg-accent text-white shadow-xs transition-transform group-hover:scale-105">
               <Crosshair size={14} weight="bold" />
             </div>
-            <span className="font-bold text-xs tracking-tight text-ink uppercase font-mono">
-              Deslop Studio
-            </span>
+            <div className="flex items-baseline gap-1.5">
+              <span className="font-serif-editorial font-medium italic text-accent text-xl tracking-tight leading-none">
+                deslop
+              </span>
+              <span className="font-mono text-[10px] font-bold text-ink-muted uppercase tracking-wider">
+                Studio
+              </span>
+            </div>
           </Link>
 
           {/* Right: Navigation & Auth */}

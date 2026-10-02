@@ -83,7 +83,9 @@ export default function HistoryPage() {
               <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
                 <Crosshair size={16} weight="bold" />
               </div>
-              <span className="font-bold text-base tracking-tight text-ink">deslop</span>
+              <span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">
+                deslop
+              </span>
             </Link>
             <Link
               href="/"
@@ -140,7 +142,9 @@ export default function HistoryPage() {
               <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
                 <Crosshair size={16} weight="bold" />
               </div>
-              <span className="font-bold text-base tracking-tight text-ink">deslop</span>
+              <span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">
+                deslop
+              </span>
             </Link>
             <span className="text-xs text-ink-subtle">/</span>
             <span className="text-xs font-mono font-bold text-ink uppercase tracking-wider">
