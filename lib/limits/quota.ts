@@ -6,7 +6,7 @@ import { UserQuota } from "@/types/tokens";
  */
 const quotaStore = new Map<string, { count: number; windowStart: number }>();
 
-const MAX_FREE_DAILY_SCANS = 3;
+const MAX_FREE_DAILY_SCANS = 9999;
 const WINDOW_DURATION_MS = 24 * 60 * 60 * 1000; // 24 hours
 
 /**

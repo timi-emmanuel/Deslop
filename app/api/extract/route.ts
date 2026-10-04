@@ -37,19 +37,8 @@ export async function POST(request: NextRequest) {
     const clientIp = forwardedFor ? forwardedFor.split(",")[0]?.trim() || "127.0.0.1" : "127.0.0.1";
     const isPro = request.headers.get("x-deslop-pro") === "true";
 
-    // Check Quota before heavy extraction
-    const currentQuota = await getQuota(clientIp, isPro);
-    if (!isPro && currentQuota.remainingScans <= 0) {
-      return NextResponse.json(
-        {
-          success: false,
-          error: "Daily free scan allowance reached (3/3 scans used). Upgrade to Deslop Pro for unlimited extractions.",
-          paywall: true,
-          quota: currentQuota,
-        },
-        { status: 429 }
-      );
-    }
+    // Evaluate Quota (unconstrained during public free launch)
+    const currentQuota = await getQuota(clientIp, true);
 
     // Perform Extraction
     const designSystem = await extractDesignSystem(validation.sanitizedUrl);

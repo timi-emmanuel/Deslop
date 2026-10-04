@@ -165,11 +165,8 @@ export function TestimonialsAndCta() {
             <a href="#how-it-works" className="hover:text-ink transition-colors">
               How it works
             </a>
-            <a href="#presets" className="hover:text-ink transition-colors">
-              Presets
-            </a>
-            <a href="#pricing" className="hover:text-ink transition-colors">
-              Pricing
+            <a href="#features" className="hover:text-ink transition-colors">
+              Features
             </a>
             <a href="#faq" className="hover:text-ink transition-colors">
               FAQ

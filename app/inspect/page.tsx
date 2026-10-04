@@ -5,7 +5,6 @@ import { useSearchParams } from "next/navigation";
 import { ExtractedDesignSystem, UserQuota } from "@/types/tokens";
 import { InspectionHeader } from "@/components/inspect/InspectionHeader";
 import { TokenTabs } from "@/components/inspect/TokenTabs";
-import { PaywallModal } from "@/components/inspect/PaywallModal";
 import {
   Warning,
   Sparkle,
@@ -30,23 +29,13 @@ function InspectionStudioContent() {
     isLoading,
     loadingStep,
     error,
-    isPaywall,
     refetch,
   } = useExtraction(rawUrl);
-
-  const [isPaywallOpen, setIsPaywallOpen] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (isPaywall) {
-      setIsPaywallOpen(true);
-    }
-  }, [isPaywall]);
 
   // If no URL is specified, render the Studio Launcher
   if (!rawUrl) {
     return <StudioLauncher />;
   }
-
 
   return (
     <div className="min-h-screen bg-canvas text-ink flex flex-col">
@@ -54,7 +43,6 @@ function InspectionStudioContent() {
         <InspectionHeader
           system={system}
           quota={quota}
-          onOpenPaywall={() => setIsPaywallOpen(true)}
         />
       )}
 
@@ -109,16 +97,6 @@ function InspectionStudioContent() {
           </div>
         )}
       </main>
-
-      {/* Paywall Upgrade Modal */}
-      <PaywallModal
-        isOpen={isPaywallOpen}
-        onClose={() => setIsPaywallOpen(false)}
-        onUnlockDemo={() => {
-          setIsPaywallOpen(false);
-          refetch();
-        }}
-      />
     </div>
   );
 }

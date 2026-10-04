@@ -12,7 +12,7 @@ import { CrosshairFrame } from "@/components/auth/CrosshairFrame";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirectUrl = searchParams.get("redirect") || "/history";
+  const redirectUrl = searchParams.get("redirect") || "/";
 
   const { user, login, isLoading: authLoading } = useAuth();
   const [email, setEmail] = useState("");

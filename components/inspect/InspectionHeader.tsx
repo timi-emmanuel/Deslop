@@ -25,7 +25,7 @@ import { ExportModal } from "./ExportModal";
 interface InspectionHeaderProps {
   system: ExtractedDesignSystem;
   quota?: UserQuota | null;
-  onOpenPaywall: () => void;
+  onOpenPaywall?: () => void;
 }
 
 export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHeaderProps) {
@@ -125,18 +125,14 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
 
           {/* Right: Quota & Action Buttons */}
           <div className="flex items-center gap-2.5">
-            {/* Quota Badge / Paywall trigger */}
-            {quota && !quota.isPro && (
-              <button
-                onClick={onOpenPaywall}
-                className="hidden md:flex items-center gap-1.5 font-mono text-[10px] border border-keyline bg-surface-sunken px-2.5 py-1.5 rounded-[6px] text-ink-muted hover:border-accent-border hover:text-accent transition-colors cursor-pointer"
-              >
-                <Sparkle size={12} className="text-accent" />
-                <span>
-                  {quota.remainingScans} of {quota.allowedScans} FREE SCANS LEFT
-                </span>
-              </button>
-            )}
+            {/* Live Engine Status Badge */}
+            <div className="hidden md:flex items-center gap-1.5 font-mono text-[10px] border border-keyline bg-surface-sunken px-2.5 py-1.5 rounded-[6px] text-ink-muted">
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pass opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-pass" />
+              </span>
+              <span>LIVE EXTRACTION</span>
+            </div>
 
             {/* Quick Copy design.md */}
             <button
