@@ -44,4 +44,5 @@ yarn-error.log*
 next-env.d.ts
 PROJECT_SCOPE.md
 ROADMAP.md
-
+CLAUDE.md
+AGENTS.md
