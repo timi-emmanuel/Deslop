@@ -103,8 +103,28 @@ export function validateAndSanitizeDesignMd(
     return closestToken.hex;
   });
 
+  // Guarantee no dangling token references to undeclared tokens in the rules/recipes
+  const validTokenNames = new Set(validPalette.map((c) => `--${c.name}`));
+  const tokenRegex = /`?(--(?:bg|accent|text)-[\w-]+)`?/g;
+  const finalMarkdown = sanitizedMarkdown.replace(tokenRegex, (match, tokenName) => {
+    if (validTokenNames.has(tokenName)) {
+      return match;
+    }
+    // Remap common undeclared tokens to valid ground-truth equivalents
+    if (tokenName.includes("danger")) {
+      return validTokenNames.has("--accent-primary") ? "`--accent-primary`" : match;
+    }
+    if (tokenName.includes("on-accent")) {
+      return validTokenNames.has("--text-primary") ? "`--text-primary`" : match;
+    }
+    if (tokenName.includes("surface")) {
+      return validTokenNames.has("--bg-canvas") ? "`--bg-canvas`" : match;
+    }
+    return match;
+  });
+
   return {
-    sanitizedMarkdown,
+    sanitizedMarkdown: finalMarkdown,
     hallucinationsFound: correctedHexes.length,
     correctedHexes,
   };
@@ -173,6 +193,7 @@ CRITICAL GROUND-TRUTH CONSTRAINTS:
 1. You MUST strictly use ONLY the exact color tokens provided above. NEVER invent, hallucinate, rename, duplicate, or alter hex codes.
 2. NEVER invent tokens that are not listed above (e.g. if --bg-surface is not in the list, cards share --bg-canvas; do not add multiple accent variants or unlisted swatches).
 3. If an interactive token has an explicit (hover: #HEX) listed above, use that exact hex for hover states.
+4. Every token name referenced anywhere in the generated AI Rules or component recipes MUST exist in the Semantic Color Token Matrix above. NEVER reference undeclared or dangling tokens (such as --accent-danger, --text-on-accent, or --bg-surface if they were not provided in the ground-truth list).
 
 Generate an authoritative, production-grade \`design.md\` file that will be dropped into \`.cursorrules\` or Claude Code project instructions.
 

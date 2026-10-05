@@ -13,7 +13,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:synthesis": "node --experimental-strip-types scripts/test-token-synthesis.ts",
-    "test": "node scripts/test-zorveus.mjs && node --experimental-strip-types scripts/test-pipeline.mjs && node --experimental-strip-types scripts/test-token-synthesis.ts"
+    "test": "node scripts/test-zorveus.mjs && node --experimental-strip-types scripts/test-pipeline.mjs && node --experimental-strip-types scripts/test-token-synthesis.ts && node --experimental-strip-types scripts/test-design-md.ts"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

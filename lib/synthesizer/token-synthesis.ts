@@ -854,7 +854,16 @@ export function convertSynthesizedToColorTokens(
     if (matchedCheck) {
       ratio = matchedCheck.ratio;
       rating = matchedCheck.level;
-      target = `vs ${matchedCheck.pair[0] === key ? matchedCheck.pair[1] : matchedCheck.pair[0]}`;
+      const otherPair = matchedCheck.pair[0] === key ? matchedCheck.pair[1] : matchedCheck.pair[0];
+      if (otherPair === "text-on-accent") {
+        const textTargetHex =
+          calculateContrastRatio("#FFFFFF", tok.hex) >= calculateContrastRatio("#000000", tok.hex)
+            ? "#FFFFFF text"
+            : "#000000 text";
+        target = `vs ${textTargetHex}`;
+      } else {
+        target = `vs ${otherPair}`;
+      }
     }
 
     result.push({

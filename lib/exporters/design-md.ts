@@ -1,4 +1,4 @@
-import { ColorToken, GeometrySpec, TypographySpec } from "@/types/tokens";
+import type { ColorToken, GeometrySpec, TypographySpec } from "../../types/tokens.ts";
 
 /**
  * Compiles an authoritative, version-controlled design.md file.
@@ -23,7 +23,52 @@ export function generateDesignMarkdown(params: {
     .join("\n");
 
   const spacingList = geometry.spacingRampPx.map((s) => `${s}px`).join(", ");
-  const hasSurface = colors.some((c) => c.name === "bg-surface");
+
+  // Dynamically condition rules strictly on tokens actually emitted in the matrix
+  const tokenNames = new Set(colors.map((c) => c.name));
+  const hasSurface = tokenNames.has("bg-surface");
+  const hasCanvas = tokenNames.has("bg-canvas");
+  const hasBorder = tokenNames.has("border") || tokenNames.has("keyline");
+
+  const colorRules: string[] = [
+    "- NEVER invent unmapped hex codes outside this locked palette.",
+  ];
+
+  if (hasCanvas) {
+    colorRules.push("- Use `--bg-canvas` exclusively for root body background.");
+  }
+
+  if (hasSurface) {
+    colorRules.push("- Use `--bg-surface` for elevated card containers, panels, and modals.");
+  } else if (hasCanvas) {
+    if (hasBorder) {
+      colorRules.push("- When no distinct surface token is declared, card containers share `--bg-canvas` with subtle stroke borders.");
+    } else {
+      colorRules.push("- When no distinct surface token is declared, card containers share `--bg-canvas` (distinguish layers using layout spacing and subtle shadows).");
+    }
+  }
+
+  if (tokenNames.has("accent-primary")) {
+    colorRules.push("- Use `--accent-primary` exclusively for primary CTA buttons and active focus indicators.");
+  }
+
+  if (tokenNames.has("accent-secondary")) {
+    colorRules.push("- Use `--accent-secondary` for secondary actions and interactive links.");
+  }
+
+  if (tokenNames.has("accent-danger")) {
+    colorRules.push("- Use `--accent-danger` exclusively for destructive actions and error states.");
+  }
+
+  if (tokenNames.has("text-primary")) {
+    colorRules.push("- Use `--text-primary` for high-contrast reading text, headings, and data labels.");
+  }
+
+  if (tokenNames.has("text-muted")) {
+    colorRules.push("- Use `--text-muted` for secondary text, metadata, and timestamps.");
+  }
+
+  colorRules.push("- Forbid generic interchangeable accent usage: each accent has a locked semantic purpose.");
 
   return `# ${domain} — Production Design System & AI Guidelines
 > Extracted from ${url} by Deslop.
@@ -35,14 +80,7 @@ export function generateDesignMarkdown(params: {
 ${colorRows}
 
 ### AI Color Rules:
-- NEVER invent unmapped hex codes outside this locked palette.
-- Use \`--bg-canvas\` exclusively for root body background.
-${hasSurface ? "- Use `--bg-surface` for elevated card containers, panels, and modals." : "- If no distinct surface token is declared, card containers share `--bg-canvas` with subtle stroke keylines."}
-- Use \`--accent-primary\` exclusively for primary CTA buttons and active focus indicators.
-- Use \`--accent-secondary\` (if declared) for secondary actions and links.
-- Use \`--accent-danger\` (if declared) exclusively for destructive actions and error states with crisp white text.
-- Use \`--text-primary\` for high-contrast reading text, headings, and data labels.
-- Forbid generic interchangeable accent usage: each accent has a locked semantic purpose.
+${colorRules.join("\n")}
 
 ---
 
