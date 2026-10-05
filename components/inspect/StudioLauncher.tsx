@@ -71,9 +71,9 @@ export function StudioLauncher() {
           <div className="flex items-center gap-3">
             <Link
               href="/"
-              className="flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
+              className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
             >
-              <ArrowLeft size={14} />
+              <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
               <span className="hidden sm:inline">Back to Home</span>
             </Link>
 

@@ -3,7 +3,7 @@
 import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Crosshair, ArrowRight, Warning, Lock, Envelope, User, Eye, EyeSlash } from "@phosphor-icons/react";
+import { Crosshair, ArrowRight, ArrowLeft, Warning, Lock, Envelope, User, Eye, EyeSlash } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "@/lib/auth/auth-context";
 import { PeekingMascot } from "@/components/auth/PeekingMascot";
@@ -66,9 +66,10 @@ function RegisterForm() {
           </Link>
           <Link
             href="/"
-            className="text-xs font-medium text-ink-muted hover:text-ink transition-colors"
+            className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
           >
-            ← Back to Home
+            <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
+            <span>Back to Home</span>
           </Link>
         </div>
       </header>
@@ -148,7 +149,7 @@ function RegisterForm() {
                       onChange={(e) => setName(e.target.value)}
                       onFocus={() => setActiveField("name")}
                       onBlur={() => setActiveField("none")}
-                      placeholder="Alex Rivera"
+                      placeholder="Timi Adekunle"
                       style={{ paddingLeft: "42px" }}
                       className="input-with-icon w-full rounded-[8px] border border-keyline bg-canvas pr-3.5 py-2.5 text-xs sm:text-sm text-ink placeholder-ink-subtle focus:border-accent focus:bg-white focus:outline-none transition-colors"
                     />

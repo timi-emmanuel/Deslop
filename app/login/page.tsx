@@ -3,7 +3,7 @@
 import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Crosshair, ArrowRight, Warning, Lock, Envelope, Eye, EyeSlash } from "@phosphor-icons/react";
+import { Crosshair, ArrowRight, ArrowLeft, Warning, Lock, Envelope, Eye, EyeSlash } from "@phosphor-icons/react";
 import { motion, AnimatePresence } from "motion/react";
 import { useAuth } from "@/lib/auth/auth-context";
 import { PeekingMascot } from "@/components/auth/PeekingMascot";
@@ -63,9 +63,10 @@ function LoginForm() {
           </Link>
           <Link
             href="/"
-            className="text-xs font-medium text-ink-muted hover:text-ink transition-colors"
+            className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
           >
-            ← Back to Home
+            <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
+            <span>Back to Home</span>
           </Link>
         </div>
       </header>

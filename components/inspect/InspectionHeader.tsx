@@ -61,10 +61,10 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
           <div className="flex items-center gap-4">
             <Link
               href="/inspect"
-              className="flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors p-1.5 rounded-[4px] hover:bg-surface-sunken"
+              className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors p-1.5 rounded-[4px] hover:bg-surface-sunken"
               title="Return to Studio Launcher"
             >
-              <ArrowLeft size={15} />
+              <ArrowLeft size={15} className="transition-transform group-hover:-translate-x-0.5" />
               <span className="hidden sm:inline">Studio</span>
             </Link>
 

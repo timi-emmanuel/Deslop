@@ -9,6 +9,7 @@ import {
   Warning,
   Sparkle,
   ArrowRight,
+  ArrowLeft,
   ShieldCheck,
   CheckCircle,
 } from "@phosphor-icons/react";
@@ -80,9 +81,10 @@ function InspectionStudioContent() {
               </button>
               <Link
                 href="/"
-                className="rounded-[6px] border border-keyline bg-white px-4 py-2 text-xs font-medium text-ink-muted hover:text-ink"
+                className="group inline-flex items-center gap-1.5 rounded-[6px] border border-keyline bg-white px-4 py-2 text-xs font-medium text-ink-muted hover:text-ink transition-colors shadow-2xs"
               >
-                Return Home
+                <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
+                <span>Return Home</span>
               </Link>
             </div>
           </div>

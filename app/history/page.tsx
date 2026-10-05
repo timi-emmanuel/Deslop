@@ -89,9 +89,10 @@ export default function HistoryPage() {
             </Link>
             <Link
               href="/"
-              className="text-xs font-medium text-ink-muted hover:text-ink transition-colors"
+              className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
             >
-              ← Back to Home
+              <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
+              <span>Back to Home</span>
             </Link>
           </div>
         </header>
@@ -153,6 +154,14 @@ export default function HistoryPage() {
           </div>
 
           <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
+            >
+              <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
+              <span className="hidden sm:inline">Back to Home</span>
+            </Link>
+
             <div className="hidden sm:flex items-center gap-2 text-xs text-ink-muted">
               <span className="font-medium text-ink">{user.name || user.email}</span>
               <span className="text-2xs font-mono bg-accent-wash text-accent px-1.5 py-0.5 rounded border border-accent-border font-bold uppercase">
