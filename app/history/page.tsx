@@ -11,6 +11,7 @@ import {
   Sparkle,
   ArrowLeft,
   Lock,
+  User,
 } from "@phosphor-icons/react";
 import { useAuth } from "@/lib/auth/auth-context";
 
@@ -153,21 +154,14 @@ export default function HistoryPage() {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <Link
               href="/"
-              className="group flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2.5 py-1.5 rounded-[6px] border border-keyline bg-surface-sunken hover:bg-canvas shadow-2xs"
+              className="group inline-flex items-center gap-1.5 text-xs font-medium text-ink-muted hover:text-ink transition-colors px-2 py-1.5 rounded-[6px] hover:bg-surface-sunken"
             >
               <ArrowLeft size={13} weight="bold" className="transition-transform group-hover:-translate-x-0.5" />
-              <span className="hidden sm:inline">Back to Home</span>
+              <span className="hidden sm:inline">Home</span>
             </Link>
-
-            <div className="hidden sm:flex items-center gap-2 text-xs text-ink-muted">
-              <span className="font-medium text-ink">{user.name || user.email}</span>
-              <span className="text-2xs font-mono bg-accent-wash text-accent px-1.5 py-0.5 rounded border border-accent-border font-bold uppercase">
-                {user.plan}
-              </span>
-            </div>
 
             <Link
               href="/inspect"
@@ -177,14 +171,18 @@ export default function HistoryPage() {
               <span>New Scan</span>
             </Link>
 
-            <button
-              onClick={() => logout()}
-              className="btn-gloss-neutral h-8 px-2.5 text-xs text-ink-muted hover:text-ink gap-1 cursor-pointer"
-              title="Sign out"
-            >
-              <SignOut size={14} />
-              <span className="hidden sm:inline">Logout</span>
-            </button>
+            <div className="inline-flex items-center gap-1.5 btn-gloss-neutral h-8 px-2.5 text-xs font-medium text-ink">
+              <User size={14} className="text-accent" />
+              <span className="max-w-[120px] truncate">{user.name || user.email.split("@")[0]}</span>
+              <button
+                type="button"
+                onClick={() => logout()}
+                title="Sign out"
+                className="ml-1 text-ink-muted hover:text-[#DC2626] transition-colors cursor-pointer"
+              >
+                <SignOut size={13} />
+              </button>
+            </div>
           </div>
         </div>
       </header>
