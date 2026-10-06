@@ -8,9 +8,7 @@ import {
   Copy,
   CheckCircle,
   DownloadSimple,
-  Sparkle,
   Globe,
-  ShareNetwork,
   MagnifyingGlass,
   X,
   User,
@@ -123,16 +121,8 @@ export function InspectionHeader({ system, quota, onOpenPaywall }: InspectionHea
             )}
           </div>
 
-          {/* Right: Quota & Action Buttons */}
+          {/* Right: Actions & User Controls */}
           <div className="flex items-center gap-2.5">
-            {/* Live Engine Status Badge */}
-            <div className="hidden md:flex items-center gap-1.5 font-mono text-[10px] border border-keyline bg-surface-sunken px-2.5 py-1.5 rounded-[6px] text-ink-muted">
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-pass opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-pass" />
-              </span>
-              <span>LIVE EXTRACTION</span>
-            </div>
 
             {/* Quick Copy design.md */}
             <button
