@@ -15,10 +15,9 @@ export default function Home() {
       <main>
         <Hero />
         <SocialProof />
-        <FeatureMatrix />
         <HowItWorks />
-        {/* <TemplateGallery /> */}
-        {/* <Pricing /> */}
+        <TemplateGallery />
+        <FeatureMatrix />
         <Faq />
         <TestimonialsAndCta />
       </main>
