@@ -43,7 +43,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${fredoka.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}>
+    <html
+      lang="en"
+      data-scroll-behavior="smooth"
+      className={`${fredoka.variable} ${jetbrainsMono.variable} ${instrumentSerif.variable} antialiased`}
+    >
       <body className="min-h-screen bg-[#FAFAFA] text-[#0A0D14] font-sans selection:bg-[#FF4800] selection:text-white">
         <AuthProvider>{children}</AuthProvider>
       </body>
