@@ -112,7 +112,7 @@ export function TemplateGallery() {
                 delay: 0.08 + idx * 0.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="group relative rounded-[10px] border border-[#222734] bg-[#0A0D14] p-6 sm:p-7 shadow-xl hover:border-accent/40 transition-all duration-300 flex flex-col justify-between"
+              className="relative rounded-[10px] border border-[#222734] bg-[#0A0D14] p-6 sm:p-7 shadow-xl flex flex-col justify-between"
             >
               <div>
                 {/* Top Row: Pill badge + Color swatch dots */}
@@ -128,7 +128,7 @@ export function TemplateGallery() {
                     {tmpl.dots.map((dot, i) => (
                       <span
                         key={i}
-                        className="h-3.5 w-3.5 rounded-full border border-white/20 shadow-sm transition-transform group-hover:scale-110"
+                        className="h-3.5 w-3.5 rounded-full border border-white/20 shadow-sm"
                         style={{ backgroundColor: dot }}
                         title={dot}
                       />
@@ -137,7 +137,7 @@ export function TemplateGallery() {
                 </div>
 
                 {/* Template Name & Description */}
-                <h3 className="text-xl font-bold text-[#F8FAFC] tracking-tight group-hover:text-accent transition-colors">
+                <h3 className="text-xl font-bold text-[#F8FAFC] tracking-tight">
                   {tmpl.name}
                 </h3>
                 <p className="mt-2 text-xs sm:text-sm text-[#94A3B8] leading-relaxed mb-6">
