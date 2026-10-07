@@ -60,7 +60,7 @@ export function Hero() {
         className="pointer-events-none absolute left-1/2 top-0 -z-10 h-96 w-full max-w-7xl -translate-x-1/2 opacity-60"
         style={{
           background:
-            "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(37, 99, 235, 0.12) 0%, transparent 75%)",
+            "radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255, 72, 0, 0.08) 0%, transparent 75%)",
         }}
       />
 
@@ -78,7 +78,7 @@ export function Hero() {
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-ink leading-[1.08]">
             Stop shipping AI slop.
             <br />
-            <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-500 bg-clip-text text-transparent">
+            <span className="text-accent">
               Start shipping design.
             </span>
           </h1>
@@ -96,9 +96,9 @@ export function Hero() {
             <motion.form
               onSubmit={(e) => handleExtract(e)}
               animate={{
-                borderColor: isFocused ? "#2563EB" : "#e5dfd3",
+                borderColor: isFocused ? "#f0642f" : "#e5dfd3",
                 boxShadow: isFocused
-                  ? "0 4px 16px -2px rgba(37, 99, 235, 0.14), 0 2px 4px -1px rgba(0, 0, 0, 0.04)"
+                  ? "0 4px 16px -2px rgba(240, 100, 47, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.04)"
                   : "0 1px 2px rgba(0, 0, 0, 0.05)",
               }}
               transition={{ duration: 0.2 }}
@@ -107,7 +107,7 @@ export function Hero() {
               <div className="relative flex-1 flex items-center">
                 <div
                   className={`pl-3.5 transition-colors duration-200 pointer-events-none ${
-                    isFocused ? "text-blue-600" : "text-ink-subtle"
+                    isFocused ? "text-accent" : "text-ink-subtle"
                   }`}
                 >
                   <Globe size={18} />
@@ -129,7 +129,7 @@ export function Hero() {
                 whileHover={{ scale: 1.015 }}
                 whileTap={{ scale: 0.97 }}
                 transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className="btn-gloss-blue h-11 px-6 text-xs sm:text-sm font-semibold tracking-[-0.01em] shrink-0 gap-2 cursor-pointer"
+                className="btn-gloss-orange h-11 px-6 text-xs sm:text-sm font-semibold tracking-[-0.01em] shrink-0 gap-2 cursor-pointer"
               >
                 <span>Inspect Website</span>
                 <ArrowRight size={15} weight="bold" />
@@ -145,7 +145,7 @@ export function Hero() {
                 key={demo.name}
                 type="button"
                 onClick={() => handleExtract(undefined, demo.url)}
-                className="px-2.5 py-1 rounded-full border border-keyline bg-white hover:border-blue-500 hover:text-blue-600 text-ink-muted font-mono text-[11px] font-medium transition-all shadow-2xs cursor-pointer flex items-center gap-1 group"
+                className="px-2.5 py-1 rounded-full border border-keyline bg-white hover:border-accent hover:text-accent text-ink-muted font-mono text-[11px] font-medium transition-all shadow-2xs cursor-pointer flex items-center gap-1 group"
               >
                 <span>{demo.name}</span>
                 <ArrowRight
@@ -188,7 +188,7 @@ export function Hero() {
                 <button
                   type="button"
                   onClick={handleCopyTailwind}
-                  className="inline-flex items-center gap-1.5 rounded-[6px] border border-[#2B3346] bg-[#161B26] px-2.5 py-1 text-[11px] font-mono text-[#D1D5DB] hover:text-white hover:border-[#3B82F6] transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded-[6px] border border-[#2B3346] bg-[#161B26] px-2.5 py-1 text-[11px] font-mono text-[#D1D5DB] hover:text-white hover:border-accent transition-colors cursor-pointer"
                 >
                   {copiedSnippet ? (
                     <CheckCircle size={13} weight="fill" className="text-[#10B981]" />
@@ -199,7 +199,7 @@ export function Hero() {
                 </button>
                 <Link
                   href="/inspect?url=https%3A%2F%2Flinear.app"
-                  className="inline-flex items-center gap-1.5 rounded-[6px] bg-[#2563EB] hover:bg-[#1D4ED8] px-3 py-1 text-[11px] font-semibold text-white transition-colors cursor-pointer"
+                  className="inline-flex items-center gap-1.5 rounded-[6px] bg-accent hover:bg-accent-hover px-3 py-1 text-[11px] font-semibold text-white transition-colors cursor-pointer"
                 >
                   <span>Inspect in Studio</span>
                   <ArrowRight size={12} weight="bold" />
@@ -213,7 +213,7 @@ export function Hero() {
               <div className="md:pr-6 space-y-3">
                 <div className="flex items-center justify-between text-xs pb-2 border-b border-[#1B202D]">
                   <span className="flex items-center gap-1.5 font-mono text-[11px] font-bold text-[#94A3B8] uppercase">
-                    <Palette size={14} className="text-[#3B82F6]" />
+                    <Palette size={14} className="text-accent" />
                     Semantic Colors
                   </span>
                   <span className="font-mono text-[10px] text-[#10B981] bg-[#10B981]/10 px-1.5 py-0.5 rounded">

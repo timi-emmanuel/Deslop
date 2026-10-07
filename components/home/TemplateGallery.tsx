@@ -77,7 +77,7 @@ export function TemplateGallery() {
         >
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="flex h-2 w-2 rounded-full bg-blue-600" />
+              <span className="flex h-2 w-2 rounded-full bg-accent" />
               <span className="font-mono text-xs uppercase tracking-widest text-ink-muted font-bold">
                 CURATED DESIGN.MD TEMPLATES
               </span>
@@ -92,7 +92,7 @@ export function TemplateGallery() {
 
           <Link
             href="/inspect?url=https%3A%2F%2Flinear.app"
-            className="text-xs font-mono font-semibold text-blue-600 hover:text-blue-700 flex items-center gap-1 group self-start sm:self-auto"
+            className="text-xs font-mono font-semibold text-accent hover:text-accent-hover flex items-center gap-1 group self-start sm:self-auto"
           >
             <span>Browse all in Studio</span>
             <ArrowRight size={13} className="transition-transform group-hover:translate-x-0.5" />
@@ -112,7 +112,7 @@ export function TemplateGallery() {
                 delay: 0.08 + idx * 0.1,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="group relative rounded-[10px] border border-[#222734] bg-[#0A0D14] p-6 sm:p-7 shadow-xl hover:border-blue-500/50 transition-all duration-300 flex flex-col justify-between"
+              className="group relative rounded-[10px] border border-[#222734] bg-[#0A0D14] p-6 sm:p-7 shadow-xl hover:border-accent/40 transition-all duration-300 flex flex-col justify-between"
             >
               <div>
                 {/* Top Row: Pill badge + Color swatch dots */}
@@ -137,7 +137,7 @@ export function TemplateGallery() {
                 </div>
 
                 {/* Template Name & Description */}
-                <h3 className="text-xl font-bold text-[#F8FAFC] tracking-tight group-hover:text-blue-400 transition-colors">
+                <h3 className="text-xl font-bold text-[#F8FAFC] tracking-tight group-hover:text-accent transition-colors">
                   {tmpl.name}
                 </h3>
                 <p className="mt-2 text-xs sm:text-sm text-[#94A3B8] leading-relaxed mb-6">
@@ -154,7 +154,7 @@ export function TemplateGallery() {
               {/* Action Button */}
               <Link
                 href={`/inspect?url=${encodeURIComponent(tmpl.url)}`}
-                className="w-full inline-flex items-center justify-center gap-2 rounded-[6px] bg-[#161B26] hover:bg-blue-600 border border-[#2B3346] hover:border-blue-500 text-xs font-semibold text-[#F1F5F9] hover:text-white py-2.5 px-4 transition-all duration-200 cursor-pointer"
+                className="w-full inline-flex items-center justify-center gap-2 rounded-[6px] bg-[#161B26] hover:bg-accent border border-[#2B3346] hover:border-accent text-xs font-semibold text-[#F1F5F9] hover:text-white py-2.5 px-4 transition-all duration-200 cursor-pointer"
               >
                 <span>Use Template</span>
                 <ArrowRight size={13} weight="bold" />

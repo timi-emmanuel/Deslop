@@ -74,7 +74,7 @@ export function Navbar() {
 
           <Link
             href="/inspect"
-            className="inline-flex items-center gap-1.5 btn-gloss-blue h-8 px-3.5 text-xs font-semibold cursor-pointer"
+            className="inline-flex items-center gap-1.5 btn-gloss-orange h-8 px-3.5 text-xs font-semibold cursor-pointer"
           >
             <span>Try Scanner</span>
             <ArrowRight size={13} weight="bold" />
