@@ -208,7 +208,17 @@ export function ExportModal({ isOpen, onClose, system }: ExportModalProps) {
             {/* Preview Box */}
             <div>
               <div className="flex items-center justify-between text-[11px] font-mono text-[#868C98] mb-1.5">
-                <span>PREVIEW ({current.filename}):</span>
+                <div className="flex items-center gap-2 relative">
+                  <span>PREVIEW ({current.filename}):</span>
+                  <button
+                    type="button"
+                    onClick={handleCopy}
+                    className="inline-flex items-center gap-1 rounded-[4px] border border-keyline bg-white px-2 py-0.5 text-[10px] font-mono font-medium text-ink hover:text-accent hover:border-accent transition-colors cursor-pointer shadow-2xs"
+                  >
+                    <Copy size={11} weight="bold" />
+                    <span>Copy Content</span>
+                  </button>
+                </div>
                 <span className="text-[#059669]">VALIDATED</span>
               </div>
               <pre className="rounded-[6px] border border-[#222326] bg-[#0A0D14] p-3 font-mono text-[11px] text-[#E2E4E9] max-h-40 overflow-y-auto leading-relaxed">
@@ -218,32 +228,34 @@ export function ExportModal({ isOpen, onClose, system }: ExportModalProps) {
           </ModalBody>
 
           {/* Part 3: Fixed Footer with Actions */}
-          <ModalFooter>
-            <button
-              type="button"
-              onClick={handleClose}
-              className="btn-gloss-neutral px-4 py-2 text-xs font-semibold"
-            >
-              Cancel
-            </button>
-
+          <ModalFooter className="justify-between">
             <button
               type="button"
               onClick={handleCopy}
-              className="btn-gloss-neutral px-4 py-2 text-xs font-semibold gap-1.5"
+              className="btn-gloss-neutral px-4 py-2 text-xs font-semibold gap-1.5 relative mr-auto"
             >
               <Copy size={13} weight="bold" />
               <span>Copy Content</span>
             </button>
 
-            <button
-              type="button"
-              onClick={handleDownload}
-              className="btn-gloss-orange px-5 py-2 text-xs font-semibold gap-1.5"
-            >
-              <DownloadSimple size={13} weight="bold" />
-              <span>Download {current.filename}</span>
-            </button>
+            <div className="flex items-center gap-2.5">
+              <button
+                type="button"
+                onClick={handleClose}
+                className="btn-gloss-neutral px-4 py-2 text-xs font-semibold"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="button"
+                onClick={handleDownload}
+                className="btn-gloss-orange px-5 py-2 text-xs font-semibold gap-1.5"
+              >
+                <DownloadSimple size={13} weight="bold" />
+                <span>Download {current.filename}</span>
+              </button>
+            </div>
           </ModalFooter>
         </>
       )}
