@@ -1,4 +1,4 @@
-import { generateDesignMarkdown } from "../lib/exporters/design-md.ts";
+import { generateDesignMarkdown } from "../apps/web/lib/exporters/design-md.ts";
 
 const markdown = generateDesignMarkdown({
   domain: "istosagent.com",

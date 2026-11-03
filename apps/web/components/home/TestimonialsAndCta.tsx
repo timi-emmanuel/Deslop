@@ -92,7 +92,7 @@ export function TestimonialsAndCta() {
 
             <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-ink max-w-2xl mx-auto leading-tight">
               Stop guessing at other people&apos;s{" "}
-              <span className="font-serif-editorial font-medium italic text-accent text-[1.12em]">
+              <span className="font-serif-editorial  italic text-accent text-[1.12em]">
                 CSS
               </span>
               .
@@ -152,7 +152,7 @@ export function TestimonialsAndCta() {
             <div className="flex h-6 w-6 items-center justify-center rounded-[4px] bg-accent text-white">
               <Crosshair size={13} weight="bold" />
             </div>
-            <span className="font-serif-editorial font-medium italic text-accent text-lg tracking-tight leading-none">
+            <span className="font-serif-editorial  italic text-accent text-lg tracking-tight leading-none">
               deslop
             </span>
             <span className="text-ink-subtle">— Quality control for AI frontend code</span>

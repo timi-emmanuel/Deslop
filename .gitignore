@@ -14,7 +14,7 @@ node_modules/
 /coverage
 
 # next.js & builds
-/.next/
+.next/
 /out/
 /build
 dist/
@@ -47,3 +47,4 @@ ROADMAP.md
 BACKEND_AND_DEVOPS_PLAN.md
 CLAUDE.md
 AGENTS.md
+PRE_LAUNCH_CHECKLIST.md

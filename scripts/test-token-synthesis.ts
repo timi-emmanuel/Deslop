@@ -7,9 +7,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { synthesizeTokens } from "../lib/synthesizer/token-synthesis.ts";
-import type { RawColorObservation, SynthesizedTokenOutput } from "../lib/synthesizer/token-synthesis.ts";
-import { calculateDeltaE, normalizeHex } from "../lib/synthesizer/color-math.ts";
+import { synthesizeTokens } from "../packages/tokens/src/token-synthesis.ts";
+import type { RawColorObservation, SynthesizedTokenOutput } from "../packages/tokens/src/token-synthesis.ts";
+import { calculateDeltaE, normalizeHex } from "../packages/tokens/src/color-math.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

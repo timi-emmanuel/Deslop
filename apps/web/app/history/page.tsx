@@ -84,7 +84,7 @@ export default function HistoryPage() {
               <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
                 <Crosshair size={16} weight="bold" />
               </div>
-              <span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">
+              <span className="font-serif-editorial  italic text-accent text-2xl tracking-tight leading-none">
                 deslop
               </span>
             </Link>
@@ -144,7 +144,7 @@ export default function HistoryPage() {
               <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
                 <Crosshair size={16} weight="bold" />
               </div>
-              <span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">
+              <span className="font-serif-editorial  italic text-accent text-2xl tracking-tight leading-none">
                 deslop
               </span>
             </Link>

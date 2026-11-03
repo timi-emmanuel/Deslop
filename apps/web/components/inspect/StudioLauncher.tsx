@@ -58,7 +58,7 @@ export function StudioLauncher() {
               <Crosshair size={14} weight="bold" />
             </div>
             <div className="flex items-baseline gap-1.5">
-              <span className="font-serif-editorial font-medium italic text-accent text-xl tracking-tight leading-none">
+              <span className="font-serif-editorial  italic text-accent text-xl tracking-tight leading-none">
                 deslop
               </span>
               <span className="font-mono text-[10px] font-bold text-ink-muted uppercase tracking-wider">
@@ -126,7 +126,7 @@ export function StudioLauncher() {
               repeat: Infinity,
               repeatDelay: 0.5
             }}
-            className="inline-block font-serif-editorial font-medium italic text-accent origin-center"
+            className="inline-block font-serif-editorial  italic text-accent origin-center"
           >
             deslop
           </motion.span>

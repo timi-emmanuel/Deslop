@@ -60,7 +60,7 @@ function RegisterForm() {
             <div className="flex h-7 w-7 items-center justify-center rounded-[6px] bg-accent text-white shadow-sm transition-transform group-hover:scale-105">
               <Crosshair size={16} weight="bold" />
             </div>
-            <span className="font-serif-editorial font-medium italic text-accent text-2xl tracking-tight leading-none">
+            <span className="font-serif-editorial  italic text-accent text-2xl tracking-tight leading-none">
               deslop
             </span>
           </Link>
@@ -110,7 +110,7 @@ function RegisterForm() {
             >
               <div className="text-center mb-6">
                 <h1 className="text-2xl font-bold tracking-tight text-ink">
-                  Create your <span className="font-serif-editorial italic text-accent font-medium">deslop</span> account
+                  Create your <span className="font-serif-editorial italic text-accent ">deslop</span> account
                 </h1>
                 <p className="mt-1.5 text-xs text-ink-muted">
                   Save your design system scans, view your history, and build anti-slop guidelines.

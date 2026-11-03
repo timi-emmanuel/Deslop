@@ -1,4 +1,4 @@
-import { validateTargetUrl } from "../lib/extractor/security.ts";
+import { validateTargetUrl } from "../apps/web/lib/extractor/security.ts";
 
 console.log("1. Testing SSRF security...");
 const testUrls = [
