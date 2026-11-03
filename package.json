@@ -7,12 +7,12 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "concurrently -n \"web,api\" -c \"cyan,magenta\" \"npm run dev:web\" \"npm run dev:api\"",
+    "dev": "node init && concurrently -n \"web,api\" -c \"cyan,magenta\" \"npm run dev:web\" \"npm run dev:api\"",
     "dev:web": "npm run dev --workspace=@deslop/web",
     "dev:api": "npm run dev --workspace=@deslop/api",
     "build:web": "npm run build --workspace=@deslop/web",
     "build:api": "npm run build --workspace=@deslop/api",
-    "build": "npm run build:api && npm run build:web",
+    "build": "node init && npm run build:api && npm run build:web",
     "start:web": "npm run start --workspace=@deslop/web",
     "start:api": "npm run start --workspace=@deslop/api",
     "lint": "npm run lint --workspace=@deslop/web",
