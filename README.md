@@ -37,94 +37,94 @@ When developers ask AI coding tools to build user interfaces, the models routine
 
 ---
 
-## 🗺️ Project Architecture & Directory Map
+## 🗺️ Project Architecture & Monorepo Map
+
+Deslop is structured as a clean, modular npm workspace monorepo:
 
 ```
 Deslop/
-├── app/
-│   ├── api/
-│   │   ├── auth/          # Authentication handlers (Supabase integration)
-│   │   ├── export/        # Multi-format token exporter (design.md, Tailwind, CSS)
-│   │   ├── extract/       # Ingestion and computed style extraction API
-│   │   └── history/       # Saved scan history and user token library
-│   ├── history/           # User dashboard for saved design systems
-│   ├── inspect/           # Token Studio with live preview & contrast audits
-│   ├── login/             # Authenticated sign-in with tactile form animations
-│   ├── register/          # User registration with decaying error shake
-│   ├── globals.css        # Warm editorial theme tokens and crafting grid styles
-│   ├── layout.tsx         # Root layout with Geist & Editorial Serif typography
-│   └── page.tsx           # Deslop landing page
-├── components/
-│   ├── auth/              # CrosshairFrame and interactive PeekingMascot
-│   ├── home/              # Landing page sections (Hero, HowItWorks, FeatureMatrix,
-│   │                      # TemplateGallery, Faq, SocialProof, Pricing, Navbar)
-│   ├── inspect/           # TokenTabs, Swatches, ContrastChecker, and ExportDialog
-│   └── ui/                # CrosshairCard, Modal, Glossy buttons, Badges
-├── lib/
-│   ├── api/               # Centralized client API with SWR caching
-│   ├── auth/              # Supabase auth context and session providers
-│   ├── config/            # Application constants and security boundaries
-│   ├── exporters/         # Token synthesizers (design-md.ts, tailwind.ts, css.ts)
-│   ├── extractor/         # Live URL crawler, Cheerio DOM parser, and SSRF security
-│   ├── limits/            # Rate limiting and abuse prevention
-│   └── synthesizer/       # Delta-E color clustering and 8pt grid quantizer
-└── public/                # Static assets, badges, and brand icons
+├── apps/
+│   ├── web/                     # @deslop/web: Next.js 16 Frontend (Port 3000)
+│   │   ├── app/                 # App Router (/, /inspect, /history, /login, /register)
+│   │   ├── components/          # React components (auth, home, inspect, ui)
+│   │   ├── lib/                 # Frontend utilities, hooks & Zorveus AI synthesis
+│   │   ├── public/              # Static brand assets and mascots
+│   │   └── package.json
+│   │
+│   └── api/                     # @deslop/api: Fastify Backend (Port 4000)
+│       ├── src/
+│       │   ├── crawler/         # Playwright Chromium headless crawler & style scraper
+│       │   ├── db/              # Neon PostgreSQL schema & Drizzle ORM pool
+│       │   ├── plugins/         # CORS, Session Auth, and Swagger OpenAPI plugins
+│       │   ├── routes/          # API routes: /health, /api/auth, /api/crawl, /api/scans
+│       │   └── server.ts        # Server bootstrap & graceful shutdown
+│       ├── openapi.json         # Static OpenAPI 3.1.0 JSON specification
+│       └── package.json
+│
+├── packages/
+│   └── tokens/                  # @deslop/tokens: Shared Token Synthesis Engine
+│       ├── src/
+│       │   ├── color-clustering.ts # CIELAB / Delta-E color clustering
+│       │   ├── color-math.ts       # Color conversions & contrast checks
+│       │   ├── grid-quantizer.ts   # 8pt/4pt modular rhythm snappers
+│       │   └── token-synthesis.ts  # Stage 3 token reduction pipeline
+│       └── package.json
+│
+└── package.json                 # Monorepo root workspace orchestrator
 ```
 
 ---
 
 ## 🛠️ Technology Stack
 
-- **Framework:** [Next.js 16 (Turbopack)](https://nextjs.org/) + [React 19](https://react.dev/)
-- **Styling:** [Tailwind CSS v4](https://tailwindcss.com/)
-- **Animations:** [Motion (`motion/react` v13)](https://motion.dev/) — springs, decaying error shakes, and fluid accordion dynamics inspired by [animations.dev](https://animations.dev/)
-- **Parsing & Extraction:** [Cheerio](https://cheerio.js.org/) + Native Fetch
-- **Database & Auth:** [Supabase](https://supabase.com/) (`@supabase/supabase-js`)
-- **Iconography:** [Phosphor Icons](https://phosphoricons.com/)
+- **Frontend (`@deslop/web`):** [Next.js 16 (Turbopack)](https://nextjs.org/) + [React 19](https://react.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [Motion v13](https://motion.dev/), [Phosphor Icons](https://phosphoricons.com/)
+- **Backend (`@deslop/api`):** [Fastify 5](https://fastify.dev/), [Playwright Chromium](https://playwright.dev/), [Server-Sent Events (SSE)](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events), [@fastify/swagger](https://github.com/fastify/fastify-swagger) (OpenAPI 3.1)
+- **Database & ORM:** [Neon Serverless PostgreSQL](https://neon.tech/) + [Drizzle ORM](https://orm.drizzle.team/)
+- **AI Synthesis:** Zorveus AI Gateway (GPT-OSS-120B) with strict hallucination-sanitizing guards
 
 ---
 
 ## 🚀 Getting Started
 
-### 1. Prerequisites
-- Node.js `20.x` or higher
-- npm / pnpm / yarn
-
-### 2. Installation
+### 1. Installation
 ```bash
 # Clone repository
 git clone https://github.com/timi-emmanuel/deslop.git
 cd deslop
 
-# Install dependencies
+# Install dependencies across all workspaces
 npm install
 ```
 
-### 3. Environment Variables
-Create a `.env.local` file in the project root:
-```env
-# Supabase Configuration (Optional for local testing; fallback mode supported)
-NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-
-# Extraction Safety
-MAX_EXTRACTION_DEPTH=1
-EXTRACTION_TIMEOUT_MS=12000
-```
-
-### 4. Running the Development Server
+### 2. Running in Development
 ```bash
+# Run BOTH Frontend (3000) and Backend (4000) concurrently:
 npm run dev
+
+# Or run services individually:
+npm run dev:web    # Starts Next.js on http://localhost:3000
+npm run dev:api    # Starts Fastify on http://localhost:4000
 ```
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### 3. API Documentation (Swagger UI)
+When the backend is running (`npm run dev:api`), open your browser to:
+- **Interactive Swagger UI:** `http://localhost:4000/documentation`
+- **Raw OpenAPI 3.1 JSON:** `http://localhost:4000/documentation/json`
+
+### 4. Running Verification & Tests
+```bash
+# Verify Swagger spec and Token Synthesis rules:
+npm test
+
+# Run individual test suites:
+npm run test:swagger     # Tests OpenAPI generation in-memory
+npm run test:synthesis   # Validates Delta-E clustering & contrast rules
+```
 
 ### 5. Production Build
 ```bash
-# Type check and build
+# Build all workspaces:
 npm run build
-
-# Start production server
-npm run start
 ```
 
 ---
