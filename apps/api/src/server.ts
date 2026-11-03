@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import fastifyCookie from "@fastify/cookie";
 import { config } from "./config.js";
 import { registerCors } from "./plugins/cors.js";
+import { registerSwagger } from "./plugins/swagger.js";
 import { healthRoutes } from "./routes/health.js";
 import { authRoutes } from "./routes/auth.js";
 import { crawlRoutes } from "./routes/crawl.js";
@@ -28,6 +29,11 @@ import { shutdownBrowser } from "./crawler/browser.js";
  */
 export async function buildServer() {
   const app = Fastify({
+    ajv: {
+      customOptions: {
+        strict: false,
+      },
+    },
     logger: {
       level: config.NODE_ENV === "development" ? "info" : "warn",
       transport:
@@ -49,6 +55,7 @@ export async function buildServer() {
   // 1. Register Global Plugins
   await registerCors(app);
   await app.register(fastifyCookie);
+  await registerSwagger(app);
 
   // 2. Register Routes
   await app.register(healthRoutes);
@@ -104,9 +111,15 @@ async function start() {
   }
 }
 
-// Start the server
-start().catch((err) => {
-  console.error("Fatal startup error:", err);
-  process.exit(1);
-});
+// Only start automatically if executed directly as entrypoint
+const isDirectExecution =
+  process.argv[1] &&
+  (process.argv[1].endsWith("server.ts") || process.argv[1].endsWith("server.js"));
+
+if (isDirectExecution) {
+  start().catch((err) => {
+    console.error("Fatal startup error:", err);
+    process.exit(1);
+  });
+}
 

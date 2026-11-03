@@ -22,7 +22,52 @@ const crawlSchema = z.object({
 export const crawlRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   app.post(
     "/api/crawl",
-    { preHandler: [optionalAuth] },
+    {
+      preHandler: [optionalAuth],
+      schema: {
+        tags: ["Crawler"],
+        summary: "Synchronous website crawl & design token synthesis",
+        description:
+          "Executes Playwright Headless Chromium to scrape computed DOM styles, CSS variables, typography, and viewport screenshots, then runs token synthesis.",
+        body: {
+          type: "object",
+          required: ["url"],
+          properties: {
+            url: { type: "string", format: "uri", example: "https://linear.app" },
+          },
+        },
+        response: {
+          200: {
+            description: "Crawl and synthesis completed successfully",
+            type: "object",
+            properties: {
+              success: { type: "boolean", example: true },
+              scanId: { type: "string", nullable: true },
+              data: {
+                type: "object",
+                additionalProperties: true,
+              },
+            },
+          },
+          400: {
+            description: "Invalid URL parameter",
+            type: "object",
+            properties: {
+              success: { type: "boolean", example: false },
+              error: { type: "string" },
+            },
+          },
+          500: {
+            description: "Crawler error or network failure",
+            type: "object",
+            properties: {
+              success: { type: "boolean", example: false },
+              error: { type: "string" },
+            },
+          },
+        },
+      },
+    },
     async (request, reply) => {
       const parseResult = crawlSchema.safeParse(request.body);
       if (!parseResult.success) {
@@ -86,7 +131,22 @@ export const crawlRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
   // -------------------------------------------------------------
   app.get(
     "/api/crawl/stream",
-    { preHandler: [optionalAuth] },
+    {
+      preHandler: [optionalAuth],
+      schema: {
+        tags: ["Crawler"],
+        summary: "Real-time Server-Sent Events (SSE) crawl stream",
+        description:
+          "Opens a live HTTP text/event-stream delivering progress milestones (connected, progress %, complete, error) as the crawler runs.",
+        querystring: {
+          type: "object",
+          required: ["url"],
+          properties: {
+            url: { type: "string", format: "uri", example: "https://linear.app" },
+          },
+        },
+      },
+    },
     async (request, reply) => {
       const query = request.query as { url?: string };
       const parseResult = crawlSchema.safeParse(query);

@@ -11,6 +11,34 @@ import { FastifyInstance, FastifyPluginAsync } from "fastify";
  * - Any error or timeout: Unhealthy, stop sending traffic and trigger an auto-restart.
  */
 export const healthRoutes: FastifyPluginAsync = async (app: FastifyInstance) => {
+  const healthSchema = {
+    schema: {
+      tags: ["Health"],
+      summary: "Service Health & Runtime Diagnostics",
+      description:
+        "Universal health check endpoint used by container orchestrators (Docker, Kubernetes, Render) and status monitors.",
+      response: {
+        200: {
+          description: "Service is healthy and accepting traffic",
+          type: "object",
+          properties: {
+            status: { type: "string", example: "ok" },
+            service: { type: "string", example: "@deslop/api" },
+            uptimeSeconds: { type: "number", example: 120 },
+            timestamp: { type: "string", example: "2026-10-24T05:00:00.000Z" },
+            memoryUsage: {
+              type: "object",
+              properties: {
+                rssMb: { type: "number", example: 68 },
+                heapUsedMb: { type: "number", example: 42 },
+              },
+            },
+          },
+        },
+      },
+    },
+  };
+
   const handler = async (request: any, reply: any) => {
     return reply.status(200).send({
       status: "ok",
@@ -24,6 +52,6 @@ export const healthRoutes: FastifyPluginAsync = async (app: FastifyInstance) => 
     });
   };
 
-  app.get("/health", handler);
-  app.get("/api/health", handler);
+  app.get("/health", healthSchema, handler);
+  app.get("/api/health", healthSchema, handler);
 };

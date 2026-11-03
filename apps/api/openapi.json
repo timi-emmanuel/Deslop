@@ -1,0 +1,876 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Deslop API Specification",
+    "description": "Official REST & SSE API for the Deslop Design System Extractor, Token Synthesis, and Anti-Slop Audit Engine.",
+    "version": "0.1.0",
+    "contact": {
+      "name": "Deslop Engineering"
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "cookieAuth": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "deslop_session",
+        "description": "Session token stored in httpOnly cookie upon successful login"
+      }
+    },
+    "schemas": {}
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Service Health & Runtime Diagnostics",
+        "tags": [
+          "Health"
+        ],
+        "description": "Universal health check endpoint used by container orchestrators (Docker, Kubernetes, Render) and status monitors.",
+        "responses": {
+          "200": {
+            "description": "Service is healthy and accepting traffic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Service is healthy and accepting traffic",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "service": {
+                      "type": "string",
+                      "example": "@deslop/api"
+                    },
+                    "uptimeSeconds": {
+                      "type": "number",
+                      "example": 120
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "2026-10-24T05:00:00.000Z"
+                    },
+                    "memoryUsage": {
+                      "type": "object",
+                      "properties": {
+                        "rssMb": {
+                          "type": "number",
+                          "example": 68
+                        },
+                        "heapUsedMb": {
+                          "type": "number",
+                          "example": 42
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/health": {
+      "get": {
+        "summary": "Service Health & Runtime Diagnostics",
+        "tags": [
+          "Health"
+        ],
+        "description": "Universal health check endpoint used by container orchestrators (Docker, Kubernetes, Render) and status monitors.",
+        "responses": {
+          "200": {
+            "description": "Service is healthy and accepting traffic",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Service is healthy and accepting traffic",
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "service": {
+                      "type": "string",
+                      "example": "@deslop/api"
+                    },
+                    "uptimeSeconds": {
+                      "type": "number",
+                      "example": 120
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "example": "2026-10-24T05:00:00.000Z"
+                    },
+                    "memoryUsage": {
+                      "type": "object",
+                      "properties": {
+                        "rssMb": {
+                          "type": "number",
+                          "example": 68
+                        },
+                        "heapUsedMb": {
+                          "type": "number",
+                          "example": 42
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "summary": "Register a new user account",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Creates a new user record in Neon PostgreSQL, hashes the password with cryptographic scrypt, and issues an httpOnly session cookie.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "designer@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "example": "Password123!"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 120,
+                    "example": "Alex Smith"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User registered and session created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "User registered and session created successfully",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "plan": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or invalid input format",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Validation error or invalid input format",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Account with this email already exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Account with this email already exists",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Database service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Database service unavailable",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "summary": "Log in with email and password",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Validates credentials against scrypt hash and sets an httpOnly session cookie.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "designer@example.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "example": "Password123!"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Login successful",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "plan": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Validation error",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid email or password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Invalid email or password",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Database service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Database service unavailable",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Log out user & clear session",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Invalidates the active session record in the database and clears the httpOnly session cookie.",
+        "responses": {
+          "200": {
+            "description": "Logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Logged out successfully",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Logged out successfully."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/me": {
+      "get": {
+        "summary": "Get current authenticated user profile",
+        "tags": [
+          "Auth"
+        ],
+        "description": "Validates the httpOnly session cookie and returns the active user profile.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Authenticated user details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Authenticated user details",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "user": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": [
+                            "string",
+                            "null"
+                          ]
+                        },
+                        "plan": {
+                          "type": "string"
+                        },
+                        "createdAt": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (no valid session cookie)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Unauthorized (no valid session cookie)",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crawl": {
+      "post": {
+        "summary": "Synchronous website crawl & design token synthesis",
+        "tags": [
+          "Crawler"
+        ],
+        "description": "Executes Playwright Headless Chromium to scrape computed DOM styles, CSS variables, typography, and viewport screenshots, then runs token synthesis.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "url"
+                ],
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "format": "uri",
+                    "example": "https://linear.app"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Crawl and synthesis completed successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Crawl and synthesis completed successfully",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "scanId": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "data": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid URL parameter",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Invalid URL parameter",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Crawler error or network failure",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Crawler error or network failure",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/crawl/stream": {
+      "get": {
+        "summary": "Real-time Server-Sent Events (SSE) crawl stream",
+        "tags": [
+          "Crawler"
+        ],
+        "description": "Opens a live HTTP text/event-stream delivering progress milestones (connected, progress %, complete, error) as the crawler runs.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uri",
+              "example": "https://linear.app"
+            },
+            "in": "query",
+            "name": "url",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/scans/history": {
+      "get": {
+        "summary": "Get authenticated user's scan history",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Returns the latest 50 design system scans performed by the authenticated user, ordered from newest to oldest.",
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user scan records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "List of user scan records",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "scans": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "format": "uuid"
+                          },
+                          "userId": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "url": {
+                            "type": "string"
+                          },
+                          "domain": {
+                            "type": "string"
+                          },
+                          "screenshotUrl": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "tokens": {
+                            "type": "object",
+                            "additionalProperties": true
+                          },
+                          "markdown": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "brandArchetype": {
+                            "type": [
+                              "string",
+                              "null"
+                            ]
+                          },
+                          "scanDurationMs": {
+                            "type": [
+                              "number",
+                              "null"
+                            ]
+                          },
+                          "createdAt": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized (no valid session cookie)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Unauthorized (no valid session cookie)",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Database service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Database service unavailable",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/scans/{id}": {
+      "get": {
+        "summary": "Get single scan by UUID",
+        "tags": [
+          "Scans"
+        ],
+        "description": "Retrieves a specific design system scan and synthesized tokens by record ID.",
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Found scan record",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Found scan record",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": true
+                    },
+                    "scan": {
+                      "type": "object",
+                      "additionalProperties": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Scan record not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Scan record not found",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Database service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Database service unavailable",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "error": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:4000",
+      "description": "Local Development Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Universal service health and diagnostic endpoints"
+    },
+    {
+      "name": "Auth",
+      "description": "Authentication, session management, and user profile"
+    },
+    {
+      "name": "Crawler",
+      "description": "Headless Playwright extraction and real-time SSE streams"
+    },
+    {
+      "name": "Scans",
+      "description": "Persisted design system scan history and token retrieval"
+    }
+  ]
+}
